@@ -8,7 +8,7 @@ export const BenefitsSection = (): JSX.Element => {
       title: "Quality Product",
       description:
         "Our flowers are of the highest quality, carefully selected and sourced from reputable",
-      image: "/time-cosuming.png",
+      image: "/im1.png",
       imageAlt: "Time cosuming",
       background: "#fbfbfb",
     },
@@ -16,7 +16,7 @@ export const BenefitsSection = (): JSX.Element => {
       title: "Always Fresh",
       description:
         "Our flowers are always fresh, handpicked and delivered promptly for maximum longevity and enjoyment.",
-      image: "/grow-sprout.png",
+      image: "/im2.png",
       imageAlt: "Grow sprout",
       background: "#f8f8f8",
     },
@@ -24,7 +24,7 @@ export const BenefitsSection = (): JSX.Element => {
       title: "Work Smart",
       description:
         "We work smart, using innovative techniques and technology to streamline our processes",
-      image: "/temperature.png",
+      image: "/im3.png",
       imageAlt: "Temperature",
       background: "#f8f8f8",
     },
@@ -32,7 +32,7 @@ export const BenefitsSection = (): JSX.Element => {
       title: "Excelent Service",
       description:
         "We pride ourselves on providing excellent service, going above and beyond to meet our customers' needs",
-      image: "/pruning.png",
+      image: "/im4.png",
       imageAlt: "Pruning",
       background: "#fbfbfb",
     },

@@ -63,17 +63,7 @@ export const TestimonialsSection = (): JSX.Element => {
                     {testimonial.quote}
                   </p>
                   <div className="absolute right-0 bottom-0 overflow-hidden opacity-5 z-0">
-                    <img
-                      className={
-                        index === 0
-                          ? "w-[235px]"
-                          : index === 1
-                            ? "w-40"
-                            : "w-[173px]"
-                      }
-                      alt={testimonial.plantAlt}
-                      src={testimonial.plantImage}
-                    />
+                    
                   </div>
                 </div>
               </div>

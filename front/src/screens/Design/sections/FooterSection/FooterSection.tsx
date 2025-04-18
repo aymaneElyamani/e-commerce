@@ -20,64 +20,47 @@ const socialIcons = [
 
 export const FooterSection = (): JSX.Element => {
   return (
-    <footer className="relative w-full bg-[#285a43] py-16">
-      <div className="relative w-full mx-auto">
-        {/* Decorative plant images with opacity */}
-        <div className="absolute w-[441px] h-[313px] top-0 left-0 overflow-hidden opacity-20">
-          <img
-            className="absolute w-[313px] h-[406px] top-12 left-[34px]"
-            alt="Monstera"
-            src="/monstera.png"
-          />
+    <footer className="relative w-full bg-[#285a43] py-16 text-white">
+      <div className="max-w-[1200px] mx-auto px-6">
+        {/* Heading */}
+        <h2 className="text-center font-['Lato',Helvetica] font-black text-3xl md:text-4xl mb-8">
+          Feel free to contact us
+        </h2>
+
+        {/* Social media icons */}
+        <div className="flex justify-center gap-8 mb-10">
+          {socialIcons.map((social, index) => (
+            <a
+              key={index}
+              href="#"
+              className="w-[57px] h-[57px] rounded-full border border-white flex items-center justify-center hover:bg-white hover:text-[#285a43] transition duration-300"
+              aria-label={social.alt}
+            >
+              <social.icon className="w-6 h-6" />
+            </a>
+          ))}
         </div>
 
-        <div className="absolute w-[395px] h-[246px] top-[67px] right-0 overflow-hidden opacity-20">
-          <img
-            className="absolute w-[310px] h-[348px] top-[82px] left-[55px]"
-            alt="Fern"
-            src="/fern.png"
-          />
+        {/* Navigation links */}
+        <div className="flex justify-center flex-wrap gap-6 mb-10">
+          {navLinks.map((link, index) => (
+            <a
+              key={index}
+              href={link.href}
+              className="opacity-80 font-['Raleway',Helvetica] font-bold text-base hover:opacity-100 transition duration-300"
+            >
+              {link.name}
+            </a>
+          ))}
         </div>
 
-        {/* Main content */}
-        <div className="flex flex-col items-center justify-center relative z-10">
-          {/* Heading */}
-          <h2 className="font-['Lato',Helvetica] font-black text-white text-[32px] tracking-[0] leading-[44.8px] mb-10">
-            Feel free to contact us
-          </h2>
+        {/* Decorative line */}
+        <div className="w-full h-[1px] bg-white opacity-20 mb-8"></div>
 
-          {/* Social media icons */}
-          <div className="flex justify-center gap-16 mb-8">
-            {socialIcons.map((social, index) => (
-              <div
-                key={index}
-                className="w-[57px] h-[57px] rounded-[28.5px] border border-solid border-white flex items-center justify-center"
-              >
-                <social.icon className="w-8 h-8 text-white" />
-              </div>
-            ))}
-          </div>
-
-          {/* Navigation links */}
-          <div className="flex justify-center gap-6 mb-8">
-            {navLinks.map((link, index) => (
-              <a
-                key={index}
-                href={link.href}
-                className="opacity-80 font-['Raleway',Helvetica] font-bold text-white text-base tracking-[0] leading-6 whitespace-nowrap"
-              >
-                {link.name}
-              </a>
-            ))}
-          </div>
-        </div>
-
-        {/* Copyright bar */}
-        <div className="absolute w-full h-[39px] bottom-0 left-0 bg-[#121212] flex items-center justify-center">
-          <div className="opacity-80 font-['Raleway',Helvetica] font-bold text-white text-base tracking-[0] leading-6 whitespace-nowrap">
-            Copyright © 2024 Lush. All rights reserved. Dennis Nzioki DNX
-          </div>
-        </div>
+        {/* Footer bottom text */}
+        <p className="text-center text-sm opacity-70">
+          © {new Date().getFullYear()} Hexashop. All rights reserved.
+        </p>
       </div>
     </footer>
   );
