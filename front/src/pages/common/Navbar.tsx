@@ -10,7 +10,7 @@ const navItems = [
 
 function Navbar() {
   return (
-    <div className="absolute top-0 left-0 w-full flex justify-between items-center px-[100px] py-[50px]">
+    <div className="absolute top-0 left-0 w-full flex justify-between items-center px-[100px] py-[30px]">
     {/* Logo */}
     {/* <img
       className="w-[105px] h-16"
