@@ -81,7 +81,7 @@ export const ProductShowcaseSection = (): JSX.Element => {
 
   return (
     <section className="w-full max-w-[1201px] mx-auto py-16">
-      <h2 className="text-center text-4xl text-[#285a43] font-normal tracking-[1.44px] leading-[50.4px] mb-10 font-['Lato',Helvetica] [-webkit-text-stroke:1.1px_#285a43]">
+      <h2 className="text-center text-2xl text-[#285a43] font-normal tracking-[1.44px] leading-[50.4px] mb-10 font-['Lato',Helvetica] [-webkit-text-stroke:1.1px_#285a43]">
         What We Offer To You
       </h2>
 

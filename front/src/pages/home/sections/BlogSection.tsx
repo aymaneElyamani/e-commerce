@@ -14,7 +14,7 @@ export const BlogSection = (): JSX.Element => {
     },
     {
       id: 2,
-      title: "The benefits of plants in your room",
+      title: "The benefits of plants in your room your room",
       excerpt:
         "Plants in your room can bring numerous benefits, such as improved air quality, reduced stress, and increased feelings of well-being....",
       date: "January 10, 2023",

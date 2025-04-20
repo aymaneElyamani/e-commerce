@@ -3,7 +3,7 @@ import { Input } from "../../../components/ui/input";
 
 export const CallToActionSection = (): JSX.Element => {
   return (
-    <section className="relative w-full h-[400px] bg-[url(/arto-suraj-x7jtnqyn54m-unsplash-1.png)] bg-cover bg-center">
+    <section className="relative w-full h-[400px] bg-[url(/emailp.png)] bg-cover bg-center">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between max-w-[1240px] mx-auto px-6 h-full">
         <div className="max-w-[570px] mt-[127px] md:mt-0 [font-family:'Lato',Helvetica] font-bold text-white text-[32px] tracking-[0] leading-[48px]">
           Enter Your Email Address For Our Mailing Promo Or Other Interesting
