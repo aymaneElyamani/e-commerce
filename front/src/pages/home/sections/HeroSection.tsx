@@ -1,7 +1,6 @@
 import { PlayIcon } from "lucide-react";
-import React from "react";
-import { Button } from "../../../../components/ui/button";
-import Navbar from "../navbar/navbar";
+import { Button } from "../../../components/ui/button";
+import Navbar from "../../common/Navbar";
 
 export const HeroSection = (): JSX.Element => {
   // Navigation items data

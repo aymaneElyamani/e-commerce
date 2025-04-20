@@ -1,16 +1,16 @@
-import React from "react";
 import { Button } from "../../components/ui/button";
 import { AboutUsSection } from "./sections/AboutUsSection";
 import { BenefitsSection } from "./sections/BenefitsSection";
 import { BlogSection } from "./sections/BlogSection";
-import { CallToActionSection } from "./sections/CallToActionSection/CallToActionSection";
+import { CallToActionSection } from "./sections/CallToActionSection";
 import { FeaturedProductsSection } from "./sections/FeaturedProductsSection";
-import { FooterSection } from "./sections/FooterSection/FooterSection";
-import { HeroSection } from "./sections/HeroSection/HeroSection";
+import { FooterSection } from "../common/FooterSection";
+import { HeroSection } from "./sections/HeroSection";
 import { ProductShowcaseSection } from "./sections/ProductShowcaseSection";
-import { TestimonialsSection } from "./sections/TestimonialsSection/TestimonialsSection";
+import { TestimonialsSection } from "./sections/TestimonialsSection";
 
-export const Design = (): JSX.Element => {
+
+ const Home = (): JSX.Element => {
   // Data for featured products buttons
   const discoverButtons = [
     { top: "234px", left: "932px" },
@@ -86,3 +86,8 @@ export const Design = (): JSX.Element => {
     </div>
   );
 };
+
+
+
+
+export default Home;

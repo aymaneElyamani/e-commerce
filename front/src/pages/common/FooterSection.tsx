@@ -1,5 +1,4 @@
 import { FacebookIcon, InstagramIcon, TwitterIcon } from "lucide-react";
-import React from "react";
 
 // Navigation links data
 const navLinks = [

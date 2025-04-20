@@ -1,5 +1,4 @@
-import React from "react";
-import { Card, CardContent } from "../../../../components/ui/card";
+import { Card, CardContent } from "../../../components/ui/card";
 
 export const AboutUsSection = (): JSX.Element => {
   // Data for category cards
