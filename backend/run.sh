@@ -18,4 +18,4 @@ echo -e "${YELLOW}🌐 Server running at:${NC} http://localhost:5000"
 echo
 
 # Run the app quietly
-FLASK_ENV=development FLASK_APP=app.py python -m flask run --no-debugger --no-reload > /dev/null 2>&1
+FLASK_ENV=development python app.py > /dev/null 2>&1
