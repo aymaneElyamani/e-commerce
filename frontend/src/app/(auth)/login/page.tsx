@@ -1,10 +1,12 @@
 "use client";
 import { login } from "@/services/auth";
-import { loginSuccess } from "@/store/slices/authSlice";
-import { RootState } from "@/store/store";
+// import { loginSuccess } from "@/store/slices/authSlice";
+// import { RootState } from "@/store/store";
+import useAuthStore from "@/store/useAuthStore";
+// import useStore from "@/store2/useAuthStore";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+// import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 
 const Login: React.FC = () => {
@@ -12,23 +14,31 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false); // 👈 Loading state
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const router = useRouter();
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  // const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+
+  const {loginSuccess , isAuthenticated  , setProfile} = useAuthStore()
 
   useEffect(() => {
+    console.log("is authentified");
     if (isAuthenticated) {
+      
       router.push("/");
     }
   }, [isAuthenticated, router]);
+
+
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true); // 👈 Start loading
 
     try {
-      const token = await login({ email, password });
-      dispatch(loginSuccess({ token, email }));
+      const {token , user} = await login({ email, password });
+      // 
+      loginSuccess(token ,  user );
+
       console.log("Logged in! Token:", token);
 
       // Show success toast

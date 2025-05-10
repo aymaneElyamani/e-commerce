@@ -1,7 +1,7 @@
 "use client";
 
 import { register } from "@/services/auth";
-import { RootState } from "@/store/store";
+import useAuthStore from "@/store/useAuthStore";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -13,9 +13,11 @@ function Signup() {
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false); // Loading state
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const router = useRouter();
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  // const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  
+  const {isAuthenticated}  = useAuthStore()
 
   useEffect(() => {
     if (isAuthenticated) {
