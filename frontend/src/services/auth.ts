@@ -13,10 +13,6 @@ interface AuthCredentials {
   password: string;
 }
 
-// Interface for user profile
-interface UserProfile {
-  email: string;
-}
 
 // ============================
 // Register User
@@ -24,7 +20,7 @@ interface UserProfile {
 
 export const register = async ({ email, password }: AuthCredentials): Promise<string> => {
   try {
-    const res = await api.post('/register', { email, password });
+    const res = await api.post('/register', { email, password } );
     return res.data.message;
   } catch (err) {
     if (axios.isAxiosError(err) && err.response) {
@@ -38,21 +34,29 @@ export const register = async ({ email, password }: AuthCredentials): Promise<st
 // ============================
 // Login User and Save Token
 // ============================
-export const login = async ({ email, password }: AuthCredentials): Promise<string> => {
+
+type loginReturn = {
+  user : User, 
+  token : string
+}
+
+export const login = async ({ email, password }: AuthCredentials): Promise<loginReturn> => {
   const res = await api.post('/login', { email, password });
   const token = res.data.token;
+  const id = res.data.token;
+
 
   if (typeof window !== 'undefined') {
     localStorage.setItem('token', token);
   }
 
-  return token;
+  return {token : token  , user : {id : id , email: email }};
 };
 
 // ============================
 // Get User Profile (Protected)
 // ============================
-export const getProfile = async ({token } : {token : string}): Promise<UserProfile> => {
+export const getProfile = async ({token } : {token : string}): Promise<User> => {
 
 
   const res = await api.get('/profile', {
@@ -60,6 +64,9 @@ export const getProfile = async ({token } : {token : string}): Promise<UserProfi
       Authorization: `Bearer ${token}`,
     },
   });
+  
+
+  console.log({"user load" : res.data.user});
 
   return res.data.user;
 };
@@ -67,7 +74,7 @@ export const getProfile = async ({token } : {token : string}): Promise<UserProfi
 // ============================
 // Logout (Client-side only)
 // ============================
-export const logout = (): void => {
+export const logoutUser = (): void => {
   if (typeof window !== 'undefined') {
     localStorage.removeItem('token');
   }

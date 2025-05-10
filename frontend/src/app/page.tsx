@@ -42,31 +42,53 @@
 
 "use client"
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
-import { logout, setProfile } from "@/store/slices/authSlice";
-import { RootState } from "@/store/store";
-import { getProfile } from "@/services/auth";
+import { getProfile, logoutUser } from "@/services/auth";
+import { HeroSection } from "./_components/HeroSection";
+import { ProductShowcaseSection } from "./_components/ProductShowcaseSection";
+import { BenefitsSection } from "./_components/BenefitsSection";
+import { FeaturedProductsSection } from "./_components/FeaturedProductsSection";
+import { TestimonialsSection } from "./_components/TestimonialsSection";
+import { CallToActionSection } from "./_components/CallToActionSection";
+import { BlogSection } from "./_components/BlogSection";
+import { FooterSection } from "@/common/FooterSection";
+import useAuthStore from "@/store/useAuthStore";
+import AddToCart from "./_components/cart_purchuse";
+import { CategoriesCloches } from "./_components/categoriesClothes";
+import Hero from "./_components/Hero";
 
 
 const Home = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const router = useRouter();
-  const { email, isAuthenticated } = useSelector((state: RootState) => state.auth);
+  const { user, isAuthenticated  , setProfile , logout} = useAuthStore();
   useEffect(() => {
      const token = localStorage.getItem('token');
 
     if (token) {
-      getProfile({token : token ?? ""}).then(user => dispatch(setProfile(user)));
+      getProfile({token : token ?? ""}).then(user => setProfile(user));
     }else{
-      router.push("/login")
+      // router.push("/login")
     }
   }, [isAuthenticated   ]);
 
   return (
     <div>
-      <h1>Welcome {email || 'User'}</h1>
-      {isAuthenticated && <button onClick={() => dispatch(logout())}>Logout</button>}
+        {/* <h1>Welcome {user?.email || 'User'}</h1>
+        {isAuthenticated && <button onClick={() => {logout(); logoutUser()}}>Logout</button>} */}
+
+        {/* <AddToCart/> */}
+        <Hero />
+        {/* <HeroSection /> */}
+       <CategoriesCloches />
+       <ProductShowcaseSection />
+       {/* <BenefitsSection /> */}
+       {/* <FeaturedProductsSection /> */}
+       <TestimonialsSection />
+       {/* <CallToActionSection /> */}
+       {/* <BlogSection /> */}
+       {/* <FooterSection /> */}
+    
     </div>
   );
 };
