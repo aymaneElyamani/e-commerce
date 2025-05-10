@@ -65,8 +65,8 @@ def login():
     conn.close()
 
     if user and check_password_hash(user["password"], password):  # Assuming the password is in index 1 of the tuple
-        token = encode_jwt({"email": email})  # Create JWT token
-        return jsonify({"message": "Login successful", "token": token})  # Send token to the client
+        token = encode_jwt(user)  # Create JWT token
+        return jsonify({"message": "Login successful", "token": token , "user" :  user})  # Send token to the client
     
     return jsonify({"error": "Invalid credentials"}), 401
 @auth_bq.route('/profile', methods=['GET'])

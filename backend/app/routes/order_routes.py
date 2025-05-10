@@ -1,10 +1,9 @@
-
-
-# orders.py
 from flask import Blueprint, request, jsonify
 from app import get_db
 
 order_bp = Blueprint("orders", __name__, url_prefix="/api/orders")
+from flask import jsonify, request
+from flask_sqlalchemy import SQLAlchemy
 
 @order_bp.route("", methods=["POST"])
 def create_order():
@@ -13,8 +12,8 @@ def create_order():
     {
       "utilisateur_id": 1,
       "items": [
-        { "product_id": 5, "quantity": 2 },
-        { "product_id": 3, "quantity": 1 }
+        { "product_id": 5, "quantity": 2, "size": "L", "color": "Red" },
+        { "product_id": 3, "quantity": 1, "size": "M", "color": "Blue" }
       ]
     }
     """
@@ -22,13 +21,22 @@ def create_order():
     user_id = data.get("utilisateur_id")
     items = data.get("items", [])
 
+    # Validate input data
     if not user_id or not items:
         return jsonify({"error": "utilisateur_id and items are required"}), 400
+
+    for item in items:
+        if not isinstance(item["quantity"], int) or item["quantity"] <= 0:
+            return jsonify({"error": f"Invalid quantity for product {item['product_id']}"}), 400
+        if not isinstance(item["product_id"], int) or item["product_id"] <= 0:
+            return jsonify({"error": f"Invalid product_id for product {item['product_id']}"}), 400
+        if "size" not in item or "color" not in item:
+            return jsonify({"error": f"Missing size or color for product {item['product_id']}"}), 400
 
     conn = get_db()
     cur = conn.cursor()
     try:
-        # 1) Insert order
+        # Insert the order into the orders table
         cur.execute("""
             INSERT INTO orders (utilisateur_id, total_price)
             VALUES (%s, 0)
@@ -36,31 +44,35 @@ def create_order():
         """, (user_id,))
         order_id = cur.fetchone()["id"]
 
-        # 2) Insert line items and compute total
         total = 0
+        line_orders = []
         for it in items:
             pid = it["product_id"]
             qty = it["quantity"]
-            # fetch product price
+            size = it["size"]
+            color = it["color"]
+
+            # Get the price of the product
             cur.execute("SELECT price FROM products WHERE id=%s", (pid,))
             row = cur.fetchone()
             if not row:
                 raise ValueError(f"Product {pid} not found")
+
             price = float(row["price"])
-            line_total = price * qty
-            total += line_total
+            total += price * qty
 
-            cur.execute("""
-                INSERT INTO line_orders (order_id, product_id, quantity, price)
-                VALUES (%s, %s, %s, %s)
-            """, (order_id, pid, qty, price))
+            line_orders.append((order_id, pid, qty, price, size, color))
 
-        # 3) Update order total
-        cur.execute("""
-            UPDATE orders SET total_price=%s WHERE id=%s
-        """, (total, order_id))
+        # Insert all line orders in one query for efficiency
+        cur.executemany("""
+            INSERT INTO line_orders (order_id, product_id, quantity, price, size, color)
+            VALUES (%s, %s, %s, %s, %s, %s)
+        """, line_orders)
 
+        # Update the total price in the orders table
+        cur.execute("UPDATE orders SET total_price=%s WHERE id=%s", (total, order_id))
         conn.commit()
+
         return jsonify({"message": "Order created", "order_id": order_id}), 201
 
     except Exception as e:
@@ -70,6 +82,7 @@ def create_order():
     finally:
         cur.close()
         conn.close()
+
 
 @order_bp.route("", methods=["GET"])
 def list_orders():
@@ -81,18 +94,17 @@ def list_orders():
         ORDER BY o.created_at DESC
     """)
     orders = cur.fetchall()
-    cur.close()
-    conn.close()
-    # convert total_price to float
     for o in orders:
         o["total_price"] = float(o["total_price"])
+    cur.close()
+    conn.close()
     return jsonify(orders), 200
 
 @order_bp.route("/<int:order_id>", methods=["GET"])
 def get_order(order_id):
     conn = get_db()
     cur = conn.cursor()
-    # fetch order
+
     cur.execute("""
         SELECT id, utilisateur_id, total_price, created_at
         FROM orders WHERE id=%s
@@ -102,28 +114,26 @@ def get_order(order_id):
         cur.close(); conn.close()
         return jsonify({"error": "Order not found"}), 404
     order["total_price"] = float(order["total_price"])
-    # fetch line items
+
     cur.execute("""
-        SELECT lo.id, lo.product_id, lo.quantity, lo.price, p.name
+        SELECT lo.id, lo.product_id, lo.quantity, lo.price, lo.size, lo.color, p.name
         FROM line_orders lo
         JOIN products p ON p.id = lo.product_id
         WHERE lo.order_id = %s
     """, (order_id,))
     items = cur.fetchall()
-    cur.close()
-    conn.close()
-    # convert price to float
     for i in items:
         i["price"] = float(i["price"])
-    return jsonify({**order, "items": items}), 200
 
+    cur.close()
+    conn.close()
+    return jsonify({**order, "items": items}), 200
 
 @order_bp.route("/user/<int:user_id>", methods=["GET"])
 def get_user_orders(user_id):
     conn = get_db()
     cur = conn.cursor()
 
-    # Fetch all orders for this user
     cur.execute("""
         SELECT o.id, o.total_price, o.created_at
         FROM orders o
@@ -132,10 +142,9 @@ def get_user_orders(user_id):
     """, (user_id,))
     orders = cur.fetchall()
 
-    # For each order, fetch its line items
     for order in orders:
         cur.execute("""
-            SELECT lo.id, lo.product_id, lo.quantity, lo.price, p.name
+            SELECT lo.id, lo.product_id, lo.quantity, lo.price, lo.size, lo.color, p.name
             FROM line_orders lo
             JOIN products p ON p.id = lo.product_id
             WHERE lo.order_id = %s
@@ -148,5 +157,4 @@ def get_user_orders(user_id):
 
     cur.close()
     conn.close()
-
     return jsonify(orders), 200
