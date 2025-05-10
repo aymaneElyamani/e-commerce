@@ -1,5 +1,6 @@
-import { Button } from "../../../components/ui/button";
-import { Card, CardContent } from "../../../components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { JSX } from "react";
 
 export const FeaturedProductsSection = (): JSX.Element => {
   const categories = [

@@ -1,6 +1,7 @@
+import Navbar from "@/common/Navbar";
+import { Button } from "@/components/ui/button";
 import { PlayIcon } from "lucide-react";
-import { Button } from "../../../components/ui/button";
-import Navbar from "../../common/Navbar";
+import { JSX } from "react";
 
 export const HeroSection = (): JSX.Element => {
   // Navigation items data
@@ -29,7 +30,7 @@ export const HeroSection = (): JSX.Element => {
 
         {/* Navigation */}
       <div>
-        <Navbar />
+        {/* <Navbar  /> */}
       </div>
 
         {/* Hero content */}

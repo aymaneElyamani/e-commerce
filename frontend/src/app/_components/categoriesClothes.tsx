@@ -1,41 +1,55 @@
-import { Card, CardContent } from "../../../components/ui/card";
 
-export const AboutUsSection = (): JSX.Element => {
+
+import { Card, CardContent } from "@/components/ui/card";
+import Link from "next/link";
+import { JSX } from "react";
+
+export const CategoriesCloches = (): JSX.Element => {
   const categories = [
     {
       id: 1,
       name: "Femmes",
-      backgroundImage: "/image1.png",
+      backgroundImage: "/img/categories/image1.png",
       textColor: "#285a43",
+      href : "/products?category=women"
     },
     {
       id: 2,
       name: "Enfants",
-      backgroundImage: "/image2.png",
+      backgroundImage: "/img/categories/image2.png",
       textColor: "#ffffff",
+      href : "/products?category=kids"
+
     },
     {
       id: 3,
       name: "Hommes",
-      backgroundImage: "/image3.png",
+      backgroundImage: "/img/categories/image3.png",
       textColor: "#285a43",
+      href : "/products?category=man"
+
     },
   ];
 
   return (
-    <section className="w-full py-[50px] px-[100px] bg-[#f9f9f9]">
-      <div className="max-w-[1100px] mx-auto">
+    <section className="w-full py-12 px-6 bg-[#f9f9f9]">
+      <div className="max-w-screen-xl mx-auto">
+        {/* Header */}
         <div className="flex flex-col md:flex-row justify-between mb-8 mt-10">
-          <h2 className="max-w-[476px] text-[#285a43] text-3xl tracking-[1.44px] leading-[50.4px] [font-family:'Lato',Helvetica] font-normal [-webkit-text-stroke:1.1px_#285a43]">
+          <h2 className="text-[#285a43] text-3xl md:text-4xl font-normal tracking-wide leading-tight md:max-w-md">
             We Help Choose The Most Suitable Plants For You
           </h2>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-8 md:gap-[30px]">
+        {/* Categories Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
           {categories.map((category) => (
-            <Card
+            <Link href={category.href} 
+            
               key={category.id}
-              className="group w-full md:w-[350px] h-[400px] border-none rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300"
+            >
+            <Card
+              className="group w-full h-[350px] md:h-[400px] border-none rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300"
             >
               <CardContent className="p-0 h-full relative">
                 {/* Image with zoom effect */}
@@ -53,13 +67,17 @@ export const AboutUsSection = (): JSX.Element => {
 
                 {/* Text */}
                 <div
-                  className="absolute inset-0 flex items-center justify-center [font-family:'Lato',Helvetica] font-black text-[48px] tracking-[2.56px] leading-[64px] text-center transition-transform duration-500 group-hover:scale-105"
-                  style={{ color: category.textColor, textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)" }}
+                  className="absolute inset-0 flex items-center justify-center font-black text-[36px] md:text-[48px] text-center transition-transform duration-500 group-hover:scale-105"
+                  style={{
+                    color: category.textColor,
+                    textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+                  }}
                 >
                   {category.name}
                 </div>
               </CardContent>
             </Card>
+            </Link>
           ))}
         </div>
       </div>

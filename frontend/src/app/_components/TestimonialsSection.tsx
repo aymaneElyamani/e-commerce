@@ -1,4 +1,5 @@
-import { Card, CardContent } from "../../../components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
+import { JSX } from "react";
 
 export const TestimonialsSection = (): JSX.Element => {
   // Testimonial data for mapping

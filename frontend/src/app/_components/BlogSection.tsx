@@ -1,5 +1,6 @@
+import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRightIcon, CalendarIcon } from "lucide-react";
-import { Card, CardContent } from "../../../components/ui/card";
+import { JSX } from "react";
 
 export const BlogSection = (): JSX.Element => {
   // Blog post data for mapping
