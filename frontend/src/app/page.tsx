@@ -74,20 +74,15 @@ const Home = () => {
 
   return (
     <div>
-        {/* <h1>Welcome {user?.email || 'User'}</h1>
-        {isAuthenticated && <button onClick={() => {logout(); logoutUser()}}>Logout</button>} */}
-
-        {/* <AddToCart/> */}
-        <Hero />
-        {/* <HeroSection /> */}
+               <Hero />
        <CategoriesCloches />
        <ProductShowcaseSection />
        {/* <BenefitsSection /> */}
-       {/* <FeaturedProductsSection /> */}
+       <FeaturedProductsSection />
        <TestimonialsSection />
        {/* <CallToActionSection /> */}
        {/* <BlogSection /> */}
-       {/* <FooterSection /> */}
+       <FooterSection />
     
     </div>
   );

@@ -8,11 +8,12 @@ import Link from "next/link";
 import useAuthStore from "@/store/useAuthStore";
 import AddToCart from "@/app/_components/cart_purchuse";
 import { logoutUser } from "@/services/auth";
+import { FaHeart } from "react-icons/fa";
 
 const navItems = [
   { text: "Home", href: "/" },
   { text: "Shop", href: "/products" },
-  { text: "Services", href: "/services" },
+  { text: "Blogs", href: "/blogs" },
   { text: "Contact", href: "/contact" },
 ];
 
@@ -73,6 +74,13 @@ export default function Navbar() {
                 >
                   <ShoppingCart size={16} />
                   My Orders
+                </Link>
+                 <Link
+                  href="/wishlist"
+                  className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm flex items-center gap-2"
+                >
+                  <FaHeart size={16} />
+                  My wishList
                 </Link>
                 <Link
                   href="/email"

@@ -1,88 +1,132 @@
-import { Card, CardContent } from "./ui/card";
-import { Button } from "./ui/button";
-import { HeartIcon, LucideView, View, ViewIcon } from "lucide-react";
-import useCartStore from "@/store/useCartStore";
-import Link from "next/link";
+"use client";
 
+import { CardContent } from "./ui/card";
+import { Button } from "./ui/button";
+import { HeartIcon } from "lucide-react";
+import { IoEyeSharp } from "react-icons/io5";
+import { FaHeart } from "react-icons/fa";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import useCartStore from "@/store/useCartStore";
+import useWishlistStore from "@/store/useWishList";
+import { toast } from "sonner";
 
 function CardProduct({ product }: { product: Product }) {
   const { addProduct } = useCartStore();
+  const { addToWishlist, removeFromWishlist, wishlist } = useWishlistStore();
+
+  const isFavorite = wishlist.find((e) => e.id === product.id);
 
   const handleAdd = () => {
     const request: AddToCardType = {
-      color : product.colors[0],
-      idProduct : product.id,
+      color: product.colors[0],
+      idProduct: product.id,
       image_cover: product.image_cover,
-      name : product.name,
-      price : product.price,
-      size : "M",
+      name: product.name,
+      price: product.price,
+      size: "M",
       quantity: 1,
     };
 
     addProduct(request);
-
-    console.log("Add to cart:", request);
-    // Here you would typically call a function to update the cart or send a request to backend
+    toast.success(`${product.name} added to cart`);
   };
 
   return (
-    <Card
-      key={product.id}
-      className="w-full rounded-[10px] border border-solid border-[#00000008] shadow-[10px_10px_20px_#00000005] overflow-hidden"
+    <motion.div
+      whileHover={{ scale: 1.015 }}
+      className="relative group rounded-xl shadow-md bg-white border border-gray-100 overflow-hidden transition-all duration-300"
     >
-      <div className="relative w-full h-[250px]">
-        <div
-          className="w-full h-full bg-cover bg-center"
-          style={{ backgroundImage: `url(${product.image_cover})`  }}
+      {/* Product Image */}
+      <div className="relative h-[250px] w-full overflow-hidden">
+        <img
+          src={product.image_cover ?? ""}
+          alt={product.name}
+          className="object-cover w-full h-full"
         />
-        <div
-          // variant="outline"
-          // size="icon"
-          className="absolute top-[15px] right-[15px] rounded-2xl  p-0 border-none"
-        >
-          <HeartIcon className="w-5 h-5" />
-         <Link href={`/products/${product.id}`}>
-    <LucideView className="w-5 h-5" />
-</Link>
 
-        </div>
+        {/* Hovered icons container */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        >
+          <Button
+            variant="ghost"
+            size="icon"
+            className="bg-white/90 hover:bg-white rounded-full p-1 shadow"
+            onClick={() => {
+              if (isFavorite) {
+                removeFromWishlist(product.id);
+                toast.message(`${product.name} removed from wishlist`);
+              } else {
+                addToWishlist(product);
+                toast.message(`${product.name} added to wishlist`);
+              }
+            }}
+          >
+            {isFavorite ? (
+              <FaHeart className="text-red-500 w-5 h-5" />
+            ) : (
+              <HeartIcon className="w-5 h-5 " />
+            )}
+          </Button>
+
+          <Link href={`/products/${product.id}`}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="bg-white/90 hover:bg-white rounded-full p-1 shadow"
+            >
+              <IoEyeSharp className="w-5 h-5 text-gray-800 cursor-pointer" />
+            </Button>
+          </Link>
+        </motion.div>
       </div>
 
-      <CardContent className="p-0">
-        <div className="pt-2 px-6 pb-4">
-          <h3 className="font-black text-[#337a5b] text-base tracking-[0] leading-[22.4px] font-['Lato',Helvetica]">
-            {product.name}
-          </h3>
+      <CardContent className="p-4">
+        {/* Product Title */}
+        <h3 className="text-base font-bold text-[#337a5b] line-clamp-1">
+          {product.name}
+        </h3>
 
-          <div className="flex items-center justify-between mt-2">
-            <div className="flex items-center gap-1">
-              {
-                product.discount_percentage &&  <span className="opacity-50 font-normal text-[#121212] text-xs tracking-[0] leading-[16.8px] line-through font-['Lato',Helvetica]">
-                ({product.price})
+        {/* Price and Add button */}
+        <div className="flex items-center justify-between mt-3">
+          <div className="space-x-2 text-sm">
+            {product.discount_percentage && (
+              <span className="line-through text-muted-foreground">
+                ${product.price}
               </span>
-              }
-            
-              <span className="font-bold text-[#337a5b] text-xs tracking-[0] leading-[16.8px] font-['Lato',Helvetica]">
-
-                {product.discount_percentage  ? (product.price - product.price * product.discount_percentage/100).toFixed(2) :  product.price}
-              </span>
-            </div>
-
-            <Button
-              onClick={handleAdd}
-              variant={"outline"}
-              className={`px-6 py-2 rounded-[3px] text-xs font-black leading-[16.8px] h-auto ${
-                true
-                  ? "bg-[#337a5b] text-white"
-                  : "border-[#337a5b99] text-[#337a5b]"
-              } font-['Lato',Helvetica]`}
-            >
-              Add to Card
-            </Button>
+            )}
+            <span className="font-bold text-[#337a5b]">
+              $
+              {product.discount_percentage
+                ? (
+                    product.price -
+                    (product.price * product.discount_percentage) / 100
+                  ).toFixed(2)
+                : product.price}
+            </span>
           </div>
+
+          <Button
+            onClick={handleAdd}
+            size="sm"
+            className="bg-[#337a5b] text-white px-4 py-1 text-xs font-semibold"
+          >
+            Add to Cart
+          </Button>
         </div>
+
+        {/* Discount badge */}
+        {product.discount_percentage && (
+          <div className="absolute top-3 left-3 bg-red-500 text-white text-[10px] px-2 py-1 rounded-full font-bold shadow-md">
+            -{product.discount_percentage}%
+          </div>
+        )}
       </CardContent>
-    </Card>
+    </motion.div>
   );
 }
 
