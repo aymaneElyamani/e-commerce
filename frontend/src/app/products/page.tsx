@@ -1,122 +1,171 @@
 "use client";
-import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
-import { Card, CardContent, CardTitle, CardDescription } from "@/components/ui/card";
-import Navbar from '@/common/Navbar';
-import { Button } from '@/components/ui/button';
-import useCartStore from '@/store/useCartStore';
-import { toast } from 'sonner';
-import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
-import CardProduct from '@/components/cardProduct';
 
-const Section = ({ title, products }: { title: string, products: Product[] }) => {
+import React, { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { useSearchParams, usePathname } from "next/navigation";
+import { toast } from "sonner";
+import { motion } from "framer-motion";
+import clsx from "clsx";
+import CardProduct from "@/components/cardProduct";
+import Link from "next/link";
+import { Skeleton } from "@/components/ui/skeleton"; // Import Skeleton from Shadcn
 
-  return <section className="mb-8">
+const Section = ({
+  title,
+  products,
+}: {
+  title: string;
+  products: Product[];
+}) => (
+  <motion.section
+    className="mb-8"
+    initial={{ opacity: 0, y: 30 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5 }}
+  >
     <h2 className="text-2xl font-bold mb-4">{title}</h2>
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {products.map((product , index) => (
-        // <Link href={  `./products/${product.id}` } key={product.id}>
-          <CardProduct product={product} key={index} />
-        // </Link>
-      
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+      {products.map((product, index) => (
+        <CardProduct key={index} product={product} />
       ))}
     </div>
-  </section>;
-};
+  </motion.section>
+);
+
+function formatPath(path: string): string {
+  return path
+    .split("/")
+    .filter(Boolean)
+    .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
+    .join(" / ") || "Home";
+}
 
 export default function Page() {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState<boolean>(true); // 👈 loading state
-
-  const searchParams = useSearchParams();
-  const category = searchParams.get('category');
-
-  // Filters state
+  const [loading, setLoading] = useState<boolean>(true);
   const [minPrice, setMinPrice] = useState<number>(0);
   const [maxPrice, setMaxPrice] = useState<number>(1000);
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const API_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/products${category ? `?category=${category}` : ''}`;
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const category = searchParams.get("category");
+
+  const API_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/products${
+    category ? `?category=${category}` : ""
+  }`;
 
   useEffect(() => {
-    setLoading(true); // 👈 Start loading
+    setLoading(true);
     fetch(API_BASE_URL)
       .then((response) => {
-        if (!response.ok) {
-          toast.error("Network response was not ok");
-        }
+        if (!response.ok) throw new Error("Network response was not ok");
         return response.json();
       })
-      .then((data) => {
+      .then((data: Product[]) => {
         setProducts(data);
         setFilteredProducts(data);
       })
-      .catch((error) => {
-        console.error('Fetch error:', error);
-        toast.error('Failed to load products.');
-      })
-      .finally(() => {
-        setLoading(false); // 👈 Done loading
-      });
-  }, []);
+      .catch(() => toast.error("Failed to load products."))
+      .finally(() => setLoading(false));
+  }, [API_BASE_URL]);
 
-  const handleFilter = () => {
-    setFilteredProducts(
-      products.filter((product) =>
+  useEffect(() => {
+    const filtered = products.filter(
+      (product) =>
         product.price >= minPrice &&
         product.price <= maxPrice &&
         product.name.toLowerCase().includes(searchQuery.toLowerCase())
-      )
     );
-  };
+    setFilteredProducts(filtered);
+  }, [minPrice, maxPrice, searchQuery, products]);
 
   return (
-    <main className="p-6 max-w-7xl mx-auto">
+    <main className="p-4 sm:p-6 max-w-7xl mx-auto">
+      <motion.h1
+        className="text-lg text-muted-foreground mb-6"
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.1 }}
+      >
+        <Link href={"/"}>Home</Link>/{" "}
+        <span className="text-black font-medium">{formatPath(pathname)}</span>
+      </motion.h1>
+
       {loading ? (
         <div className="text-center py-20">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading products...</p>
+          {/* Skeleton for the heading */}
+          <Skeleton className="mx-auto mb-4 w-40 h-6" />
+          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
+            {/* Skeleton for products */}
+            {[...Array(8)].map((_, index) => (
+              <Skeleton key={index} className="rounded-md h-80 w-full" />
+            ))}
+          </div>
         </div>
       ) : (
         <>
-          <div className="mb-6 flex space-x-4">
-            <input
-              type="number"
-              value={minPrice}
-              onChange={(e) => setMinPrice(Number(e.target.value))}
-              placeholder="Min Price"
-              className="p-2 border rounded"
-            />
-            <input
-              type="number"
-              value={maxPrice}
-              onChange={(e) => setMaxPrice(Number(e.target.value))}
-              placeholder="Max Price"
-              className="p-2 border rounded"
-            />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search by name"
-              className="p-2 border rounded"
-            />
-            <Button onClick={handleFilter} className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">
-              Apply Filters
-            </Button>
-          </div>
+          <motion.div
+            className="grid sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            <div>
+              <label htmlFor="minPrice" className="block text-sm font-medium mb-1">
+                Min Price
+              </label>
+              <input
+                id="minPrice"
+                type="number"
+                value={minPrice}
+                onChange={(e) => setMinPrice(Number(e.target.value))}
+                className="p-2 border rounded w-full"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="maxPrice" className="block text-sm font-medium mb-1">
+                Max Price
+              </label>
+              <input
+                id="maxPrice"
+                type="number"
+                value={maxPrice}
+                onChange={(e) => setMaxPrice(Number(e.target.value))}
+                className="p-2 border rounded w-full"
+              />
+            </div>
+
+            <div className="col-span-2 md:col-span-1">
+              <label htmlFor="search" className="block text-sm font-medium mb-1">
+                Search by Name
+              </label>
+              <input
+                id="search"
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="p-2 border rounded w-full"
+              />
+            </div>
+          </motion.div>
 
           <Section title="Products" products={filteredProducts} />
 
-          <footer className="mt-12 bg-gray-100 p-6 rounded-xl">
+          <motion.footer
+            className="mt-12 bg-gray-100 p-6 rounded-xl text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
             <h3 className="text-xl font-semibold mb-2">Kid's Collection</h3>
             <p className="text-gray-600 mb-4">Explore adorable outfits for kids!</p>
-            <button className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">
+            <Button className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">
               Browse Now
-            </button>
-          </footer>
+            </Button>
+          </motion.footer>
         </>
       )}
     </main>
