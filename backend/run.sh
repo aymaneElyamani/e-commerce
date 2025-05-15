@@ -15,6 +15,8 @@ source "./.venv/Scripts/activate"
 # Print colorful info message
 echo -e "${GREEN}🚀 Flask server is starting...${NC}"
 echo -e "${YELLOW}🌐 Server running at:${NC} http://localhost:5000"
+echo -e "${YELLOW}🌐 admin running at:${NC} http://localhost:5000/admin"
+
 echo
 
 # Run the app quietly

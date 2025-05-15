@@ -29,6 +29,31 @@ def get_offers():
     cur.close()
     return jsonify(offers)
 
+# GET all offers with product details
+@offers_bp.route('/all', methods=['GET'])
+def get_offers_all():
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute('''
+        SELECT 
+            offers.*, 
+            products.name AS product_name,
+            products.description AS product_description,
+            products.price AS product_price,
+            products.image_cover AS product_image_cover,
+            products.image_details AS product_image_details,
+            products.colors AS product_colors,
+            products.quantity AS product_quantity,
+            products.category AS product_category
+        FROM offers
+        JOIN products ON offers.product_id = products.id
+        
+    ''')
+    offers = cur.fetchall()
+    cur.close()
+    return jsonify(offers)
+
+
 
 # GET single offer by ID
 @offers_bp.route('/<int:offer_id>', methods=['GET'])

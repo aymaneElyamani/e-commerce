@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>eCommerce Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center">
+
+  <header class="w-full bg-gray-800 text-white text-center py-6 text-3xl font-bold shadow-md">
+    eCommerce Admin
+  </header>
+
+  <main class="max-w-4xl w-full px-6 py-10 text-center">
+    <div class="mb-10 rounded-lg overflow-hidden shadow-lg">
+      <img
+        src="https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=900&q=80"
+        alt="Boutique Clothes"
+        class="w-full h-auto object-cover"
+      />
+    </div>
+
+    <nav class="flex flex-wrap justify-center gap-6">
+      <a href="/admin/users" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-md shadow-md transition">
+        Users
+      </a>
+      <a href="/admin/products" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-md shadow-md transition">
+        Products
+      </a>
+      <a href="/admin/offers" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-md shadow-md transition">
+        Offers
+      </a>
+      <a href="/admin/orders" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-md shadow-md transition">
+        Orders
+      </a>
+    </nav>
+  </main>
+
+</body>
+</html>

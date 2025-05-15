@@ -3,7 +3,7 @@ from app import get_db
 
 order_bp = Blueprint("orders", __name__, url_prefix="/api/orders")
 from flask import jsonify, request
-from flask_sqlalchemy import SQLAlchemy
+# from flask_sqlalchemy import SQLAlchemy
 
 @order_bp.route("", methods=["POST"])
 def create_order():
@@ -158,3 +158,79 @@ def get_user_orders(user_id):
     cur.close()
     conn.close()
     return jsonify(orders), 200
+
+
+
+
+@order_bp.route("/<int:order_id>", methods=["PUT"])
+def update_order(order_id):
+    data = request.get_json()
+    items = data.get("items", [])
+
+    if not items:
+        return jsonify({"error": "items are required"}), 400
+
+    for item in items:
+        if not isinstance(item["quantity"], int) or item["quantity"] <= 0:
+            return jsonify({"error": f"Invalid quantity for product {item['product_id']}"}), 400
+        if not isinstance(item["product_id"], int) or item["product_id"] <= 0:
+            return jsonify({"error": f"Invalid product_id for product {item['product_id']}"}), 400
+        if "size" not in item or "color" not in item:
+            return jsonify({"error": f"Missing size or color for product {item['product_id']}"}), 400
+
+    conn = get_db()
+    cur = conn.cursor()
+    try:
+        # Delete old line items
+        cur.execute("DELETE FROM line_orders WHERE order_id = %s", (order_id,))
+        total = 0
+        new_lines = []
+        for it in items:
+            pid = it["product_id"]
+            qty = it["quantity"]
+            size = it["size"]
+            color = it["color"]
+
+            cur.execute("SELECT price FROM products WHERE id=%s", (pid,))
+            row = cur.fetchone()
+            if not row:
+                raise ValueError(f"Product {pid} not found")
+
+            price = float(row["price"])
+            total += price * qty
+            new_lines.append((order_id, pid, qty, price, size, color))
+
+        cur.executemany("""
+            INSERT INTO line_orders (order_id, product_id, quantity, price, size, color)
+            VALUES (%s, %s, %s, %s, %s, %s)
+        """, new_lines)
+
+        cur.execute("UPDATE orders SET total_price=%s WHERE id=%s", (total, order_id))
+        conn.commit()
+        return jsonify({"message": "Order updated", "order_id": order_id}), 200
+
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"error": str(e)}), 400
+    finally:
+        cur.close()
+        conn.close()
+
+
+@order_bp.route("/<int:order_id>", methods=["DELETE"])
+def delete_order(order_id):
+    conn = get_db()
+    cur = conn.cursor()
+    try:
+        # First, delete associated line orders
+        cur.execute("DELETE FROM line_orders WHERE order_id = %s", (order_id,))
+        # Then, delete the order itself
+        cur.execute("DELETE FROM orders WHERE id = %s", (order_id,))
+        conn.commit()
+        return jsonify({"message": "Order deleted"}), 200
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"error": str(e)}), 400
+    finally:
+        cur.close()
+        conn.close()

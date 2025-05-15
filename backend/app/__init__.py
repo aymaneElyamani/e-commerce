@@ -113,12 +113,14 @@ def init_db():
 
 def create_app():
     init_db()
-    from .routes import products_bq , auth_bq , order_bp,offers_bp
+    from .routes import products_bq , auth_bq , order_bp,offers_bp , admin
 
     app.register_blueprint(products_bq)
     app.register_blueprint(auth_bq)
     app.register_blueprint(order_bp)
     app.register_blueprint(offers_bp)
+    app.register_blueprint(admin)
+
 
 
 

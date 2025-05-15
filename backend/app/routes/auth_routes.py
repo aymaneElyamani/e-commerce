@@ -92,3 +92,76 @@ def profile():
 @auth_bq.route('/logout', methods=['GET'])
 def logout():
     return jsonify({"message": "Logged out"}), 200
+
+
+
+# Get all users
+@auth_bq.route('/users', methods=['GET'])
+def get_all_users():
+    conn = get_db()
+    cur = conn.cursor()
+    try:
+        cur.execute('SELECT id, email FROM utilisateurs')  # Select only necessary fields
+        users = cur.fetchall()
+        # Convert to list of dicts
+        users_list = [{"id": u["id"], "email": u["email"]} for u in users]
+        return jsonify(users_list), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cur.close()
+        conn.close()
+
+# Update user by id
+@auth_bq.route('/users/<int:user_id>', methods=['PUT'])
+def update_user(user_id):
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
+
+    conn = get_db()
+    cur = conn.cursor()
+    try:
+        if password:
+            password_hash = generate_password_hash(password)
+            cur.execute(
+                'UPDATE utilisateurs SET email=%s, password=%s WHERE id=%s',
+                (email, password_hash, user_id)
+            )
+        else:
+            # If password not provided, update only email
+            cur.execute(
+                'UPDATE utilisateurs SET email=%s WHERE id=%s',
+                (email, user_id)
+            )
+        conn.commit()
+        if cur.rowcount == 0:
+            return jsonify({"error": "User not found"}), 404
+        return jsonify({"message": "User updated"}), 200
+    except psycopg2.errors.UniqueViolation:
+        conn.rollback()
+        return jsonify({"error": "Email already exists"}), 409
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cur.close()
+        conn.close()
+
+# Delete user by id
+@auth_bq.route('/users/<int:user_id>', methods=['DELETE'])
+def delete_user(user_id):
+    conn = get_db()
+    cur = conn.cursor()
+    try:
+        cur.execute('DELETE FROM utilisateurs WHERE id=%s', (user_id,))
+        conn.commit()
+        if cur.rowcount == 0:
+            return jsonify({"error": "User not found"}), 404
+        return jsonify({"message": "User deleted"}), 200
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cur.close()
+        conn.close()
