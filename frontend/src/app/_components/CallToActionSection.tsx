@@ -16,7 +16,7 @@ export const CallToActionSection = (): JSX.Element => {
             className="w-[475px] h-12 bg-[#d9d9d908] rounded-[5px] border border-solid border-white backdrop-blur-[2.5px] backdrop-brightness-[100%] [-webkit-backdrop-filter:blur(2.5px)_brightness(100%)] opacity-80 [font-family:'Raleway',Helvetica] font-medium text-white text-base tracking-[0] leading-6 placeholder:text-white placeholder:opacity-80 focus-visible:ring-0 focus-visible:ring-offset-0"
             placeholder="Enter your email"
           />
-          <Button className="ml-6 px-[45px] py-3 bg-[#285a43] rounded-[5px] backdrop-blur-[2.5px] backdrop-brightness-[100%] [-webkit-backdrop-filter:blur(2.5px)_brightness(100%)] opacity-80 [font-family:'Raleway',Helvetica] font-bold text-white text-base tracking-[0] leading-6 whitespace-nowrap hover:bg-[#1e4332]">
+          <Button className="ml-6 px-[45px] py-3 bg-primary rounded-[5px] backdrop-blur-[2.5px] backdrop-brightness-[100%] [-webkit-backdrop-filter:blur(2.5px)_brightness(100%)] opacity-80 [font-family:'Raleway',Helvetica] font-bold text-white text-base tracking-[0] leading-6 whitespace-nowrap hover:bg-[#1e4332]">
             Submit
           </Button>
         </div>

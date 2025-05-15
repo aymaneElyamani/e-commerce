@@ -46,7 +46,7 @@ export const HeroSection = (): JSX.Element => {
           </p>
 
           <div className="flex gap-[35px] mt-[38px]">
-            <Button className="px-[50px] py-3 bg-[#285a43] rounded-[3px] font-['Lato',Helvetica] font-bold text-white text-sm tracking-[0.28px] leading-[16.8px]">
+            <Button className="px-[50px] py-3 bg-primary rounded-[3px] font-['Lato',Helvetica] font-bold text-white text-sm tracking-[0.28px] leading-[16.8px]">
               Book Now
             </Button>
 
@@ -67,7 +67,7 @@ export const HeroSection = (): JSX.Element => {
               key={index}
               className={`font-['Lato',Helvetica] text-base ${
                 item.isActive
-                  ? "font-black text-[#285a43] underline"
+                  ? "font-black text-primary underline"
                   : "opacity-70 font-medium text-white"
               }`}
             >

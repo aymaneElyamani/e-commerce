@@ -5,7 +5,6 @@ import useAuthStore from "@/store/useAuthStore";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 
 function Signup() {
@@ -84,7 +83,7 @@ function Signup() {
                 type="submit"
                 disabled={loading}
                 className={`w-full py-2 rounded transition-colors text-white ${
-                  loading ? "bg-gray-500 cursor-not-allowed" : "bg-green-700 hover:bg-green-800"
+                  loading ? "bg-gray-500 cursor-not-allowed" : "bg-primary hover:bg-primary"
                 }`}
               >
                 {loading ? "Creating account..." : "Create Account"}

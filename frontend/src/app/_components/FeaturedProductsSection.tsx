@@ -33,7 +33,7 @@ export const FeaturedProductsSection = (): JSX.Element => {
   return (
     <section className="w-screen py-16 bg-gray-50">
       <div className="w-full flex flex-col items-center">
-        <h2 className="text-4xl text-[#285a43] font-normal tracking-[1.44px] leading-[50.4px] font-['Lato',Helvetica] [-webkit-text-stroke:1.1px_#285a43] mb-12">
+        <h2 className="text-4xl text-primary font-normal tracking-[1.44px] leading-[50.4px] font-['Lato',Helvetica] [-webkit-text-stroke:1.1px_#285a43] mb-12">
           Our Gallery View
         </h2>
       </div>

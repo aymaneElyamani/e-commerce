@@ -44,18 +44,14 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getProfile, logoutUser } from "@/services/auth";
-import { HeroSection } from "./_components/HeroSection";
 import { ProductShowcaseSection } from "./_components/ProductShowcaseSection";
-import { BenefitsSection } from "./_components/BenefitsSection";
 import { FeaturedProductsSection } from "./_components/FeaturedProductsSection";
 import { TestimonialsSection } from "./_components/TestimonialsSection";
-import { CallToActionSection } from "./_components/CallToActionSection";
-import { BlogSection } from "./_components/BlogSection";
-import { FooterSection } from "@/common/FooterSection";
+// import { FooterSection } from "@/common/FooterSection";
 import useAuthStore from "@/store/useAuthStore";
-import AddToCart from "./_components/cart_purchuse";
 import { CategoriesCloches } from "./_components/categoriesClothes";
 import Hero from "./_components/Hero";
+import { BenefitsSection } from "./_components/BenefitsSection";
 
 
 const Home = () => {
@@ -77,12 +73,9 @@ const Home = () => {
                <Hero />
        <CategoriesCloches />
        <ProductShowcaseSection />
-       {/* <BenefitsSection /> */}
-       <FeaturedProductsSection />
+       <BenefitsSection />
+       {/* <FeaturedProductsSection /> */}
        <TestimonialsSection />
-       {/* <CallToActionSection /> */}
-       {/* <BlogSection /> */}
-       <FooterSection />
     
     </div>
   );

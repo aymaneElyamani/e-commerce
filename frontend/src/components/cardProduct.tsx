@@ -10,14 +10,28 @@ import { motion } from "framer-motion";
 import useCartStore from "@/store/useCartStore";
 import useWishlistStore from "@/store/useWishList";
 import { toast } from "sonner";
+import useAuthStore from "@/store/useAuthStore";
+import { useRouter } from "next/navigation";
 
 function CardProduct({ product }: { product: Product }) {
   const { addProduct } = useCartStore();
   const { addToWishlist, removeFromWishlist, wishlist } = useWishlistStore();
 
+  const {isAuthenticated} = useAuthStore()
+
   const isFavorite = wishlist.find((e) => e.id === product.id);
+  
+  const router  = useRouter();
 
   const handleAdd = () => {
+
+
+    if(!isAuthenticated){
+      toast.info("You should log in first")
+      router.push("/login");
+      return;
+    }
+
     const request: AddToCardType = {
       color: product.colors[0],
       idProduct: product.id,
@@ -87,7 +101,7 @@ function CardProduct({ product }: { product: Product }) {
 
       <CardContent className="p-4">
         {/* Product Title */}
-        <h3 className="text-base font-bold text-[#337a5b] line-clamp-1">
+        <h3 className="text-base font-bold text-primary line-clamp-1">
           {product.name}
         </h3>
 
@@ -99,7 +113,7 @@ function CardProduct({ product }: { product: Product }) {
                 ${product.price}
               </span>
             )}
-            <span className="font-bold text-[#337a5b]">
+            <span className="font-bold text-primary">
               $
               {product.discount_percentage
                 ? (
@@ -113,7 +127,7 @@ function CardProduct({ product }: { product: Product }) {
           <Button
             onClick={handleAdd}
             size="sm"
-            className="bg-[#337a5b] text-white px-4 py-1 text-xs font-semibold"
+            className="bg-primary text-white px-4 py-1 text-xs font-semibold"
           >
             Add to Cart
           </Button>

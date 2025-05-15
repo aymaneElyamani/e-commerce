@@ -35,7 +35,7 @@ export const TestimonialsSection = (): JSX.Element => {
 
   return (
     <section className="w-full max-w-[1220px] mx-auto py-10">
-      <h2 className="text-center text-4xl text-[#285a43] [-webkit-text-stroke:1.1px_#285a43] font-normal tracking-[1.44px] leading-[50.4px] mb-8 font-['Lato',Helvetica]">
+      <h2 className="text-center text-4xl text-primary font-normal tracking-[1.44px] leading-[50.4px] mb-8 font-['Lato',Helvetica]">
         What Do They Say About Us
       </h2>
 
@@ -53,7 +53,7 @@ export const TestimonialsSection = (): JSX.Element => {
                     alt={`${testimonial.name} profile`}
                     src={testimonial.image}
                   />
-                  <h3 className="ml-5 mt-3 font-['Lato',Helvetica] font-black text-[#285a43] text-xl leading-7">
+                  <h3 className="ml-5 mt-3 font-['Lato',Helvetica] font-black text-primary text-xl leading-7">
                     {testimonial.name}
                   </h3>
                 </div>

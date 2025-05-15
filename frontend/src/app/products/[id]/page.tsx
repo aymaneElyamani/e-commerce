@@ -13,6 +13,8 @@ import Loading from "@/app/loading";
 import axios from "axios";
 import CardProduct from "@/components/cardProduct";
 import { Carousel } from "@/components/ui/carousel";
+import { useRouter } from "next/navigation";
+import useAuthStore from "@/store/useAuthStore";
 
 // Import the ShadCN Carousel component
 
@@ -36,7 +38,10 @@ export default function ProductPage() {
   const [recommendedProducts, setRecommendedProducts] = useState<Product[]>([]);
   const { addProduct } = useCartStore();
   const [selectedImage, setSelectedImage] = useState(0);
+  
+  const router = useRouter()
 
+  const {isAuthenticated} = useAuthStore()
   const API_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/products`;
 
   // Fetch product details
@@ -79,6 +84,13 @@ export default function ProductPage() {
 
   // Handle adding product to the cart
   const handleAdd = () => {
+
+    if(!isAuthenticated){
+      toast.info("You should login first")
+      router.push("/login")
+
+      return;
+    }
     const request: AddToCardType = {
       color: selectedColor ?? "red",
       idProduct: product?.id,

@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import { login } from "@/services/auth";
 // import { loginSuccess } from "@/store/slices/authSlice";
 // import { RootState } from "@/store/store";
@@ -73,13 +74,13 @@ const Login: React.FC = () => {
               onChange={(e) => setEmail(e.target.value)}
               type="email"
               placeholder="Email or Phone Number"
-              className="w-full px-4 py-2 border border-gray-300 rounded bg-[#EDF1F7] text-sm focus:outline-none focus:ring-2 focus:ring-green-700"
+              className="w-full px-4 py-2 border border-gray-300 rounded bg-[#EDF1F7] text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             />
             <input
               onChange={(e) => setPassword(e.target.value)}
               type="password"
               placeholder="Password"
-              className="w-full px-4 py-2 border border-gray-300 rounded bg-[#EDF1F7] text-sm focus:outline-none focus:ring-2 focus:ring-green-700"
+              className="w-full px-4 py-2 border border-gray-300 rounded bg-[#EDF1F7] text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             />
 
             <div className="flex justify-end">
@@ -88,15 +89,15 @@ const Login: React.FC = () => {
               </a>
             </div>
 
-            <button
+            <Button
               type="submit"
               disabled={loading}
               className={`w-full py-2 rounded transition-colors text-white ${
-                loading ? "bg-gray-500 cursor-not-allowed" : "bg-green-700 hover:bg-green-800"
+                loading ? "bg-gray-500 cursor-not-allowed" : "bg-primary  "
               }`}
             >
               {loading ? "Logging in..." : "Log in"}
-            </button>
+            </Button>
 
             <button
               type="button"

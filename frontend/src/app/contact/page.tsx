@@ -52,7 +52,7 @@ export default function ContactPage() {
         >
           <Card className="p-6 shadow-xl border-none">
             <CardContent className="p-0 space-y-6">
-              <h2 className="text-3xl font-bold text-[#285a43]">Contact Us</h2>
+              <h2 className="text-3xl font-bold text-primary">Contact Us</h2>
               <p className="text-gray-600">
                 Got a question or feedback? Fill in the form and our team will get back to you.
               </p>
@@ -81,7 +81,7 @@ export default function ContactPage() {
                   onChange={handleChange}
                   required
                 />
-                <Button type="submit" className="bg-[#285a43] hover:bg-[#1e4734] text-white w-full">
+                <Button type="submit" className="bg-primary hover:bg-[#1e4734] text-white w-full">
                   Send Message
                 </Button>
               </form>

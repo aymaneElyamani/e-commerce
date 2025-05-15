@@ -4,6 +4,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { HeartOff, ShoppingCart } from "lucide-react";
 import useWishlistStore from "@/store/useWishList";
+import Image from "next/image";
 
 function Page() {
   const { wishlist, removeFromWishlist } = useWishlistStore();
@@ -20,9 +21,10 @@ function Page() {
             <Card key={product.id} className="rounded-2xl shadow-sm hover:shadow-md transition">
               <CardContent className="p-4">
                 <div className="relative w-full h-40 mb-4 rounded-lg overflow-hidden bg-muted">
-                  <img
+                  <Image
                     src={product.image_cover || "/placeholder.jpg"}
                     alt={product.name}
+                    fill
                     className="object-cover"
                   />
                 </div>

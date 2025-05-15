@@ -33,7 +33,7 @@ export const ProductShowcaseSection = (): JSX.Element => {
 
   return (
     <section className="w-full px-4 sm:px-6 lg:px-0 max-w-[1200px] mx-auto py-12 md:py-16">
-      <h2 className="text-center text-xl sm:text-2xl text-[#285a43] font-normal tracking-wide leading-snug mb-10 font-['Lato',Helvetica] [-webkit-text-stroke:1.1px_#285a43]">
+      <h2 className="text-center text-xl sm:text-2xl text-primary font-normal tracking-wide leading-snug mb-10 font-['Lato',Helvetica] ">
         What We Offer To You
       </h2>
 

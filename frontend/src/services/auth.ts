@@ -50,7 +50,7 @@ export const login = async ({ email, password }: AuthCredentials): Promise<login
     localStorage.setItem('token', token);
   }
 
-  return {token : token  , user : {id : id , email: email }};
+  return {token : token  , user : {id : id , email: email ,cover_img : undefined , name : ""  }};
 };
 
 // ============================
@@ -76,7 +76,7 @@ export const getProfile = async ({token } : {token : string}): Promise<User> => 
 // ============================
 export const logoutUser = (): void => {
   if (typeof window !== 'undefined') {
-    localStorage.removeItem('token');
+    localStorage.clear();
   }
 };
 

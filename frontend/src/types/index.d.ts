@@ -2,6 +2,8 @@
 interface User {
    id : number;
    email : string;
+   name : string | undefined;
+   cover_img : string | undefined;
  
  }
 
@@ -22,7 +24,7 @@ interface User {
 interface AddToCardType{
   idProduct: string;
   name: string;
-  price : number; 
+  price : float; 
   quantity : int;
   image_cover : string  | null;
   color: string;

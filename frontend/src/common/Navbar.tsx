@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, User, ShoppingCart, LogOut, UserPlus, LogIn } from "lucide-react";
@@ -9,6 +9,7 @@ import useAuthStore from "@/store/useAuthStore";
 import AddToCart from "@/app/_components/cart_purchuse";
 import { logoutUser } from "@/services/auth";
 import { FaHeart } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 const navItems = [
   { text: "Home", href: "/" },
@@ -21,12 +22,27 @@ export default function Navbar() {
   const { user, isAuthenticated, logout } = useAuthStore();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [profileMenuVisible, setProfileMenuVisible] = useState(false);
+  
+  const route = useRouter()
+  const hoverTimeout = useRef<NodeJS.Timeout | null>(null);
+  
+    const handleMouseEnter = () => {
+    if (hoverTimeout.current) {
+      clearTimeout(hoverTimeout.current);
+    }
+    setProfileMenuVisible(true);
+  };
 
+  const handleMouseLeave = () => {
+    hoverTimeout.current = setTimeout(() => {
+      setProfileMenuVisible(false);
+    }, 300); // Delay in ms (adjust as needed)
+  };
   return (
-    <header className="bg-primary text-white fixed top-0 left-0 w-full z-50 shadow-md">
+    <header className="bg-white text-white fixed top-0 left-0 w-full z-50 shadow-md">
       <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
         {/* Logo */}
-        <div className="text-xl font-bold">eComm</div>
+        <div className="text-xl font-bold text-primary">eComm</div>
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-8">
@@ -34,7 +50,7 @@ export default function Navbar() {
             <Link
               key={item.text}
               href={item.href}
-              className="text-lg hover:underline"
+              className="text-base hover:underline text-black"
             >
               {item.text}
             </Link>
@@ -45,8 +61,8 @@ export default function Navbar() {
           {isAuthenticated ? (
             <div
               className="relative group ml-4"
-              onMouseEnter={() => setProfileMenuVisible(true)}
-              onMouseLeave={() => setProfileMenuVisible(false)}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
             >
               <img
                 src="/avatar.png"
@@ -93,6 +109,7 @@ export default function Navbar() {
                   onClick={async () => {
                     logoutUser();
                     logout();
+                    route.push("/");
                   }}
                   className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm flex items-center gap-2"
                 >
@@ -107,18 +124,18 @@ export default function Navbar() {
   <Link href="/signup">
     <Button
       variant="outline"
-      className="border-white text-white bg-transparent hover:bg-white/20 focus:outline-none transition duration-300 ease-in-out w-full rounded-lg py-3 flex items-center justify-center gap-2"
+      className="border-white text-primary bg-transparent hover:bg-white/20 focus:outline-none transition duration-300 ease-in-out w-full rounded-lg py-3 flex items-center justify-center gap-2"
     >
-      <UserPlus className="text-white" />
+      <UserPlus className="text-primary" />
       <span>Sign Up</span>
     </Button>
   </Link>
   <Link href="/login">
     <Button
       variant="outline"
-      className="border-white text-white bg-transparent hover:bg-white/20 focus:outline-none transition duration-300 ease-in-out w-full rounded-lg py-3 flex items-center justify-center gap-2"
+      className="border-white text-primary bg-transparent hover:bg-white/20 focus:outline-none transition duration-300 ease-in-out w-full rounded-lg py-3 flex items-center justify-center gap-2"
     >
-      <LogIn className="text-white" />
+      <LogIn className="text-primary" />
       <span>Log In</span>
     </Button>
   </Link>
