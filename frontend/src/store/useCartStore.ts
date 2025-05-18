@@ -1,54 +1,71 @@
 import { create } from "zustand";
 import { persist, PersistOptions } from "zustand/middleware";
 
-
-// Cart store interface
+// Cart store
 interface AddToCartState {
   products: AddToCardType[];
-  addProduct: (product: AddToCardType) => void;
-  removeProduct: (id: string) => void;
+  nextIdCart: number;
+  addProduct: (product: Omit<AddToCardType, "idCart">) => void;
+  removeProduct: (idCart: number) => void;
   clearCart: () => void;
-  updateQuantity: (id: string, quantity: number) => void;
+  updateProduct: (
+  idCart: number,
+  updatedFields: Partial<Omit<AddToCardType, 'idCart'>>
+) => void;
 }
 
-// Zustand store with persistence
+// Zustand store with auto-increment idCart
 const useCartStore = create<AddToCartState>()(
   persist(
     (set, get) => ({
       products: [],
-   
-      addProduct: (product: AddToCardType) => {
-        const existingProduct = get().products.find(p => p.idProduct == product.idProduct);
+      nextIdCart: 1, // Start from 1
+
+      addProduct: (product) => {
+        const existingProduct = get().products.find(
+          p =>
+            p.idProduct === product.idProduct &&
+            p.color === product.color &&
+            p.size === product.size
+        );
+
         if (existingProduct) {
           set({
             products: get().products.map(p =>
-              p.idProduct == product.idProduct
+              p.idProduct === product.idProduct &&
+              p.color === product.color &&
+              p.size === product.size
                 ? { ...p, quantity: p.quantity + product.quantity }
                 : p
             ),
           });
         } else {
-          set({ products: [...get().products, product] });
+          const idCart = get().nextIdCart;
+          const newProduct: AddToCardType = { ...product, idCart };
+          set({
+            products: [...get().products, newProduct],
+            nextIdCart: idCart + 1,
+          });
         }
       },
 
-      removeProduct: (id: string) => {
+      removeProduct: (idCart) => {
         set({
-          products: get().products.filter(p => p.idProduct != id),
+          products: get().products.filter(p => p.idCart !== idCart),
         });
       },
 
       clearCart: () => {
-        set({ products: [] });
+        set({ products: [], nextIdCart: 1 });
       },
 
-      updateQuantity: (id: string, quantity: number) => {
-        set({
-          products: get().products.map(p =>
-            p.idProduct == id ? { ...p, quantity } : p
-          ),
-        });
-      },
+updateProduct: (idCart, updatedFields: Partial<Omit<AddToCardType, 'idCart'>>) => {
+  set({
+    products: get().products.map(p =>
+      p.idCart === idCart ? { ...p, ...updatedFields } : p
+    ),
+  });
+},
     }),
     {
       name: "addToCart-store",

@@ -12,6 +12,7 @@ import useWishlistStore from "@/store/useWishList";
 import { toast } from "sonner";
 import useAuthStore from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
+import { SIZES } from "@/constants";
 
 function CardProduct({ product }: { product: Product }) {
   const { addProduct } = useCartStore();
@@ -33,12 +34,13 @@ function CardProduct({ product }: { product: Product }) {
     }
 
     const request: AddToCardType = {
-      color: product.colors[0] == undefined ?product.colors[0] :   "black"   ,
+      idCart : null,
+      color: product.colors.length==0 ? "black"  : product.colors[0]      ,
       idProduct: product.id,
       image_cover: product.image_cover,
       name: product.name,
       price: product.price,
-      size: "M",
+      size: SIZES[2],
       quantity: 1,
     };
 
@@ -71,6 +73,11 @@ function CardProduct({ product }: { product: Product }) {
             size="icon"
             className="bg-white/90 hover:bg-white rounded-full p-1 shadow"
             onClick={() => {
+              if(!isAuthenticated){
+      toast.info("You should log in first")
+      router.push("/login");
+      return;
+    }
               if (isFavorite) {
                 removeFromWishlist(product.id);
                 toast.message(`${product.name} removed from wishlist`);

@@ -21,14 +21,15 @@ interface User {
   colors : string[]
 }
 
-interface AddToCardType{
+interface AddToCardType {
+  idCart: number | null;
   idProduct: string;
   name: string;
-  price : float; 
-  quantity : int;
-  image_cover : string  | null;
+  price: number;
+  quantity: number;
+  image_cover: string | null;
   color: string;
-  size:string
+  size: string;
 }
 
 interface Offer {

@@ -17,7 +17,7 @@ const stripePromise = loadStripe(
 type line = Stripe.Checkout.SessionCreateParams.LineItem;
 
 const CheckoutPage = () => {
-  const { products, clearCart, updateQuantity, removeProduct } = useCartStore();
+  const { products, clearCart, updateProduct, removeProduct } = useCartStore();
   const { user } = useAuthStore();
   const [loading, setLoading] = useState(false);
 
@@ -119,14 +119,17 @@ const CheckoutPage = () => {
                   <th className="py-3 pl-6 w-1/2">Product</th>
                   <th className="py-3">Price</th>
                   <th className="py-3">Quantity</th>
+      
+
+                 
                   <th className="py-3 pr-6 text-right">Subtotal</th>
-                  <th className="py-3 pr-6 text-right">Action</th>{" "}
-                  {/* Add this */}
+                  <th className="py-3 pr-6 text-right">Action</th>
+          
                 </tr>
               </thead>
               <tbody>
-                {products.map((p) => (
-                  <tr key={p.idProduct} className="border-b last:border-none">
+                {products.map((p,index) => (
+                  <tr key={index} className="border-b last:border-none">
                     {/* product + thumb */}
                     <td className="py-4 pl-6">
                       <div className="flex items-center gap-4">
@@ -160,7 +163,7 @@ const CheckoutPage = () => {
                         <select
                           value={p.quantity}
                           onChange={(e) =>
-                            updateQuantity(p.idProduct, +e.target.value)
+                          updateProduct(p.idCart!, { ...p, quantity: +e.target.value })
                           }
                           className="border rounded px-3 py-1 pr-6 text-center appearance-none"
                         >
@@ -194,7 +197,7 @@ const CheckoutPage = () => {
                       <Button
                         variant="destructive"
                         size="sm"
-                        onClick={() => removeProduct(p.idProduct)}
+                        onClick={() => removeProduct(p.idCart!)}
                       >
                         Delete
                       </Button>

@@ -2,7 +2,6 @@
 "use client"
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Maximize2 } from "lucide-react";
 
@@ -12,20 +11,10 @@ import useCartStore from "@/store/useCartStore";
 import Loading from "@/app/loading";
 import axios from "axios";
 import CardProduct from "@/components/cardProduct";
-import { Carousel } from "@/components/ui/carousel";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
+import { SIZES } from "@/constants";
 
-// Import the ShadCN Carousel component
-
-// // Product type definition
-// export type ProductRequest = {
-//   productId: number;
-//   size: string;
-//   quantity: number;
-// };
-
-const SIZES  =  ["Small" , "Medium" , "Large" , "X-Large"]
 
 export default function ProductPage() {
   const params = useParams();
@@ -35,7 +24,7 @@ export default function ProductPage() {
   const [fullscreenImage, setFullscreenImage] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState(SIZES[2]);
-  const [selectedColor, setSelectedColor] = useState(product?.colors[0]);
+  const [selectedColor, setSelectedColor] = useState(product?.colors[0] ?? "black");
 
   const [recommendedProducts, setRecommendedProducts] = useState<Product[]>([]);
   const { addProduct } = useCartStore();
@@ -94,11 +83,12 @@ export default function ProductPage() {
       return;
     }
     const request: AddToCardType = {
-      color: selectedColor ?? "red",
+      idCart : null,
+      color: selectedColor,
       idProduct: product?.id,
       name: product?.name,
       price : product.price,
-      quantity:product.quantity
+      quantity:quantity
       , image_cover : product.image_cover , size :selectedSize
     };
     addProduct(request);

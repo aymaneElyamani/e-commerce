@@ -55,7 +55,7 @@ export default function AddToCart() {
                   <Button
                     variant="ghost"
                     className="p-1"
-                    onClick={() => removeProduct(item.idProduct)}
+                    onClick={() => removeProduct(item.idCart!)}
                   >
                     <Trash2Icon className="w-4 h-4 text-red-500" />
                   </Button>
