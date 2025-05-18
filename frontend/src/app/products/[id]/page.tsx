@@ -25,6 +25,8 @@ import useAuthStore from "@/store/useAuthStore";
 //   quantity: number;
 // };
 
+const SIZES  =  ["Small" , "Medium" , "Large" , "X-Large"]
+
 export default function ProductPage() {
   const params = useParams();
   const id = params.id?.toString();
@@ -32,7 +34,7 @@ export default function ProductPage() {
   const [loading, setLoading] = useState(true);
   const [fullscreenImage, setFullscreenImage] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
-  const [selectedSize, setSelectedSize] = useState("M");
+  const [selectedSize, setSelectedSize] = useState(SIZES[2]);
   const [selectedColor, setSelectedColor] = useState(product?.colors[0]);
 
   const [recommendedProducts, setRecommendedProducts] = useState<Product[]>([]);
@@ -128,7 +130,7 @@ export default function ProductPage() {
       </div>
 
       {/* Selected image display */}
-      <div className="relative flex-1 min-w-[300px] max-w-[700px] h-[500px] rounded overflow-hidden border">
+      <div className="relative flex-1 min-w-[300px] max-w-[700px] h-[400px] rounded overflow-hidden border">
         <img
           src={product.image_details[selectedImage]}
           alt="Selected"
@@ -161,8 +163,8 @@ export default function ProductPage() {
 
         {/* Product Details */}
         <div>
-          <h1 className="text-2xl font-bold mb-2">{product.name}</h1>
-          <p>{product.description}</p>
+          <h1 className="text-3xl  mb-2 text-primary">{product.name}</h1>
+          <p className="text-primary">{product.description}</p>
           <div className="flex items-center gap-2 mb-4">
             {
               product.discount_percentage &&
@@ -182,29 +184,28 @@ export default function ProductPage() {
               onClick={()=>  setSelectedColor(color)}
                 key={color}
                 style={{ backgroundColor: color }}
-                className={`rounded-full h-5 w-5  ${selectedColor == color ? "border-blue-600 border-2 " : "border-none"}`}
+                className={`h-5 w-5 cursor-pointer  ${selectedColor == color ? "border-blue-600 border-2 " : "border-none"}`}
               />
             ))}
           </div>
 
-          <div className="flex items-center gap-2 mb-4">
-            <label htmlFor="size" className="text-sm">
-              Size
-            </label>
-            <select
-              id="size"
-              value={selectedSize}
-              onChange={(e) => setSelectedSize(e.target.value)}
-              className="border px-2 py-1 rounded"
-            >
-              <option value="S">S</option>
-              <option value="M">M</option>
-              <option value="L">L</option>
-            </select>
+          <div className="mb-4">
+            <p className="text-sm text-primary mb-3">
+              Choose Size
+            </p>
+
+            <div className=" flex gap-x-2">
+             { SIZES.map((ele , index)=>{
+              return <h1 key = {index} onClick={()=>setSelectedSize(ele)} className={`px-2 py-2 ${selectedSize == ele ? "bg-primary text-white" : "text-primary bg-white "} border-primary border  w-20 text-center cursor-pointer`}>
+                {ele}
+              </h1>
+             })}
+            </div>
+        
           </div>
 
           <div className="flex items-center gap-2 mb-4">
-            <label className="text-sm">Quantity</label>
+            <label className="text-sm text-primary">Quantity</label>
             <Button
               variant="outline"
               onClick={() => setQuantity((q) => Math.max(1, q - 1))}
@@ -217,13 +218,13 @@ export default function ProductPage() {
             </Button>
           </div>
 
-          <Button onClick={handleAdd}>Ajouter</Button>
-          <Button className="ml-2">Checkout</Button>
+          <Button onClick={handleAdd} className=" mt-5 bg-transparent border border-primary text-primary w-full hover:text-white">Ajouter</Button>
+          {/* <Button className="ml-2">Checkout</Button> */}
         </div>
       </div>
 
       {/* Recommended Products */}
-      <h2 className="text-xl font-semibold mt-12 mb-4">You might also like</h2>
+      <h2 className="text-4xl  mt-14 mb-10 text-center text-primary ">You might also like</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {recommendedProducts.map((product, index) => (
           <CardProduct product={product} key={index} />
@@ -231,19 +232,6 @@ export default function ProductPage() {
       </div>
 
       {/* Promo Section */}
-      <div
-        className="bg-cover bg-center py-12 mt-16 text-white text-center"
-        style={{ backgroundImage: 'url(/bg.jpg)' }}
-      >
-        <p className="text-lg font-semibold">
-          Enter Your Email Address For Our Mailing Promo Or Other Interesting
-          Things
-        </p>
-        <div className="flex justify-center mt-4 gap-2">
-          <Input placeholder="Email address" className="w-64" />
-          <Button>Subscribe</Button>
-        </div>
-      </div>
 
       {/* Brand Logos */}
       <div className="text-center mt-12">

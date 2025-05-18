@@ -31,7 +31,7 @@ export const CategoriesCloches = (): JSX.Element => {
   ];
 
   return (
-    <section className="w-full py-14 px-6 bg-[#f9f9f9]">
+    <section className="w-full py-14 px-6 bg-[#f9f9f9]" id = "categories">
       <div className="max-w-screen-xl mx-auto">
         {/* Header */}
         <motion.div

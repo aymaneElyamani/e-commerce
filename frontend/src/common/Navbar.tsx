@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 
 const navItems = [
   { text: "Home", href: "/" },
-  { text: "Shop", href: "/products" },
+  // { text: "Shop", href: "/products" },
   { text: "Blogs", href: "/blogs" },
   { text: "Contact", href: "/contact" },
 ];
@@ -42,7 +42,7 @@ export default function Navbar() {
     <header className="bg-white text-white fixed top-0 left-0 w-full z-50 shadow-md">
       <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
         {/* Logo */}
-        <div className="text-xl font-bold text-primary">eComm</div>
+        <Link href= "/" className="text-xl font-bold text-primary cursor-pointer">eComm</Link>
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-8">
