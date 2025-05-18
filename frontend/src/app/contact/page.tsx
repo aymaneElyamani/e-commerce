@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { motion } from "framer-motion"
 import Image from "next/image"
 import { useState } from "react"
+import { toast } from "sonner"
 
 export default function ContactPage() {
   const [form, setForm] = useState({
@@ -15,14 +16,38 @@ export default function ContactPage() {
     message: ""
   })
 
+  const [loading, setLoading] = useState(false)
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setForm(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Form submitted:", form)
+    setLoading(true)
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(form)
+      })
+
+      if (res.ok) {
+        toast.success("Message sent successfully!")
+        setForm({ name: "", email: "", message: "" })
+      } else {
+        toast.error("Failed to send message. Please try again.")
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error)
+      toast.error("Something went wrong. Please try again.")
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -40,7 +65,7 @@ export default function ContactPage() {
             alt="Contact Us"
             width={600}
             height={600}
-            className="w-full h-auto rounded-2xl shadow-lg object-cover"
+            className="w-full h-auto rounded-2xl object-cover" // shadow removed here
           />
         </motion.div>
 
@@ -50,7 +75,7 @@ export default function ContactPage() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <Card className="p-6 shadow-xl border-none">
+          <Card className="p-6 border-none"> {/* shadow-xl removed */}
             <CardContent className="p-0 space-y-6">
               <h2 className="text-3xl font-bold text-primary">Contact Us</h2>
               <p className="text-gray-600">
@@ -81,8 +106,12 @@ export default function ContactPage() {
                   onChange={handleChange}
                   required
                 />
-                <Button type="submit" className="bg-primary hover:bg-[#1e4734] text-white w-full">
-                  Send Message
+                <Button
+                  type="submit"
+                  className="bg-primary hover:bg-[#1e4734] text-white w-full"
+                  disabled={loading}
+                >
+                  {loading ? "Sending..." : "Send Message"}
                 </Button>
               </form>
             </CardContent>
