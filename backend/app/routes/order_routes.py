@@ -4,39 +4,26 @@ from app import get_db
 order_bp = Blueprint("orders", __name__, url_prefix="/api/orders")
 from flask import jsonify, request
 # from flask_sqlalchemy import SQLAlchemy
-
 @order_bp.route("", methods=["POST"])
 def create_order():
-    """
-    Expects JSON:
-    {
-      "utilisateur_id": 1,
-      "items": [
-        { "product_id": 5, "quantity": 2, "size": "L", "color": "Red" },
-        { "product_id": 3, "quantity": 1, "size": "M", "color": "Blue" }
-      ]
-    }
-    """
     data = request.get_json()
     user_id = data.get("utilisateur_id")
     items = data.get("items", [])
 
-    # Validate input data
     if not user_id or not items:
         return jsonify({"error": "utilisateur_id and items are required"}), 400
 
     for item in items:
-        if not isinstance(item["quantity"], int) or item["quantity"] <= 0:
-            return jsonify({"error": f"Invalid quantity for product {item['product_id']}"}), 400
-        if not isinstance(item["product_id"], int) or item["product_id"] <= 0:
-            return jsonify({"error": f"Invalid product_id for product {item['product_id']}"}), 400
+        if not isinstance(item.get("quantity"), int) or item["quantity"] <= 0:
+            return jsonify({"error": f"Invalid quantity for product {item.get('product_id')}"}), 400
+        if not isinstance(item.get("product_id"), int) or item["product_id"] <= 0:
+            return jsonify({"error": f"Invalid product_id for product {item.get('product_id')}"}), 400
         if "size" not in item or "color" not in item:
-            return jsonify({"error": f"Missing size or color for product {item['product_id']}"}), 400
+            return jsonify({"error": f"Missing size or color for product {item.get('product_id')}"}), 400
 
     conn = get_db()
     cur = conn.cursor()
     try:
-        # Insert the order into the orders table
         cur.execute("""
             INSERT INTO orders (utilisateur_id, total_price)
             VALUES (%s, 0)
@@ -52,27 +39,28 @@ def create_order():
             size = it["size"]
             color = it["color"]
 
-            # Get the price of the product
             cur.execute("SELECT price FROM products WHERE id=%s", (pid,))
             row = cur.fetchone()
             if not row:
                 raise ValueError(f"Product {pid} not found")
 
             price = float(row["price"])
+            print(f"Product {pid}: price={price}, quantity={qty}")
             total += price * qty
 
             line_orders.append((order_id, pid, qty, price, size, color))
 
-        # Insert all line orders in one query for efficiency
+        print(f"Calculated total price: {total}")
+
         cur.executemany("""
             INSERT INTO line_orders (order_id, product_id, quantity, price, size, color)
             VALUES (%s, %s, %s, %s, %s, %s)
         """, line_orders)
 
-        # Update the total price in the orders table
         cur.execute("UPDATE orders SET total_price=%s WHERE id=%s", (total, order_id))
-        conn.commit()
+        print(f"Updated order {order_id} total price, rows affected: {cur.rowcount}")
 
+        conn.commit()
         return jsonify({"message": "Order created", "order_id": order_id}), 201
 
     except Exception as e:
@@ -82,6 +70,7 @@ def create_order():
     finally:
         cur.close()
         conn.close()
+
 
 
 @order_bp.route("", methods=["GET"])

@@ -14,7 +14,7 @@ def create_product():
     price = data.get('price')
     image_cover = data.get('image_cover', '')
     image_details = data.get('image_details', [])  # Should be a list
-    colors = data.get('colors', [])                # Should be a list
+    colors = data.get('colors', ["black" , "white"])                # Should be a list
     quantity = data.get('quantity')
     category = data.get('category')
 
