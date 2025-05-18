@@ -108,6 +108,7 @@ export default function Navbar() {
                 <button
                   onClick={async () => {
                     logoutUser();
+                    window. localStorage.clear();
                     logout();
                     route.push("/");
                   }}

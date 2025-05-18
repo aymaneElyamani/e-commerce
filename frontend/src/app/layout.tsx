@@ -5,6 +5,7 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import Navbar from "@/common/Navbar";
 import Footer from "@/common/FooterSection";
+import { CallToActionSection } from "./_components/CallToActionSection";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,6 +38,8 @@ export default function RootLayout({
 
         {children}
         {/* </Providers> */}
+    <CallToActionSection/>
+
         <Footer/>
 
       </body>

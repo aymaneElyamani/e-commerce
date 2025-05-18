@@ -4,7 +4,7 @@ import CardProduct from "@/components/cardProduct";
 import { JSX, useEffect, useState } from "react";
 import { toast } from "sonner";
 
-export const ProductShowcaseSection = (): JSX.Element => {
+export const WhatWeOffer = (): JSX.Element => {
   const [loading, setLoading] = useState<boolean>(true);
   const [products, setProducts] = useState<Product[]>([]);
 

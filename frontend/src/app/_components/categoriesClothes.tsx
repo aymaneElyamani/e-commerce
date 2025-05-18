@@ -9,21 +9,21 @@ export const CategoriesCloches = (): JSX.Element => {
   const categories = [
     {
       id: 1,
-      name: "Femmes",
+      name: "WOMEN",
       backgroundImage: "/img/categories/image1.png",
       textColor: "primary",
       href: "/products?category=women",
     },
     {
       id: 2,
-      name: "Enfants",
+      name: "KIDS",
       backgroundImage: "/img/categories/image2.png",
       textColor: "white",
       href: "/products?category=kids",
     },
     {
       id: 3,
-      name: "Hommes",
+      name: "MEN",
       backgroundImage: "/img/categories/image3.png",
       textColor: "primary",
       href: "/products?category=man",
@@ -57,7 +57,7 @@ export const CategoriesCloches = (): JSX.Element => {
               viewport={{ once: true }}
             >
               <Link href={category.href}>
-                <Card className="group w-full h-[320px] sm:h-[400px] border-none rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300">
+                <Card className="group w-full h-[320px] sm:h-[400px] border-none rounded-3xl overflow-hidden  duration-300">
                   <CardContent className="p-0 h-full w-full relative">
                     {/* Full-cover image */}
                     <div className="absolute inset-0 z-0">
@@ -70,7 +70,7 @@ export const CategoriesCloches = (): JSX.Element => {
                     </div>
 
                     {/* Gradient Overlay */}
-                    <div className="absolute inset-0 z-10 bg-gradient-to-t from-black via-black/30 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+                    {/* <div className="absolute inset-0 z-10 bg-gradient-to-t from-black via-black/30 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div> */}
 
                     {/* Category Name */}
                     <div

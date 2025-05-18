@@ -38,11 +38,11 @@ export const BenefitsSection = (): JSX.Element => {
   ];
 
   return (
-    <section className="w-full flex flex-col lg:flex-row min-h-screen">
-      {/* Left Image */}
-      <div className="relative w-full lg:w-1/2 h-[400px] lg:h-auto bg-cover bg-center bg-[url('/image-11.png')]">
-        {/* Floating Image & Center Group (simplified) */}
-        <div className="absolute top-16 left-1/2 transform -translate-x-1/2">
+    <section className="w-full bg-white py-12">
+      <div className="max-w-[1240px] mx-auto px-6 flex flex-col lg:flex-row min-h-[400px] lg:min-h-screen gap-8">
+        {/* Left Image */}
+        <div className="relative w-full lg:w-1/2 h-[400px] lg:h-auto bg-cover bg-center bg-[url('/image-11.png')] flex justify-center items-center">
+          {/* Floating Image & Center Group */}
           <div className="relative w-64 h-64">
             <img
               className="w-44 h-44 object-cover rounded-full mx-auto"
@@ -57,23 +57,27 @@ export const BenefitsSection = (): JSX.Element => {
             <div className="absolute w-2.5 h-2.5 top-[168px] left-[168px] bg-white rounded-full" />
           </div>
         </div>
-      </div>
 
-      {/* Benefits Section */}
-      <div className="w-full lg:w-1/2 grid grid-cols-1 sm:grid-cols-2 gap-6 p-6 bg-white">
-        {benefitCards.map((card, index) => (
-          <Card
-            key={`benefit-${index}`}
-            className="rounded-lg shadow-sm border border-gray-200"
-            style={{ background: card.background }}
-          >
-            <CardContent className="flex flex-col items-center p-6 text-center">
-              <img src={card.image} alt={card.imageAlt} className="w-16 h-16 mb-4" />
-              <h3 className="text-xl font-bold text-primary ">{card.title}</h3>
-              <p className="text-sm text-gray-700 mt-2">{card.description}</p>
-            </CardContent>
-          </Card>
-        ))}
+        {/* Benefits Section */}
+        <div className="w-full lg:w-1/2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {benefitCards.map((card, index) => (
+            <Card
+              key={`benefit-${index}`}
+              className="rounded-lg shadow-sm border border-gray-200"
+              style={{ background: card.background }}
+            >
+              <CardContent className="flex flex-col items-center p-6 text-center">
+                <img
+                  src={card.image}
+                  alt={card.imageAlt}
+                  className="w-16 h-16 mb-4"
+                />
+                <h3 className="text-xl font-bold text-primary">{card.title}</h3>
+                <p className="text-sm text-gray-700 mt-2">{card.description}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
     </section>
   );
