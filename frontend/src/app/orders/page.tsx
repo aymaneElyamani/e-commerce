@@ -1,25 +1,31 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import useAuthStore from "@/store/useAuthStore"; 
+import useAuthStore from "@/store/useAuthStore";
 import { getOrdersByUserId } from "@/services/order";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useRouter } from "next/navigation";
 
 function OrdersPage() {
-  const { user } = useAuthStore(); // Get user data
+  const { user, isAuthenticated } = useAuthStore(); // Get user data
   const [orders, setOrders] = useState<Order[]>([]); // Orders state
   const [filteredOrders, setFilteredOrders] = useState<Order[]>([]); // Filtered orders
   const [isLoading, setIsLoading] = useState<boolean>(true); // Loading state
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null); // Selected order for modal
-  
+
+  const router = useRouter();
+
   const [filter, setFilter] = useState({
-    startDate: '',
-    endDate: '',
-    status: '',
+    startDate: "",
+    endDate: "",
+    status: "",
     minPrice: 0,
     maxPrice: 1000,
   });
 
+  useEffect(() => {
+    if (!isAuthenticated) router.push("/login");
+  }, [isAuthenticated]);
   useEffect(() => {
     if (!user?.id) return;
 
@@ -42,25 +48,27 @@ function OrdersPage() {
 
     // Filter by date range
     if (filter.startDate) {
-      filtered = filtered.filter(order =>
-        new Date(order.created_at) >= new Date(filter.startDate)
+      filtered = filtered.filter(
+        (order) => new Date(order.created_at) >= new Date(filter.startDate)
       );
     }
 
     if (filter.endDate) {
-      filtered = filtered.filter(order =>
-        new Date(order.created_at) <= new Date(filter.endDate)
+      filtered = filtered.filter(
+        (order) => new Date(order.created_at) <= new Date(filter.endDate)
       );
     }
 
     // Filter by status
     if (filter.status) {
-      filtered = filtered.filter(order => order.status === filter.status);
+      filtered = filtered.filter((order) => order.status === filter.status);
     }
 
     // Filter by price range
-    filtered = filtered.filter(order =>
-      order.total_price >= filter.minPrice && order.total_price <= filter.maxPrice
+    filtered = filtered.filter(
+      (order) =>
+        order.total_price >= filter.minPrice &&
+        order.total_price <= filter.maxPrice
     );
 
     setFilteredOrders(filtered);
@@ -71,15 +79,26 @@ function OrdersPage() {
     <div className="bg-white shadow-lg rounded-md p-4 mb-4 border border-gray-200 hover:shadow-xl transition-shadow">
       <div className="flex justify-between items-center mb-3">
         <h3 className="text-xl font-semibold text-gray-800">Order</h3>
-        <span className="text-sm text-gray-500">{new Date(order.created_at).toLocaleDateString()}</span>
+        <span className="text-sm text-gray-500">
+          {new Date(order.created_at).toLocaleDateString()}
+        </span>
       </div>
-      <p className="text-gray-700 text-lg font-medium">Status: {order.status}</p>
-      <p className="text-gray-700 text-lg font-medium mt-2">Total: ${order.total_price.toFixed(2)}</p>
+      <p className="text-gray-700 text-lg font-medium">
+        Status: {order.status}
+      </p>
+      <p className="text-gray-700 text-lg font-medium mt-2">
+        Total: ${order.total_price.toFixed(2)}
+      </p>
 
       <div className="mt-4 space-y-2">
         {order.items?.map((item) => (
-          <div key={item.id} className="flex justify-between items-center text-sm text-gray-600">
-            <span>{item.name} x{item.quantity}</span>
+          <div
+            key={item.id}
+            className="flex justify-between items-center text-sm text-gray-600"
+          >
+            <span>
+              {item.name} x{item.quantity}
+            </span>
             <span>${(item.price * item.quantity).toFixed(2)}</span>
           </div>
         ))}
@@ -108,8 +127,10 @@ function OrdersPage() {
 
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6 text-center sm:text-left">Your Orders</h1>
-      
+      <h1 className="text-3xl font-bold mb-6 text-center sm:text-left">
+        Your Orders
+      </h1>
+
       {/* Filter Section */}
       <div className="flex flex-wrap gap-6 mb-6">
         <div className="flex gap-2">
@@ -117,7 +138,9 @@ function OrdersPage() {
           <input
             type="date"
             value={filter.startDate}
-            onChange={(e) => setFilter({ ...filter, startDate: e.target.value })}
+            onChange={(e) =>
+              setFilter({ ...filter, startDate: e.target.value })
+            }
             className="p-2 border rounded-md"
           />
         </div>
@@ -147,15 +170,25 @@ function OrdersPage() {
           <label className="text-gray-600">Price Range:</label>
           <input
             type="number"
-            value={filter.minPrice || ''}
-            onChange={(e) => setFilter({ ...filter, minPrice: e.target.value ? parseFloat(e.target.value) : 0 })}
+            value={filter.minPrice || ""}
+            onChange={(e) =>
+              setFilter({
+                ...filter,
+                minPrice: e.target.value ? parseFloat(e.target.value) : 0,
+              })
+            }
             className="p-2 border rounded-md"
             placeholder="Min"
           />
           <input
             type="number"
-            value={filter.maxPrice || ''}
-            onChange={(e) => setFilter({ ...filter, maxPrice: e.target.value ? parseFloat(e.target.value) : 1000 })}
+            value={filter.maxPrice || ""}
+            onChange={(e) =>
+              setFilter({
+                ...filter,
+                maxPrice: e.target.value ? parseFloat(e.target.value) : 1000,
+              })
+            }
             className="p-2 border rounded-md"
             placeholder="Max"
           />
@@ -167,14 +200,20 @@ function OrdersPage() {
         <div className="space-y-6">
           {Array(3)
             .fill(null)
-            .map((_, index) => <OrderSkeleton key={index} />)}
+            .map((_, index) => (
+              <OrderSkeleton key={index} />
+            ))}
         </div>
       ) : (
         <div className="space-y-6">
           {filteredOrders && filteredOrders.length > 0 ? (
-            filteredOrders.map((order) => <OrderItem key={order.id} order={order} />)
+            filteredOrders.map((order) => (
+              <OrderItem key={order.id} order={order} />
+            ))
           ) : (
-            <p className="text-gray-500 text-center">No orders match your filter.</p>
+            <p className="text-gray-500 text-center">
+              No orders match your filter.
+            </p>
           )}
         </div>
       )}
@@ -182,7 +221,9 @@ function OrdersPage() {
       {selectedOrder && (
         <Dialog open={true} onOpenChange={() => setSelectedOrder(null)}>
           <DialogContent>
-            <DialogTitle className="text-xl font-semibold">Order Details</DialogTitle>
+            <DialogTitle className="text-xl font-semibold">
+              Order Details
+            </DialogTitle>
             <div className="space-y-4">
               <div className="flex justify-between">
                 <span className="font-semibold">Total Amount:</span>
@@ -194,15 +235,22 @@ function OrdersPage() {
               </div>
               <div className="flex justify-between">
                 <span className="font-semibold">Order Date:</span>
-                <span>{new Date(selectedOrder.created_at).toLocaleDateString()}</span>
+                <span>
+                  {new Date(selectedOrder.created_at).toLocaleDateString()}
+                </span>
               </div>
 
               <div className="mt-4">
                 <h4 className="text-lg font-semibold">Items:</h4>
                 <div className="space-y-2">
                   {selectedOrder.items?.map((item) => (
-                    <div key={item.id} className="flex justify-between items-center">
-                      <span>{item.name} x{item.quantity}</span>
+                    <div
+                      key={item.id}
+                      className="flex justify-between items-center"
+                    >
+                      <span>
+                        {item.name} x{item.quantity}
+                      </span>
                       <span>${(item.price * item.quantity).toFixed(2)}</span>
                     </div>
                   ))}
