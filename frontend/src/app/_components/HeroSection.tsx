@@ -55,7 +55,7 @@ export const HeroSection = () => {
   return (
     <section className="relative w-full h-[700px] overflow-hidden">
       {/* Slider Images */}
-      <div className="absolute inset-0" ref={emblaRef}>
+      <div className="absolute inset-0 " ref={emblaRef} >
         <div className="flex h-full">
           {slides.map((slide, idx) => (
             <div
@@ -74,10 +74,10 @@ export const HeroSection = () => {
 
       {/* Dynamic Hero Text */}
       <div className="absolute top-[190px] left-0 w-full flex flex-col items-center z-10">
-        <h1 className="font-['Lato',Helvetica] font-bold text-white text-[64px] max-w-[1000px] text-center">
+        <h1 className="font-['Lato',Helvetica] font-bold text-white text-2xl sm:text-[64px] max-w-[1000px] text-center px-10">
           {slides[selectedIndex].title}
         </h1>
-        <p className="w-[787px] mt-[50px] font-['Poppins',Helvetica] font-medium text-[#f8f8f8] text-lg text-center leading-[25.2px]">
+        <p className="max-w-[787px] mt-[50px] font-['Poppins',Helvetica] font-medium text-[#f8f8f8] text-sm px-20 sm:text-lg text-center leading-[25.2px]">
           {slides[selectedIndex].description}
         </p>
         <div className="flex gap-[35px] mt-[38px]">
@@ -97,7 +97,7 @@ export const HeroSection = () => {
       </div>
 
       {/* Pagination */}
-      <div className="absolute top-[333px] right-[137px] flex flex-col gap-[35px] z-10">
+      <div className="hidden sm:flex absolute top-[333px] right-[137px]  flex-col gap-[35px] z-10">
         {slides.map((_, index) => (
           <div
             key={index}
