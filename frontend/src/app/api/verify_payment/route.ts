@@ -1,4 +1,6 @@
-// src/app/api/verify_payment/route.ts
+// This Map should be moved to a better scoped storage (e.g. Redis or DB in production)
+const usedSessions = new Set<string>();
+
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
@@ -12,9 +14,16 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Session ID is missing' }, { status: 400 });
     }
 
+    // Check if session_id has already been used
+    if (usedSessions.has(session_id)) {
+      return NextResponse.json({ error: 'Session ID already used' }, { status: 403 });
+    }
+
     const session = await stripe.checkout.sessions.retrieve(session_id);
 
     if (session.payment_status === 'paid') {
+      // Mark session_id as used
+      usedSessions.add(session_id);
       return NextResponse.json({ success: true });
     } else {
       return NextResponse.json({ success: false });

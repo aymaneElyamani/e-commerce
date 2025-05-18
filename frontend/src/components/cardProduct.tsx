@@ -33,7 +33,7 @@ function CardProduct({ product }: { product: Product }) {
     }
 
     const request: AddToCardType = {
-      color: product.colors[0],
+      color: product.colors[0] == undefined ?product.colors[0] :   "black"   ,
       idProduct: product.id,
       image_cover: product.image_cover,
       name: product.name,
@@ -49,7 +49,7 @@ function CardProduct({ product }: { product: Product }) {
   return (
     <motion.div
       whileHover={{ scale: 1.015 }}
-      className="relative group rounded-xl shadow-md bg-white border border-gray-100 overflow-hidden transition-all duration-300"
+      className="relative group rounded-xl shadow-md bg-white border border-gray-100 overflow-hidden transition-all duration-300 "
     >
       {/* Product Image */}
       <div className="relative h-[250px] w-full overflow-hidden">

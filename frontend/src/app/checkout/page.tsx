@@ -1,93 +1,62 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { createOrder } from "@/services/order";
-import useAuthStore from "@/store/useAuthStore";
-import useCartStore from "@/store/useCartStore";
-import { useRouter, usePathname } from "next/navigation";
-import { toast } from "sonner";
-import { motion } from "framer-motion";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import Image from "next/image";
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
-
-import { loadStripe } from '@stripe/stripe-js';
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import useCartStore from "@/store/useCartStore";
+import useAuthStore from "@/store/useAuthStore";
+import { loadStripe } from "@stripe/stripe-js";
 import Stripe from "stripe";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
 );
+type line = Stripe.Checkout.SessionCreateParams.LineItem;
 
 const CheckoutPage = () => {
-  const { products, clearCart } = useCartStore();
+  const { products, clearCart, updateQuantity, removeProduct } = useCartStore();
   const { user } = useAuthStore();
-  const { push } = useRouter();
-    const [loading, setLoading] = useState(false); // 👈 loading state
+  const [loading, setLoading] = useState(false);
 
-  const totalPrice = products.reduce((total, product) => total + product.price * product.quantity, 0);
+  const totalPrice = products.reduce((t, p) => t + p.price * p.quantity, 0);
 
-  // const handleCheckout = async () => {
-  //   setLoading(true); // 👈 start loading
-  //   const orderItems: OrderItem[] = products.map((p: AddToCardType) => ({
-  //     product_id: p.idProduct,
-  //     color: p.color,
-  //     quantity: p.quantity,
-  //     size: p.size,
-  //   }));
-
-  //   try {
-  //     const orderResponse = await createOrder(user?.id!, orderItems);
-
-  //     if (orderResponse && orderResponse.order_id) {
-  //       toast.success("Order placed successfully!");
-  //       clearCart();
-  //       // push("/success");
-  //     } else {
-  //       toast.error("Something went wrong. Please try again.");
-  //     }
-  //   } catch (error) {
-  //     toast.error("An error occurred while processing your order.");
-  //   } finally {
-  //     setLoading(false); // 👈 stop loading
-  //   }
-  // };
-
-  type line = Stripe.Checkout.SessionCreateParams.LineItem;
+  /* checkout handler here … (unchanged) */
 
   const handleCheckout = async () => {
-
     setLoading(true);
-    const orderItems: OrderItem[] = products.map((p: AddToCardType) => ({
-      product_id: p.idProduct,
-      color: p.color,
-      quantity: p.quantity,
-      size: p.size,
-    }));
+    // const orderItems: OrderItem[] = products.map((p: AddToCardType) => ({
+    //   product_id: p.idProduct,
+    //   color: p.color,
+    //   quantity: p.quantity,
+    //   size: p.size,
+    // }));
 
-    const items : line[] = products.map(e=>{ return {
-       price_data: {
-          currency: 'usd',
+    const items: line[] = products.map((e) => {
+      return {
+        price_data: {
+          currency: "usd",
 
           product_data: {
-            name: e.name
+            name: e.name,
           },
           unit_amount: +e.price * e.quantity * 100,
         },
-        quantity: e.quantity
-    }})
+        quantity: e.quantity,
+      };
+    });
 
-   const res = await fetch('/api/checkout_sessions', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    line_items: items
-  })
-});
-
+    const res = await fetch("/api/checkout_sessions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        line_items: items,
+      }),
+    });
 
     const data = await res.json();
 
@@ -95,36 +64,41 @@ const CheckoutPage = () => {
     const result = await stripe?.redirectToCheckout({
       sessionId: data.sessionId,
     });
-    
-    console.log("user session")
+
+    console.log("user session");
     if (result?.error) {
       alert(result.error.message);
     }
     setLoading(false);
   };
 
+  /* helper to build an array 1..10 for qty select */
+  const qtyOpts = Array.from({ length: 100 }, (_, i) => i + 1);
+
   return (
-    <main className="max-w-6xl mx-auto p-6">
-      <motion.h1
-        className="text-muted-foreground text-lg mb-6"
-        initial={{ opacity: 0, x: -20 }}
+    <main className="max-w-6xl mx-auto px-4 py-10">
+      {/* breadcrumb */}
+      <motion.p
+        initial={{ opacity: 0, x: -15 }}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.1 }}
+        className="text-muted-foreground mb-8"
       >
-        <span className="text-black font-semibold"><Link href={"/"}>Home</Link> / Checkout</span>
-      </motion.h1>
+        <Link href="/" className="text-black font-semibold">
+          Home
+        </Link>{" "}
+        / checkout
+      </motion.p>
 
       {products.length === 0 ? (
-        <motion.div
-          className="text-center text-gray-500 mt-32"
+        <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
+          className="text-center text-gray-500 mt-32"
         >
           Your cart is empty.
-        </motion.div>
+        </motion.p>
       ) : (
         <motion.section
-          className="space-y-6"
           initial="hidden"
           animate="visible"
           variants={{
@@ -132,65 +106,160 @@ const CheckoutPage = () => {
             visible: {
               opacity: 1,
               y: 0,
-              transition: { staggerChildren: 0.1 },
+              transition: { staggerChildren: 0.06 },
             },
           }}
+          className="space-y-8"
         >
-          {products.map((product, index) => (
-            <motion.div key={index} variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
-              <Card className="shadow-sm overflow-hidden">
-                <div className="grid grid-cols-1 md:grid-cols-[100px_1fr] gap-4 items-center p-4">
-                  {/* Product Image */}
-                  {product.image_cover && (
-                    <div className="relative w-[100px] h-[100px]">
-                      <Image
-                        src={product.image_cover}
-                        alt={product.name}
-                        fill
-                        className="object-cover rounded-md"
-                      />
-                    </div>
-                  )}
+          {/* ---------- CART TABLE ---------- */}
+          <div className="w-full overflow-x-auto">
+            <table className="w-full text-sm border-separate [border-spacing:0]">
+              <thead>
+                <tr className="bg-muted text-left text-gray-600 text-xs uppercase tracking-wider">
+                  <th className="py-3 pl-6 w-1/2">Product</th>
+                  <th className="py-3">Price</th>
+                  <th className="py-3">Quantity</th>
+                  <th className="py-3 pr-6 text-right">Subtotal</th>
+                  <th className="py-3 pr-6 text-right">Action</th>{" "}
+                  {/* Add this */}
+                </tr>
+              </thead>
+              <tbody>
+                {products.map((p) => (
+                  <tr key={p.idProduct} className="border-b last:border-none">
+                    {/* product + thumb */}
+                    <td className="py-4 pl-6">
+                      <div className="flex items-center gap-4">
+                        {p.image_cover && (
+                          <div className="relative w-14 h-14 shrink-0">
+                            <Image
+                              src={p.image_cover}
+                              alt={p.name}
+                              fill
+                              className="object-cover rounded"
+                            />
+                          </div>
+                        )}
 
-                  <div>
-                    <CardHeader className="p-0 pb-2">
-                      <CardTitle className="flex justify-between items-center text-base">
-                        <span className="font-bold">{product.name}</span>
-                        <span className="text-muted-foreground font-bold">${product.price}</span>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-0 text-sm text-gray-700 space-y-1">
-                      <div><span className="font-semibold">Quantity:</span> {product.quantity}</div>
-                      <div><span className="font-semibold">Color:</span> {product.color}</div>
-                      <div><span className="font-semibold">Size:</span> {product.size}</div>
-                    </CardContent>
-                  </div>
-                </div>
-              </Card>
-            </motion.div>
-          ))}
+                        <div>
+                          <p className="font-medium">{p.name}</p>
+                          <p className="text-xs text-muted-foreground space-x-2">
+                            <span>{p.color}</span>
+                            <span>{p.size}</span>
+                          </p>
+                        </div>
+                      </div>
+                    </td>
 
-          <Separator />
+                    {/* unit price */}
+                    <td className="py-4">${p.price}</td>
 
-          <motion.div
-            className="text-right text-lg font-bold"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            Total: ${totalPrice.toFixed(2)}
-          </motion.div>
+                    {/* qty select */}
+                    <td className="py-4">
+                      <div className="relative inline-block">
+                        <select
+                          value={p.quantity}
+                          onChange={(e) =>
+                            updateQuantity(p.idProduct, +e.target.value)
+                          }
+                          className="border rounded px-3 py-1 pr-6 text-center appearance-none"
+                        >
+                          {qtyOpts.map((q) => (
+                            <option key={q}>{q.toString()}</option>
+                          ))}
+                        </select>
+                        {/* chevron */}
+                        <svg
+                          className="absolute right-2 top-1/2 -translate-y-1/2 h-4 w-4 pointer-events-none"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            d="M7 7l3 3 3-3"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </div>
+                    </td>
 
-          <motion.div
-            className="text-right"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-          >
-            <Button disabled = {loading} className="px-6 py-2 text-white bg-black hover:bg-gray-800" onClick={handleCheckout}>
-              Checkout Now
-            </Button>
-          </motion.div>
+                    {/* subtotal */}
+                    <td className="py-4 pr-6 text-right font-medium">
+                      ${(p.price * p.quantity).toFixed(2)}
+                    </td>
+
+                    <td className="py-4 pr-6 text-right">
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => removeProduct(p.idProduct)}
+                      >
+                        Delete
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* ---------- ACTIONS + SUMMARY ---------- */}
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* left column: actions */}
+            <div className="md:col-span-2 space-y-4">
+              <div className="flex flex-wrap items-center gap-4">
+                <Link href="/" className="border px-6 py-2 rounded">
+                  Return to shop
+                </Link>
+                {/* <Button
+                  variant="outline"
+                  onClick={() => {}}
+                  className="px-6"
+                >
+                  Update cart
+                </Button> */}
+              </div>
+
+              {/* coupon form */}
+              <div className="flex flex-wrap gap-4">
+                <input
+                  placeholder="Coupon code"
+                  className="border rounded px-4 py-2 w-52"
+                />
+                <Button className="bg-emerald-800 hover:bg-emerald-900">
+                  Apply coupon
+                </Button>
+              </div>
+            </div>
+
+            {/* right column: total */}
+            <div className="border p-6 space-y-4">
+              <h3 className="font-semibold text-lg">Cart total</h3>
+              <Separator />
+              <div className="flex justify-between text-sm">
+                <span>Subtotal:</span>
+                <span>${totalPrice.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span>Shipping:</span>
+                <span className="font-medium">Free</span>
+              </div>
+              <Separator />
+              <div className="flex justify-between font-semibold">
+                <span>Total:</span>
+                <span>${totalPrice.toFixed(2)}</span>
+              </div>
+              <Button
+                disabled={loading}
+                onClick={handleCheckout}
+                className="w-full bg-emerald-800 hover:bg-emerald-900 mt-2"
+              >
+                Proceed to checkout
+              </Button>
+            </div>
+          </div>
         </motion.section>
       )}
     </main>
