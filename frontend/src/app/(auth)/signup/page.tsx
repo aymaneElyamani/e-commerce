@@ -40,9 +40,13 @@ function Signup() {
       toast.success(message); // Show success toast
       router.push("/login"); // Redirect to login page
 
-    } catch (error: any) {
+    } catch (error: unknown) {
       // console.error("Sign up failed:", error);
-      toast.error(error.message|| "Sign-up failed. Please try again."); // Show error toast
+      if (error instanceof Error) {
+        toast.error(error.message || "Sign-up failed. Please try again."); // Show error toast
+      } else {
+        toast.error("Sign-up failed. Please try again."); // Show generic error
+      }
     } finally {
       setLoading(false); // Stop loading
     }
@@ -55,7 +59,7 @@ function Signup() {
           {/* Left: Image */}
           <div className="flex items-center justify-center p-8 bg-blue-50">
             <img
-              src="/signup-imglogin.png"
+              src="/imglogin.png"
               alt="Signup Visual"
               className="max-w-full h-auto w-3/4"
             />
