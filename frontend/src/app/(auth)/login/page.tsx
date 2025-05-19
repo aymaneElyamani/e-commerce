@@ -1,100 +1,112 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { login } from "@/services/auth";
-// import { loginSuccess } from "@/store/slices/authSlice";
-// import { RootState } from "@/store/store";
 import useAuthStore from "@/store/useAuthStore";
-// import useStore from "@/store2/useAuthStore";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false); // 👈 Loading state
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
 
-  // const dispatch = useDispatch();
   const router = useRouter();
-  // const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
-
-  const {loginSuccess , isAuthenticated  , setProfile} = useAuthStore()
+  const { loginSuccess, isAuthenticated } = useAuthStore();
 
   useEffect(() => {
-    console.log("is authentified");
     if (isAuthenticated) {
-      
       router.push("/");
     }
   }, [isAuthenticated, router]);
 
+  const validateForm = () => {
+    const newErrors: typeof errors = {};
+    if (!email) {
+      newErrors.email = "Email is required.";
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = "Invalid email format.";
+    }
 
+    if (!password) {
+      newErrors.password = "Password is required.";
+    } else if (password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true); // 👈 Start loading
 
+    if (!validateForm()) return;
+
+    setLoading(true);
     try {
-      const {token , user} = await login({ email, password });
-      // 
-      loginSuccess(token ,  user );
-
-      console.log("Logged in! Token:", token);
-
-      // Show success toast
+      const { token, user } = await login({ email, password });
+      loginSuccess(token, user);
       toast.success("Login successful!");
-
-      // Optionally redirect or do something after success
     } catch (error: any) {
-      console.error("Login failed:", error);
-
-      // Show error toast with the error message
-      toast.error(error.response?.data?.message || "Login failed. Please try again.");
+      toast.error(error?.response?.data?.message || "Login failed. Please try again.");
     } finally {
-      setLoading(false); // 👈 Stop loading
+      setLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <div className="flex w-full max-w-4xl bg-white rounded-lg shadow-md overflow-hidden">
-        {/* Left Image Panel */}
+        {/* Left Panel */}
         <div className="hidden md:flex w-1/2 items-center justify-center bg-[#EAF1FB]">
-          <img src="/imglogin.png" alt="Signup Visual" className="w-3/4" />
+          <img src="/imglogin.png" alt="Login visual" className="w-3/4" />
         </div>
 
-        {/* Right Form Panel */}
+        {/* Right Panel */}
         <div className="w-full md:w-1/2 px-8 py-12">
           <h2 className="text-2xl font-bold text-gray-900 mb-1">Log in to Exclusive</h2>
           <p className="text-sm text-gray-500 mb-6">Enter your details below</p>
 
           <form className="space-y-4" onSubmit={handleLogin}>
-            <input
-              onChange={(e) => setEmail(e.target.value)}
-              type="email"
-              placeholder="Email or Phone Number"
-              className="w-full px-4 py-2 border border-gray-300 rounded bg-[#EDF1F7] text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-            <input
-              onChange={(e) => setPassword(e.target.value)}
-              type="password"
-              placeholder="Password"
-              className="w-full px-4 py-2 border border-gray-300 rounded bg-[#EDF1F7] text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-            />
+            <div>
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email or Phone Number"
+              />
+              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+            </div>
+
+            <div>
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+              />
+              {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+            </div>
 
             <div className="flex justify-end">
               <a href="#" className="text-sm text-gray-500 hover:underline">
-                Forget Password?
+                Forgot Password?
               </a>
             </div>
 
             <Button
               type="submit"
               disabled={loading}
-              className={`w-full py-2 rounded transition-colors text-white ${
-                loading ? "bg-gray-500 cursor-not-allowed" : "bg-primary  "
-              }`}
+              className="w-full"
             >
               {loading ? "Logging in..." : "Log in"}
             </Button>
