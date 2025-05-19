@@ -28,7 +28,7 @@ def init_db():
     # cur.execute("DROP TABLE IF EXISTS line_orders CASCADE;")
     # cur.execute("DROP TABLE IF EXISTS orders CASCADE;")
 
-    # cur.execute("DROP TABLE IF EXISTS products CASCADE;")
+    # cur.execute("DROP TABLE IF EXISTS blogs CASCADE;")
 
     # utilisateurs table
     cur.execute('''
@@ -105,6 +105,19 @@ def init_db():
                 ON DELETE RESTRICT
         )
     ''')
+
+    cur.execute('''
+    CREATE TABLE IF NOT EXISTS blogs (
+    id SERIAL PRIMARY KEY,
+    title TEXT NOT NULL,
+    content TEXT NOT NULL,
+    image_url TEXT,  
+    is_published BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+    )
+''')
+
     conn.commit()
     cur.close()
     conn.close()
@@ -113,12 +126,14 @@ def init_db():
 
 def create_app():
     init_db()
-    from .routes import products_bq , auth_bq , order_bp,offers_bp , admin
+    from .routes import products_bq , auth_bq , order_bp,offers_bp , admin , blogs_bp
 
     app.register_blueprint(products_bq)
     app.register_blueprint(auth_bq)
     app.register_blueprint(order_bp)
     app.register_blueprint(offers_bp)
+    app.register_blueprint(blogs_bp)
+
     app.register_blueprint(admin)
 
 

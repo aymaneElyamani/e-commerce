@@ -27,3 +27,9 @@ def orders():
 @admin.route('/offers', methods=['GET'])
 def offers():
     return render_template('offers.html')
+
+
+
+@admin.route('/blogs', methods=['GET'])
+def blogs():
+    return render_template('blogs.html')
