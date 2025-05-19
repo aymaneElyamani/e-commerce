@@ -14,8 +14,8 @@ import { Button } from "@/components/ui/button";
 
 // Zod schema for validation
 const SignupSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  email: z.string().email("Adresse e-mail invalide"),
+  password: z.string().min(6, "Le mot de passe doit contenir au moins 6 caractères"),
 });
 
 type SignupFormData = z.infer<typeof SignupSchema>;
@@ -43,33 +43,36 @@ function Signup() {
       const message = await register(data);
       toast.success(message);
       router.push("/login");
-    } catch (error: any) {
-      toast.error(error.message || "Sign-up failed. Please try again.");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Échec de l'inscription. Veuillez réessayer.";
+      toast.error(message);
     }
   };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
       <div className="grid grid-cols-1 md:grid-cols-2 bg-white shadow-md rounded-lg overflow-hidden">
+        
         {/* Left: Image */}
         <div className="flex items-center justify-center p-8 bg-blue-50">
           <img
-            src="/signup-imglogin.png"
-            alt="Signup Visual"
+            src="/imglogin.png"
+            alt="Illustration d'inscription"
             className="max-w-full h-auto w-3/4"
           />
         </div>
 
         {/* Right: Signup Form */}
         <div className="p-8 w-full max-w-md">
-          <h2 className="text-2xl font-bold mb-2">Create an account</h2>
-          <p className="text-gray-500 mb-6">Enter your details below</p>
+          <h2 className="text-2xl font-bold mb-2">Créer un compte</h2>
+          <p className="text-gray-500 mb-6">Entrez vos informations ci-dessous</p>
 
           <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
             <div>
               <Input
                 type="email"
                 placeholder="Email"
+                autoComplete="email"
                 {...formRegister("email")}
               />
               {errors.email && (
@@ -80,7 +83,8 @@ function Signup() {
             <div>
               <Input
                 type="password"
-                placeholder="Password"
+                placeholder="Mot de passe"
+                autoComplete="new-password"
                 {...formRegister("password")}
               />
               {errors.password && (
@@ -89,7 +93,7 @@ function Signup() {
             </div>
 
             <Button type="submit" className="w-full" disabled={isSubmitting}>
-              {isSubmitting ? "Creating account..." : "Create Account"}
+              {isSubmitting ? "Création du compte..." : "Créer un compte"}
             </Button>
 
             <Button
@@ -99,17 +103,17 @@ function Signup() {
             >
               <img
                 src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-                alt="Google"
+                alt="Logo Google"
                 className="w-5 h-5 mr-2"
               />
-              Sign up with Google
+              S&apos;inscrire avec Google
             </Button>
           </form>
 
           <p className="text-center text-sm text-gray-600 mt-4">
-            Already have an account?{" "}
+            Vous avez déjà un compte ?{" "}
             <Link href="/login" className="text-black font-medium">
-              Log in
+              Connectez-vous
             </Link>
           </p>
         </div>
