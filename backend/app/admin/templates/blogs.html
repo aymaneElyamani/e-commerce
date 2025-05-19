@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Blog Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gradient-to-br from-gray-100 to-blue-50 min-h-screen p-0 sm:p-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex justify-between items-center mb-6">
+        <a
+          href="/admin"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-lg shadow transition"
+          >← Back to dashboard</a
+        >
+      </div>
+
+      <h1
+        class="text-4xl font-extrabold mb-10 text-center text-blue-700 tracking-tight drop-shadow"
+      >
+        Blog Management
+      </h1>
+
+      <!-- Blog Form -->
+      <section
+        class="bg-white/90 p-8 rounded-2xl shadow-lg mb-12 border border-blue-100"
+      >
+        <h2 id="formTitle" class="text-2xl font-semibold mb-6 text-blue-600">
+          Create New Blog
+        </h2>
+        <form id="blogForm" class="space-y-5" novalidate>
+          <input type="hidden" id="blogId" />
+
+          <div>
+            <label for="title" class="block font-medium mb-1 text-gray-700"
+              >Blog Title</label
+            >
+            <input
+              type="text"
+              id="title"
+              name="title"
+              required
+              aria-required="true"
+              class="w-full px-3 py-2 border border-blue-200 rounded-lg bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+          </div>
+
+          <div>
+            <label
+              for="imageUrl"
+              class="block font-medium mb-1 text-gray-700"
+              >Image URL (optional)</label
+            >
+            <input
+              id="imageUrl"
+              type="url"
+              placeholder="https://example.com/image.jpg"
+              class="w-full px-3 py-2 border border-blue-200 rounded-lg bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+          </div>
+
+          <div>
+            <label for="content" class="block font-medium mb-1 text-gray-700"
+              >Content</label
+            >
+            <textarea
+              id="content"
+              name="content"
+              rows="6"
+              required
+              aria-required="true"
+              class="w-full px-3 py-2 border border-blue-200 rounded-lg bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            ></textarea>
+          </div>
+
+          <div>
+            <label for="isPublished" class="block font-medium mb-1 text-gray-700"
+              >Published Status</label
+            >
+            <select
+              id="isPublished"
+              name="isPublished"
+              class="w-full px-3 py-2 border border-blue-200 rounded-lg bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            >
+              <option value="true" selected>Published</option>
+              <option value="false">Draft</option>
+            </select>
+          </div>
+
+          <div class="flex space-x-2">
+            <button
+              type="submit"
+              id="submitBtn"
+              class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition font-semibold shadow"
+            >
+              Create Blog
+            </button>
+            <button
+              type="button"
+              id="cancelEditBtn"
+              class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition font-semibold shadow hidden"
+            >
+              Cancel
+            </button>
+          </div>
+
+          <p id="formMessage" class="mt-2 text-red-600 font-medium" role="alert"></p>
+        </form>
+      </section>
+
+      <!-- Blogs Table -->
+      <section>
+        <h2 class="text-2xl font-semibold mb-6 text-blue-600">Blog List</h2>
+        <div
+          class="overflow-x-auto bg-white/90 rounded-2xl shadow-lg border border-blue-100"
+        >
+          <table class="min-w-full divide-y divide-blue-100" aria-describedby="blogsTableCaption">
+            <caption id="blogsTableCaption" class="sr-only">
+              List of blogs with title, content preview, status, creation date, and actions
+            </caption>
+            <thead class="bg-blue-50">
+              <tr>
+                <th
+                  class="px-4 py-3 text-left text-xs font-bold text-blue-700 uppercase tracking-wider"
+                  scope="col"
+                >
+                  ID
+                </th>
+                <th
+                  class="px-4 py-3 text-left text-xs font-bold text-blue-700 uppercase tracking-wider"
+                  scope="col"
+                >
+                  Title
+                </th>
+                <th
+                  class="px-4 py-3 text-left text-xs font-bold text-blue-700 uppercase tracking-wider"
+                  scope="col"
+                >
+                  Content
+                </th>
+                <th
+                  class="px-4 py-3 text-left text-xs font-bold text-blue-700 uppercase tracking-wider"
+                  scope="col"
+                >
+                  Status
+                </th>
+                <th
+                  class="px-4 py-3 text-left text-xs font-bold text-blue-700 uppercase tracking-wider"
+                  scope="col"
+                >
+                  Created At
+                </th>
+                <th
+                  class="px-4 py-3 text-left text-xs font-bold text-blue-700 uppercase tracking-wider"
+                  scope="col"
+                >
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody id="blogsTableBody" class="bg-white divide-y divide-blue-50">
+              <!-- Dynamic blog rows here -->
+            </tbody>
+          </table>
+        </div>
+
+        <p id="loadingMessage" class="mt-4 text-gray-500" aria-live="polite"
+          >Loading blogs...</p
+        >
+        <p id="errorMessage" class="mt-4 text-red-600 font-semibold" role="alert"></p>
+      </section>
+    </div>
+
+    <!-- Edit Modal -->
+    <div
+      id="editModal"
+      class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="editModalTitle"
+    >
+      <div
+        class="bg-white rounded-xl shadow-lg max-w-xl w-full p-6 space-y-4"
+        tabindex="-1"
+      >
+        <h2 id="editModalTitle" class="text-xl font-semibold text-blue-600">
+          Edit Blog
+        </h2>
+        <input type="hidden" id="modalBlogId" />
+        <div>
+          <label
+            for="modalTitle"
+            class="block text-gray-700 font-medium mb-1"
+            >Title</label
+          >
+          <input
+            id="modalTitle"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md"
+          />
+        </div>
+        <div>
+          <label
+            for="modalContent"
+            class="block text-gray-700 font-medium mb-1"
+            >Content</label
+          >
+          <textarea
+            id="modalContent"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md"
+            rows="4"
+          ></textarea>
+        </div>
+        <div>
+          <label
+            for="modalIsPublished"
+            class="block text-gray-700 font-medium mb-1"
+            >Status</label
+          >
+          <select
+            id="modalIsPublished"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md"
+          >
+            <option value="true">Published</option>
+            <option value="false">Draft</option>
+          </select>
+        </div>
+        <div class="flex justify-end space-x-2">
+          <button
+            id="closeModalBtn"
+            class="px-4 py-2 rounded-md bg-gray-500 text-white hover:bg-gray-600"
+          >
+            Cancel
+          </button>
+          <button
+            id="saveModalBtn"
+            class="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+      const apiUrl = "/api/blogs";
+
+      // Escape HTML utility to prevent injection in table output
+      function escapeHTML(str) {
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      // Format date to readable string
+      function formatDate(isoString) {
+        const d = new Date(isoString);
+        return d.toLocaleDateString(undefined, {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      }
+
+      // Show loading, error, and message helpers
+      const loadingMessage = document.getElementById("loadingMessage");
+      const errorMessage = document.getElementById("errorMessage");
+      const formMessage = document.getElementById("formMessage");
+
+      // Load blogs from API and render table
+      async function loadBlogs() {
+        loadingMessage.style.display = "block";
+        errorMessage.textContent = "";
+        const tbody = document.getElementById("blogsTableBody");
+        tbody.innerHTML = "";
+        try {
+          const res = await fetch(apiUrl);
+          if (!res.ok) throw new Error("Failed to fetch blogs");
+          const blogs = await res.json();
+          if (blogs.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-gray-500">No blogs found.</td></tr>`;
+          } else {
+            blogs.forEach((blog) => {
+              tbody.insertAdjacentHTML(
+                "beforeend",
+                `<tr>
+                <td class="px-4 py-3 text-sm font-mono text-gray-600">${blog.id}</td>
+                <td class="px-4 py-3 max-w-xs overflow-hidden whitespace-nowrap text-ellipsis" title="${escapeHTML(
+                  blog.title
+                )}">${escapeHTML(blog.title)}</td>
+                <td class="px-4 py-3 max-w-lg whitespace-nowrap overflow-hidden text-ellipsis" title="${escapeHTML(
+                  blog.content
+                )}">${escapeHTML(blog.content)}</td>
+                <td class="px-4 py-3 text-sm font-semibold ${
+                  blog.isPublished ? "text-green-600" : "text-gray-400"
+                }">${blog.isPublished ? "Published" : "Draft"}</td>
+                <td class="px-4 py-3 text-sm text-gray-500">${formatDate(
+                  blog.createdAt
+                )}</td>
+                <td class="px-4 py-3 text-sm space-x-2">
+                  <button class="editBtn bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700" data-id="${
+                    blog.id
+                  }" aria-label="Edit blog titled ${escapeHTML(blog.title)}">Edit</button>
+                  <button class="deleteBtn bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700" data-id="${
+                    blog.id
+                  }" aria-label="Delete blog titled ${escapeHTML(blog.title)}">Delete</button>
+                </td>
+              </tr>`
+              );
+            });
+          }
+        } catch (e) {
+          errorMessage.textContent = e.message;
+        } finally {
+          loadingMessage.style.display = "none";
+        }
+      }
+
+      // Reset form to initial state
+      function resetForm() {
+        document.getElementById("blogForm").reset();
+        document.getElementById("blogId").value = "";
+        document.getElementById("formTitle").textContent = "Create New Blog";
+        document.getElementById("submitBtn").textContent = "Create Blog";
+        document.getElementById("cancelEditBtn").classList.add("hidden");
+        formMessage.textContent = "";
+      }
+
+      // Fill form fields for editing
+      function fillFormForEdit(blog) {
+        document.getElementById("blogId").value = blog.id;
+        document.getElementById("title").value = blog.title;
+        document.getElementById("imageUrl").value = blog.imageUrl || "";
+        document.getElementById("content").value = blog.content;
+        document.getElementById("isPublished").value = blog.isPublished ? "true" : "false";
+        document.getElementById("formTitle").textContent = "Edit Blog";
+        document.getElementById("submitBtn").textContent = "Update Blog";
+        document.getElementById("cancelEditBtn").classList.remove("hidden");
+        formMessage.textContent = "";
+      }
+
+      // Create a new blog via POST
+      async function createBlog(blogData) {
+        const res = await fetch(apiUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(blogData),
+        });
+        if (!res.ok) {
+          const error = await res.text();
+          throw new Error("Create failed: " + error);
+        }
+        return await res.json();
+      }
+
+      // Update a blog via PUT
+      async function updateBlog(id, blogData) {
+        const res = await fetch(`${apiUrl}/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(blogData),
+        });
+        if (!res.ok) {
+          const error = await res.text();
+          throw new Error("Update failed: " + error);
+        }
+        return await res.json();
+      }
+
+      // Delete a blog via DELETE
+      async function deleteBlog(id) {
+        const res = await fetch(`${apiUrl}/${id}`, { method: "DELETE" });
+        if (!res.ok) {
+          const error = await res.text();
+          throw new Error("Delete failed: " + error);
+        }
+      }
+
+      // Event: submit form for create/update
+      document.getElementById("blogForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        formMessage.textContent = "";
+        const id = document.getElementById("blogId").value;
+        const blogData = {
+          title: document.getElementById("title").value.trim(),
+          imageUrl: document.getElementById("imageUrl").value.trim(),
+          content: document.getElementById("content").value.trim(),
+          isPublished: document.getElementById("isPublished").value === "true",
+        };
+        // Basic validation
+        if (!blogData.title || !blogData.content) {
+          formMessage.textContent = "Title and Content are required.";
+          return;
+        }
+
+        try {
+          if (id) {
+            // Update
+            await updateBlog(id, blogData);
+            formMessage.textContent = "Blog updated successfully.";
+          } else {
+            // Create
+            await createBlog(blogData);
+            formMessage.textContent = "Blog created successfully.";
+          }
+          resetForm();
+          loadBlogs();
+        } catch (error) {
+          formMessage.textContent = error.message;
+        }
+      });
+
+      // Cancel edit button resets form
+      document.getElementById("cancelEditBtn").addEventListener("click", () => {
+        resetForm();
+      });
+
+      // Delegate click events for edit and delete buttons on blog table
+      document.getElementById("blogsTableBody").addEventListener("click", async (e) => {
+        if (e.target.classList.contains("editBtn")) {
+          const id = e.target.dataset.id;
+          // Get blog details and fill form for editing
+          try {
+            const res = await fetch(`${apiUrl}/${id}`);
+            if (!res.ok) throw new Error("Failed to fetch blog details");
+            const blog = await res.json();
+            fillFormForEdit(blog);
+            // Scroll to form for user convenience
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          } catch (error) {
+            errorMessage.textContent = error.message;
+          }
+        } else if (e.target.classList.contains("deleteBtn")) {
+          const id = e.target.dataset.id;
+          if (
+            confirm(
+              "Are you sure you want to delete this blog? This action cannot be undone."
+            )
+          ) {
+            try {
+              await deleteBlog(id);
+              loadBlogs();
+            } catch (error) {
+              errorMessage.textContent = error.message;
+            }
+          }
+        }
+      });
+
+      // Modal functionality (optional: if you want to edit via modal instead of inline form)
+      const editModal = document.getElementById("editModal");
+      const closeModalBtn = document.getElementById("closeModalBtn");
+      const saveModalBtn = document.getElementById("saveModalBtn");
+
+      function openModal() {
+        editModal.classList.remove("hidden");
+      }
+      function closeModal() {
+        editModal.classList.add("hidden");
+      }
+
+      closeModalBtn.addEventListener("click", closeModal);
+
+      saveModalBtn.addEventListener("click", async () => {
+        const id = document.getElementById("modalBlogId").value;
+        const updatedData = {
+          title: document.getElementById("modalTitle").value.trim(),
+          content: document.getElementById("modalContent").value.trim(),
+          isPublished: document.getElementById("modalIsPublished").value === "true",
+        };
+        if (!updatedData.title || !updatedData.content) {
+          alert("Title and Content cannot be empty.");
+          return;
+        }
+        try {
+          await updateBlog(id, updatedData);
+          closeModal();
+          loadBlogs();
+        } catch (error) {
+          alert("Error saving blog: " + error.message);
+        }
+      });
+
+      // Load blogs initially
+      loadBlogs();
+    </script>
+  </body>
+</html>

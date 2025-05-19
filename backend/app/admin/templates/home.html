@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>eCommerce Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body
+    class="bg-gradient-to-br from-gray-100 to-blue-50 min-h-screen flex flex-col items-center"
+  >
+    <header
+      class="w-full bg-white/80 backdrop-blur-md shadow-sm py-6 flex flex-col items-center"
+    >
+      <span class="text-4xl font-extrabold text-blue-700 tracking-tight"
+        >eCommerce Admin</span
+      >
+      <span class="mt-2 text-gray-500 text-lg font-medium"
+        >Bienvenue sur votre espace d’administration</span
+      >
+    </header>
+
+    <main class="max-w-3xl w-full px-6 py-12 flex flex-col items-center">
+      <div class="mb-10 rounded-2xl overflow-hidden shadow-lg w-full">
+        <img
+          src="https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=900&q=80"
+          alt="Boutique Clothes"
+          class="w-full h-56 object-cover"
+        />
+      </div>
+
+      <nav class="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
+        <a
+          href="/admin/users"
+          class="group bg-white border border-blue-100 hover:border-blue-400 transition shadow-sm rounded-xl px-8 py-5 flex flex-col items-center hover:scale-105 duration-200"
+        >
+          <span
+            class="text-blue-600 group-hover:text-blue-800 text-xl font-semibold mb-1"
+            >Users</span
+          >
+          <span class="text-gray-400 text-sm">Manage accounts</span>
+        </a>
+        <a
+          href="/admin/products"
+          class="group bg-white border border-blue-100 hover:border-blue-400 transition shadow-sm rounded-xl px-8 py-5 flex flex-col items-center hover:scale-105 duration-200"
+        >
+          <span
+            class="text-blue-600 group-hover:text-blue-800 text-xl font-semibold mb-1"
+            >Products</span
+          >
+          <span class="text-gray-400 text-sm">Manage catalog</span>
+        </a>
+        <a
+          href="/admin/offers"
+          class="group bg-white border border-blue-100 hover:border-blue-400 transition shadow-sm rounded-xl px-8 py-5 flex flex-col items-center hover:scale-105 duration-200"
+        >
+          <span
+            class="text-blue-600 group-hover:text-blue-800 text-xl font-semibold mb-1"
+            >Offers</span
+          >
+          <span class="text-gray-400 text-sm">Promotions & discounts</span>
+        </a>
+        <a
+          href="/admin/orders"
+          class="group bg-white border border-blue-100 hover:border-blue-400 transition shadow-sm rounded-xl px-8 py-5 flex flex-col items-center hover:scale-105 duration-200"
+        >
+          <span
+            class="text-blue-600 group-hover:text-blue-800 text-xl font-semibold mb-1"
+            >Orders</span
+          >
+          <span class="text-gray-400 text-sm">Order tracking</span>
+        </a>
+      </nav>
+    </main>
+  </body>
+</html>

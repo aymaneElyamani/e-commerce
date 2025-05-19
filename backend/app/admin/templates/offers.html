@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Offers Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body
+    class="bg-gradient-to-br from-gray-100 to-blue-50 min-h-screen p-0 sm:p-6"
+  >
+    <div class="max-w-6xl mx-auto">
+      <div class="flex justify-between items-center mb-6">
+        <a
+          href="/admin"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-lg shadow transition"
+        >
+          ← Back to dashboard
+        </a>
+      </div>
+      <h1
+        class="text-4xl font-extrabold mb-10 text-center text-blue-700 tracking-tight drop-shadow"
+      >
+        Offers Management
+      </h1>
+
+      <!-- Offer Form -->
+      <section
+        class="bg-white/90 p-8 rounded-2xl shadow-lg mb-12 border border-blue-100"
+      >
+        <h2 id="formTitle" class="text-2xl font-semibold mb-6 text-blue-600">
+          Create New Offer
+        </h2>
+        <form id="offerForm" class="space-y-5">
+          <input type="hidden" id="offerId" />
+
+          <div>
+            <label for="productId" class="block font-medium mb-1 text-gray-700"
+              >Product ID</label
+            >
+            <input
+              type="number"
+              id="productId"
+              min="1"
+              required
+              class="w-full px-3 py-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-blue-50"
+            />
+          </div>
+
+          <div>
+            <label for="title" class="block font-medium mb-1 text-gray-700"
+              >Offer Title</label
+            >
+            <input
+              type="text"
+              id="title"
+              required
+              class="w-full px-3 py-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-blue-50"
+            />
+          </div>
+
+          <div>
+            <label for="discount" class="block font-medium mb-1 text-gray-700"
+              >Discount Percentage (%)</label
+            >
+            <input
+              type="number"
+              id="discount"
+              min="0"
+              max="100"
+              step="0.01"
+              required
+              class="w-full px-3 py-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-blue-50"
+            />
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label
+                for="startDate"
+                class="block font-medium mb-1 text-gray-700"
+                >Start Date</label
+              >
+              <input
+                type="date"
+                id="startDate"
+                required
+                class="w-full px-3 py-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-blue-50"
+              />
+            </div>
+            <div>
+              <label for="endDate" class="block font-medium mb-1 text-gray-700"
+                >End Date</label
+              >
+              <input
+                type="date"
+                id="endDate"
+                required
+                class="w-full px-3 py-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-blue-50"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label for="isActive" class="block font-medium mb-1 text-gray-700"
+              >Is Active</label
+            >
+            <select
+              id="isActive"
+              class="w-full px-3 py-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-blue-50"
+            >
+              <option value="true" selected>Active</option>
+              <option value="false">Inactive</option>
+            </select>
+          </div>
+
+          <div class="flex space-x-2">
+            <button
+              type="submit"
+              id="submitBtn"
+              class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition font-semibold shadow"
+            >
+              Create Offer
+            </button>
+            <button
+              type="button"
+              id="cancelEditBtn"
+              class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition font-semibold shadow hidden"
+            >
+              Cancel
+            </button>
+          </div>
+          <p id="formMessage" class="mt-2"></p>
+        </form>
+      </section>
+
+      <!-- Offers Table -->
+      <section>
+        <h2 class="text-2xl font-semibold mb-6 text-blue-600">Offers List</h2>
+        <div
+          class="overflow-x-auto bg-white/90 rounded-2xl shadow-lg border border-blue-100"
+        >
+          <table class="min-w-full divide-y divide-blue-100">
+            <thead class="bg-blue-50">
+              <tr>
+                <th
+                  class="px-4 py-3 text-left text-xs font-bold text-blue-700 uppercase tracking-wider"
+                >
+                  ID
+                </th>
+                <th
+                  class="px-4 py-3 text-left text-xs font-bold text-blue-700 uppercase tracking-wider"
+                >
+                  Product
+                </th>
+                <th
+                  class="px-4 py-3 text-left text-xs font-bold text-blue-700 uppercase tracking-wider"
+                >
+                  Title
+                </th>
+                <th
+                  class="px-4 py-3 text-left text-xs font-bold text-blue-700 uppercase tracking-wider"
+                >
+                  Discount %
+                </th>
+                <th
+                  class="px-4 py-3 text-left text-xs font-bold text-blue-700 uppercase tracking-wider"
+                >
+                  Period
+                </th>
+                <th
+                  class="px-4 py-3 text-left text-xs font-bold text-blue-700 uppercase tracking-wider"
+                >
+                  Active
+                </th>
+                <th
+                  class="px-4 py-3 text-left text-xs font-bold text-blue-700 uppercase tracking-wider"
+                >
+                  Price
+                </th>
+                <th
+                  class="px-4 py-3 text-left text-xs font-bold text-blue-700 uppercase tracking-wider"
+                >
+                  Image
+                </th>
+                <th
+                  class="px-4 py-3 text-left text-xs font-bold text-blue-700 uppercase tracking-wider"
+                >
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              id="offersTableBody"
+              class="bg-white divide-y divide-blue-50"
+            >
+              <!-- Rows go here -->
+            </tbody>
+          </table>
+        </div>
+        <p id="loadingMessage" class="mt-4 text-gray-500">Loading offers...</p>
+        <p id="errorMessage" class="mt-4 text-red-600 font-semibold"></p>
+      </section>
+    </div>
+
+    <script>
+      const apiBase = "/api/offers";
+
+      // Form elements
+      const offerForm = document.getElementById("offerForm");
+      const offerIdInput = document.getElementById("offerId");
+      const productIdInput = document.getElementById("productId");
+      const titleInput = document.getElementById("title");
+      const discountInput = document.getElementById("discount");
+      const startDateInput = document.getElementById("startDate");
+      const endDateInput = document.getElementById("endDate");
+      const isActiveSelect = document.getElementById("isActive");
+      const submitBtn = document.getElementById("submitBtn");
+      const cancelEditBtn = document.getElementById("cancelEditBtn");
+      const formMessage = document.getElementById("formMessage");
+
+      // Table elements
+      const offersTableBody = document.getElementById("offersTableBody");
+      const loadingMessage = document.getElementById("loadingMessage");
+      const errorMessage = document.getElementById("errorMessage");
+      const formTitle = document.getElementById("formTitle");
+
+      // Fetch and render offers
+      async function fetchOffers() {
+        loadingMessage.style.display = "block";
+        errorMessage.textContent = "";
+        try {
+          const res = await fetch(apiBase + "/all");
+          if (!res.ok) throw new Error("Failed to fetch offers");
+          const offers = await res.json();
+
+          renderOffers(offers);
+        } catch (err) {
+          errorMessage.textContent = err.message;
+          offersTableBody.innerHTML = "";
+        } finally {
+          loadingMessage.style.display = "none";
+        }
+      }
+
+      // Render offers table rows
+      function renderOffers(offers) {
+        offersTableBody.innerHTML = "";
+        if (offers.length === 0) {
+          offersTableBody.innerHTML = `<tr><td colspan="9" class="text-center py-4 text-gray-500">No offers found.</td></tr>`;
+          return;
+        }
+
+        for (const offer of offers) {
+          const tr = document.createElement("tr");
+
+          // Convert product_price to number safely
+          const priceNum = Number(offer.product_price);
+          const priceFormatted = !isNaN(priceNum) ? priceNum.toFixed(2) : "N/A";
+
+          tr.innerHTML = `
+        <td class="px-4 py-2 whitespace-nowrap">${offer.id}</td>
+        <td class="px-4 py-2 whitespace-nowrap font-semibold">${
+          offer.product_name || "N/A"
+        }</td>
+        <td class="px-4 py-2 whitespace-nowrap">${offer.title}</td>
+        <td class="px-4 py-2 whitespace-nowrap">${
+          offer.discount_percentage
+        }%</td>
+        <td class="px-4 py-2 whitespace-nowrap">${offer.start_date} to ${
+            offer.end_date
+          }</td>
+        <td class="px-4 py-2 whitespace-nowrap">${
+          offer.is_active ? "Yes" : "No"
+        }</td>
+        <td class="px-4 py-2 whitespace-nowrap">$${priceFormatted}</td>
+        <td class="px-4 py-2 whitespace-nowrap">
+          ${
+            offer.product_image_cover
+              ? `<img src="${offer.product_image_cover}" alt="${offer.product_name}" class="w-20 h-20 object-contain rounded" />`
+              : "No Image"
+          }
+        </td>
+        <td class="px-4 py-2 whitespace-nowrap">
+          <button data-id="${
+            offer.id
+          }" class="edit-btn bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded mr-2">Edit</button>
+          <button data-id="${
+            offer.id
+          }" class="delete-btn bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded">Delete</button>
+        </td>
+      `;
+
+          offersTableBody.appendChild(tr);
+        }
+        addTableButtonListeners();
+      }
+
+      // Add click listeners to edit/delete buttons in table
+      function addTableButtonListeners() {
+        document.querySelectorAll(".edit-btn").forEach((btn) => {
+          btn.onclick = () => startEditOffer(btn.dataset.id);
+        });
+        document.querySelectorAll(".delete-btn").forEach((btn) => {
+          btn.onclick = () => deleteOffer(btn.dataset.id);
+        });
+      }
+
+      // Start editing an offer: fetch data and fill form
+      async function startEditOffer(id) {
+        try {
+          formMessage.textContent = "";
+          const res = await fetch(`${apiBase}/${id}`);
+          if (!res.ok) throw new Error("Failed to fetch offer details");
+          const offer = await res.json();
+
+          offerIdInput.value = offer.id;
+          productIdInput.value = offer.product_id || "";
+          titleInput.value = offer.title || "";
+          discountInput.value = offer.discount_percentage || 0;
+          startDateInput.value = offer.start_date || "";
+          endDateInput.value = offer.end_date || "";
+          isActiveSelect.value = offer.is_active ? "true" : "false";
+
+          submitBtn.textContent = "Update Offer";
+          cancelEditBtn.classList.remove("hidden");
+          formTitle.textContent = `Edit Offer #${offer.id}`;
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        } catch (err) {
+          formMessage.textContent = err.message;
+          formMessage.classList.add("text-red-600");
+        }
+      }
+
+      // Cancel editing mode
+      cancelEditBtn.onclick = () => {
+        resetForm();
+      };
+
+      // Reset form to initial state
+      function resetForm() {
+        offerForm.reset();
+        offerIdInput.value = "";
+        submitBtn.textContent = "Create Offer";
+        cancelEditBtn.classList.add("hidden");
+        formTitle.textContent = "Create New Offer";
+        formMessage.textContent = "";
+        formMessage.classList.remove("text-red-600");
+      }
+
+      // Delete offer
+      async function deleteOffer(id) {
+        if (!confirm("Are you sure you want to delete this offer?")) return;
+        try {
+          const res = await fetch(`${apiBase}/${id}`, { method: "DELETE" });
+          if (!res.ok) throw new Error("Failed to delete offer");
+          await fetchOffers();
+        } catch (err) {
+          alert(err.message);
+        }
+      }
+
+      // Submit form (create or update)
+      offerForm.onsubmit = async (e) => {
+        e.preventDefault();
+        formMessage.textContent = "";
+        formMessage.classList.remove("text-red-600");
+
+        // Build offer object from form
+        const offerData = {
+          product_id: Number(productIdInput.value),
+          title: titleInput.value.trim(),
+          discount_percentage: Number(discountInput.value),
+          start_date: startDateInput.value,
+          end_date: endDateInput.value,
+          is_active: isActiveSelect.value === "true",
+        };
+
+        const id = offerIdInput.value;
+
+        try {
+          let res;
+          if (id) {
+            // Update existing offer
+            res = await fetch(`${apiBase}/${id}`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(offerData),
+            });
+          } else {
+            // Create new offer
+            res = await fetch(apiBase + "/", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(offerData),
+            });
+          }
+
+          if (!res.ok) throw new Error("Failed to save offer");
+          resetForm();
+          await fetchOffers();
+          formMessage.textContent = id
+            ? "Offer updated successfully!"
+            : "Offer created successfully!";
+          formMessage.classList.remove("text-red-600");
+        } catch (err) {
+          formMessage.textContent = err.message;
+          formMessage.classList.add("text-red-600");
+        }
+      };
+
+      // Initial fetch
+      fetchOffers();
+    </script>
+  </body>
+</html>
