@@ -102,8 +102,8 @@ function OrdersPage() {
               : "bg-blue-100 text-primary"
           }`}
         >
-          {/* {order.status.charAt(0).toUpperCase() + order.status.slice(1)} */}
-          Pending
+          {order.status}
+          {/* Pending */}
         </span>
         <span className="text-gray-700 font-medium">
           Total:{" "}
