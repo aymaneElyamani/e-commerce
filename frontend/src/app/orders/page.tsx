@@ -96,10 +96,10 @@ function OrdersPage() {
         <span
           className={`px-3 py-1 rounded-full text-xs font-semibold ${
             order.status === "completed"
-              ? "bg-green-100 text-green-700"
+              ? "bg-green-100 text-primary"
               : order.status === "pending"
               ? "bg-yellow-100 text-yellow-700"
-              : "bg-blue-100 text-blue-700"
+              : "bg-blue-100 text-primary"
           }`}
         >
           {/* {order.status.charAt(0).toUpperCase() + order.status.slice(1)} */}
@@ -127,7 +127,7 @@ function OrdersPage() {
       </div>
       <button
         onClick={() => setSelectedOrder(order)}
-        className="absolute right-6 bottom-6 bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition-all font-semibold"
+        className="absolute right-6 bottom-6 bg-primary text-white px-4 py-2 rounded-lg shadow hover:bg-green-600 transition-all font-semibold"
       >
         View Details
       </button>
