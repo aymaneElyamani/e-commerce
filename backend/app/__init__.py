@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, session
+from flask import Flask, request, jsonify, session , redirect
 from flask_cors import CORS
 import psycopg2
 from psycopg2.extras import RealDictCursor
@@ -15,7 +15,7 @@ CORS(app, supports_credentials=True, resources={r"/*": {"origins": "http://local
 
 @app.route("/" , methods=["GET"])
 def home():
-    return "<h1>Hello app</h1>"
+    return redirect("/admin")
 
 
 
@@ -78,12 +78,20 @@ def init_db():
     )
     ''')
 
+    cur.execute('''
+        DO $$ BEGIN
+        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'order_status') THEN
+            CREATE TYPE order_status AS ENUM ('Pending', 'Completed', 'Shipped');
+        END IF;
+        END $$;
+    ''')
 
     cur.execute('''
         CREATE TABLE IF NOT EXISTS orders (
             id SERIAL PRIMARY KEY,
             utilisateur_id INTEGER NOT NULL,
             total_price NUMERIC(12, 2) NOT NULL,
+            status order_status DEFAULT 'Pending',
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (utilisateur_id) REFERENCES utilisateurs(id)
                 ON DELETE CASCADE
