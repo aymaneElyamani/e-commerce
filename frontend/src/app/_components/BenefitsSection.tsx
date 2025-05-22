@@ -39,7 +39,7 @@ export const BenefitsSection = (): JSX.Element => {
 
   return (
     <section className="w-full bg-white py-12">
-      <div className="max-w-[1240px] mx-auto px-6 flex flex-col lg:flex-row min-h-[400px] lg:min-h-screen gap-8">
+      <div className=" flex flex-col lg:flex-row min-h-[400px] lg:min-h-screen">
         {/* Left Image */}
         <div className="relative w-full lg:w-1/2 h-[400px] lg:h-auto bg-cover bg-center bg-[url('/image-11.png')] flex justify-center items-center">
           {/* Floating Image & Center Group */}
@@ -54,16 +54,15 @@ export const BenefitsSection = (): JSX.Element => {
               src="/line-1.svg"
               alt="Line"
             />
-            <div className="absolute w-2.5 h-2.5 top-[168px] left-[168px] bg-white rounded-full" />
+            <div className="absolute w-2.5 h-2.5 top-[168px] left-[168px] bg-white" />
           </div>
         </div>
 
         {/* Benefits Section */}
-        <div className="w-full lg:w-1/2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="w-full lg:w-1/2 grid grid-cols-1 sm:grid-cols-2 ">
           {benefitCards.map((card, index) => (
             <Card
               key={`benefit-${index}`}
-              className="rounded-lg shadow-sm border border-gray-200"
               style={{ background: card.background }}
             >
               <CardContent className="flex flex-col items-center p-6 text-center">
