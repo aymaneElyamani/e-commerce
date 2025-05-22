@@ -42,13 +42,7 @@ def init_db():
     ''')
 #     cur.execute("""DROP TYPE IF EXISTS product_category;
 #  """)
-    cur.execute("""
-    DO $$ BEGIN
-    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'product_category') THEN
-        CREATE TYPE product_category AS ENUM ('man', 'women', 'kids');
-    END IF;
-    END $$;
-    """)
+    
 
     cur.execute('''
     CREATE TABLE IF NOT EXISTS offers (
@@ -63,6 +57,13 @@ def init_db():
     )
 ''')
 
+    cur.execute("""
+    DO $$ BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'product_category') THEN
+        CREATE TYPE product_category AS ENUM ('man', 'women', 'kids');
+    END IF;
+    END $$;
+    """)
 
     cur.execute('''
     CREATE TABLE IF NOT EXISTS products (
