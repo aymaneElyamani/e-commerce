@@ -59,7 +59,7 @@ def login():
 
     conn = get_db()
     cur = conn.cursor()
-    cur.execute('SELECT * FROM utilisateurs WHERE email = %s', (email,))
+    cur.execute('SELECT password , email , id , name  FROM utilisateurs WHERE email = %s', (email,))
     user = cur.fetchone()
     cur.close()
     conn.close()
