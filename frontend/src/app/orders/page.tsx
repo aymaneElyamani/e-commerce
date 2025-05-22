@@ -95,9 +95,9 @@ function OrdersPage() {
       <div className="flex flex-wrap gap-4 items-center mb-2">
         <span
           className={`px-3 py-1 rounded-full text-xs font-semibold ${
-            order.status === "completed"
+            order.status === "Completed"
               ? "bg-green-100 text-primary"
-              : order.status === "pending"
+              : order.status === "Pending"
               ? "bg-yellow-100 text-yellow-700"
               : "bg-blue-100 text-primary"
           }`}
@@ -180,9 +180,9 @@ function OrdersPage() {
             className="p-2 border border-blue-200 rounded-md focus:ring-2 focus:ring-blue-400 bg-blue-50"
           >
             <option value="">All</option>
-            <option value="pending">Pending</option>
-            <option value="completed">Completed</option>
-            <option value="shipped">Shipped</option>
+            <option value="Pending">Pending</option>
+            <option value="Completed">Completed</option>
+            <option value="Shipped">Shipped</option>
           </select>
         </div>
         <div className="flex flex-col gap-1">
