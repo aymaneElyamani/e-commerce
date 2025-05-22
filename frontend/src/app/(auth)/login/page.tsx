@@ -55,7 +55,7 @@ const Login: React.FC = () => {
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Login failed. Please try again.");
     } finally {
-      setLoading(false);
+     setLoading(false);
     }
   };
 
@@ -74,7 +74,7 @@ const Login: React.FC = () => {
 
           <form className="space-y-4" onSubmit={handleLogin}>
             <div>
-              <Label htmlFor="email">Email</Label>
+              <Label className="pb-2" htmlFor="email">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -86,7 +86,7 @@ const Login: React.FC = () => {
             </div>
 
             <div>
-              <Label htmlFor="password">Password</Label>
+              <Label className="pb-2" htmlFor="password">Password</Label>
               <Input
                 id="password"
                 type="password"
