@@ -1,9 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, User, ShoppingCart, LogOut, UserPlus, LogIn } from "lucide-react";
+import {
+  Menu,
+  User,
+  ShoppingCart,
+  LogOut,
+  UserPlus,
+  LogIn,
+} from "lucide-react";
 import Link from "next/link";
 import useAuthStore from "@/store/useAuthStore";
 import AddToCart from "@/app/_components/cart_purchuse";
@@ -13,20 +20,19 @@ import { useRouter } from "next/navigation";
 
 const navItems = [
   { text: "Home", href: "/" },
-  // { text: "Shop", href: "/products" },
   { text: "Blogs", href: "/blogs" },
   { text: "Contact", href: "/contact" },
+  { text: "About", href: "/about" },
 ];
 
 export default function Navbar() {
   const { user, isAuthenticated, logout } = useAuthStore();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [profileMenuVisible, setProfileMenuVisible] = useState(false);
-  
-  const route = useRouter()
+  const route = useRouter();
   const hoverTimeout = useRef<NodeJS.Timeout | null>(null);
-  
-    const handleMouseEnter = () => {
+
+  const handleMouseEnter = () => {
     if (hoverTimeout.current) {
       clearTimeout(hoverTimeout.current);
     }
@@ -36,16 +42,24 @@ export default function Navbar() {
   const handleMouseLeave = () => {
     hoverTimeout.current = setTimeout(() => {
       setProfileMenuVisible(false);
-    }, 300); // Delay in ms (adjust as needed)
+    }, 300);
   };
+
   return (
     <header className="bg-white text-white fixed top-0 left-0 w-full z-50 shadow-md">
       <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
         {/* Logo */}
-        <Link href= "/" className="text-xl font-bold text-primary cursor-pointer">eComm</Link>
+        <div className="flex items-center justify-start flex-1 ml-16">
+          <Link
+            href="/"
+            className="text-4xl font-bold text-primary cursor-pointer "
+          >
+            Gojira
+          </Link>
+        </div>
 
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-8">
+        {/* Desktop Navigation Center */}
+        <nav className="hidden md:flex items-center justify-center gap-16 flex-1">
           {navItems.map((item) => (
             <Link
               key={item.text}
@@ -55,12 +69,14 @@ export default function Navbar() {
               {item.text}
             </Link>
           ))}
+        </nav>
 
+        {/* Right: Auth / Profile */}
+        <div className="hidden md:flex items-center justify-end gap-4 flex-1">
           {isAuthenticated && <AddToCart />}
-
           {isAuthenticated ? (
             <div
-              className="relative group ml-4"
+              className="relative group"
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
             >
@@ -71,7 +87,9 @@ export default function Navbar() {
               />
               <div
                 className={`absolute right-0 mt-2 w-48 bg-white text-black rounded shadow-lg transition-opacity duration-300 ease-in-out ${
-                  profileMenuVisible ? "opacity-100 visible" : "opacity-0 invisible"
+                  profileMenuVisible
+                    ? "opacity-100 visible"
+                    : "opacity-0 invisible"
                 }`}
               >
                 <div className="px-4 py-2 border-b text-sm font-medium">
@@ -79,28 +97,28 @@ export default function Navbar() {
                 </div>
                 <Link
                   href="/profile"
-                  className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm flex items-center gap-2"
+                  className="w-full px-4 py-2 hover:bg-gray-100 text-sm flex items-center gap-2"
                 >
                   <User size={16} />
                   Profile
                 </Link>
                 <Link
                   href="/orders"
-                  className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm flex items-center gap-2"
+                  className="w-full px-4 py-2 hover:bg-gray-100 text-sm flex items-center gap-2"
                 >
                   <ShoppingCart size={16} />
                   My Orders
                 </Link>
-                 <Link
+                <Link
                   href="/wishlist"
-                  className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm flex items-center gap-2"
+                  className="w-full px-4 py-2 hover:bg-gray-100 text-sm flex items-center gap-2"
                 >
                   <FaHeart size={16} />
                   My wishList
                 </Link>
                 <Link
                   href="/email"
-                  className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm flex items-center gap-2"
+                  className="w-full px-4 py-2 hover:bg-gray-100 text-sm flex items-center gap-2"
                 >
                   <User size={16} />
                   Email
@@ -108,11 +126,11 @@ export default function Navbar() {
                 <button
                   onClick={async () => {
                     logoutUser();
-                    window. localStorage.clear();
+                    window.localStorage.clear();
                     logout();
                     route.push("/");
                   }}
-                  className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm flex items-center gap-2"
+                  className="w-full px-4 py-2 hover:bg-gray-100 text-sm flex items-center gap-2"
                 >
                   <LogOut size={16} />
                   Logout
@@ -121,30 +139,23 @@ export default function Navbar() {
             </div>
           ) : (
             <>
-           
-  <Link href="/signup">
-    <Button
-      variant="outline"
-      className="border-white text-primary bg-transparent hover:bg-white/20 focus:outline-none transition duration-300 ease-in-out w-full rounded-lg py-3 flex items-center justify-center gap-2"
-    >
-      <UserPlus className="text-primary" />
-      <span>Sign Up</span>
-    </Button>
-  </Link>
-  <Link href="/login">
-    <Button
-      variant="outline"
-      className="border-white text-primary bg-transparent hover:bg-white/20 focus:outline-none transition duration-300 ease-in-out w-full rounded-lg py-3 flex items-center justify-center gap-2"
-    >
-      <LogIn className="text-primary" />
-      <span>Log In</span>
-    </Button>
-  </Link>
+              <Link href="/signup">
+                <Button variant="outline" className="text-primary">
+                  <UserPlus className="text-primary" />
+                  <span>Sign Up</span>
+                </Button>
+              </Link>
+              <Link href="/login">
+                <Button variant="outline" className="text-primary">
+                  <LogIn className="text-primary" />
+                  <span>Log In</span>
+                </Button>
+              </Link>
             </>
           )}
-        </nav>
+        </div>
 
-        {/* Mobile Nav Toggle */}
+        {/* Mobile Navigation */}
         <div className="md:hidden flex items-center gap-2">
           {isAuthenticated && <AddToCart />}
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
@@ -154,7 +165,7 @@ export default function Navbar() {
                 size="icon"
                 onClick={() => setIsSheetOpen(true)}
               >
-                <Menu className="text-white" />
+                <Menu className="text-black" />
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="bg-green-800 text-white">
@@ -176,7 +187,7 @@ export default function Navbar() {
                         Profile
                       </Button>
                     </Link>
-                    <Link href="/my-orders">
+                    <Link href="/orders">
                       <Button
                         variant="outline"
                         className="border-white text-black w-full"
@@ -197,6 +208,7 @@ export default function Navbar() {
                         logoutUser();
                         logout();
                         setIsSheetOpen(false);
+                        route.push("/");
                       }}
                       className="w-full text-left px-4 py-2 hover:bg-white/20 text-sm"
                     >
@@ -204,27 +216,26 @@ export default function Navbar() {
                     </button>
                   </div>
                 ) : (
-                 
-<div className="flex flex-col gap-4 mt-6">
-  <Link href="/signup">
-    <Button
-      variant="outline"
-      className="border-white text-white bg-transparent hover:bg-white/20 focus:outline-none transition duration-300 ease-in-out w-full rounded-lg py-3 flex items-center justify-center gap-2"
-    >
-      <UserPlus className="text-white" />
-      <span>Sign Up</span>
-    </Button>
-  </Link>
-  <Link href="/login">
-    <Button
-      variant="outline"
-      className="border-white text-white bg-transparent hover:bg-white/20 focus:outline-none transition duration-300 ease-in-out w-full rounded-lg py-3 flex items-center justify-center gap-2"
-    >
-      <LogIn className="text-white" />
-      <span>Log In</span>
-    </Button>
-  </Link>
-</div>
+                  <div className="flex flex-col gap-4 mt-6">
+                    <Link href="/signup">
+                      <Button
+                        variant="outline"
+                        className="border-white text-white bg-transparent hover:bg-white/20 w-full"
+                      >
+                        <UserPlus className="text-white" />
+                        <span>Sign Up</span>
+                      </Button>
+                    </Link>
+                    <Link href="/login">
+                      <Button
+                        variant="outline"
+                        className="border-white text-white bg-transparent hover:bg-white/20 w-full"
+                      >
+                        <LogIn className="text-white" />
+                        <span>Log In</span>
+                      </Button>
+                    </Link>
+                  </div>
                 )}
               </div>
             </SheetContent>
