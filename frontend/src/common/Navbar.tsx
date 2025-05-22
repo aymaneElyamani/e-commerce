@@ -54,7 +54,14 @@ export default function Navbar() {
             href="/"
             className="text-4xl font-bold text-primary cursor-pointer "
           >
-            Gojira
+            <div>
+            <img
+                src="/logo1.png"
+                alt="logo"
+                className="w-25 h-8 cursor-pointer"
+              />
+        </div>
+
           </Link>
         </div>
 
