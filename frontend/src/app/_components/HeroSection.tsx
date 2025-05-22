@@ -22,7 +22,7 @@ const slides = [
   },
   {
     image: '/hero1.png',
-    title: 'Bloom Every Season',
+    title: 'Blossom with the changing seasons',
     description:
       'Discover seasonal flowers that bloom with beauty and elegance, making every season special at your home.',
   },
