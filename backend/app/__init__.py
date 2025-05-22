@@ -26,7 +26,7 @@ def init_db():
     cur = conn.cursor()
 
     # cur.execute("DROP TABLE IF EXISTS line_orders CASCADE;")
-    # cur.execute("DROP TABLE IF EXISTS orders CASCADE;")
+    # cur.execute("DROP TABLE IF EXISTS utilisateurs CASCADE;")
 
     # cur.execute("DROP TABLE IF EXISTS blogs CASCADE;")
 
@@ -36,7 +36,8 @@ def init_db():
             id SERIAL PRIMARY KEY,
             name TEXT,
             email TEXT UNIQUE NOT NULL,
-            password TEXT NOT NULL
+            password TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
 #     cur.execute("""DROP TYPE IF EXISTS product_category;

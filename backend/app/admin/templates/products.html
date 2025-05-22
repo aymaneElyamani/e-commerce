@@ -1,429 +1,601 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html lang="en" class="scroll-smooth">
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Product Admin Panel</title>
+    <title>Product Management - eCommerce Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body
-    class="bg-gradient-to-br from-gray-100 to-indigo-50 min-h-screen p-6 flex flex-col items-center"
-  >
-    <div class="max-w-6xl w-full bg-white/90 p-8 rounded-2xl shadow-xl">
-      <div class="flex justify-between items-center mb-6">
-        <a
-          href="/admin"
-          class="bg-blue-500 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-lg shadow transition"
-        >
-          ← Back to dashboard
-        </a>
-      </div>
-      <h1
-        class="text-4xl font-extrabold mb-10 text-center text-indigo-700 tracking-tight drop-shadow"
-      >
-        Product Admin Panel
-      </h1>
-
-      <!-- Create Product Form -->
-      <section class="mb-12 max-w-lg mx-auto">
-        <h2
-          class="text-2xl font-semibold mb-5 text-indigo-600 border-b-2 border-indigo-200 pb-2"
-        >
-          Create New Product
-        </h2>
-        <form id="createProductForm" class="space-y-4">
-          <input
-            name="name"
-            placeholder="Name"
-            required
-            class="w-full px-4 py-3 border border-indigo-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-indigo-50"
-          />
-          <input
-            name="description"
-            placeholder="Description"
-            class="w-full px-4 py-3 border border-indigo-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-indigo-50"
-          />
-          <input
-            name="price"
-            type="number"
-            step="0.01"
-            placeholder="Price"
-            required
-            class="w-full px-4 py-3 border border-indigo-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-indigo-50"
-          />
-          <input
-            name="image_cover"
-            placeholder="Image URL"
-            class="w-full px-4 py-3 border border-indigo-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-indigo-50"
-          />
-
-          <textarea
-            name="image_details"
-            placeholder='Image Details (JSON array, e.g. ["url1","url2"])'
-            class="w-full px-4 py-3 border border-indigo-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-indigo-50"
-            rows="3"
-          ></textarea>
-
-          <input
-            name="quantity"
-            type="number"
-            placeholder="Quantity"
-            required
-            class="w-full px-4 py-3 border border-indigo-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-indigo-50"
-          />
-          <select
-            name="category"
-            required
-            class="w-full px-4 py-3 border border-indigo-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-indigo-50"
-          >
-            <option value="" disabled selected>Select a category</option>
-            <option value="man">Man</option>
-            <option value="women">Women</option>
-            <option value="kids">Kids</option>
-          </select>
-
-          <button
-            type="submit"
-            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg transition duration-200 shadow"
-          >
-            Create Product
-          </button>
-        </form>
-        <div id="createStatus" class="mt-3 text-center text-sm"></div>
-      </section>
-
-      <!-- Product List Table -->
-      <section>
-        <h2
-          class="text-2xl font-semibold mb-5 text-indigo-600 border-b-2 border-indigo-200 pb-2"
-        >
-          Product List
-        </h2>
-        <div
-          class="overflow-x-auto rounded-2xl shadow border border-indigo-100 bg-white/90"
-        >
-          <table class="min-w-full">
-            <thead class="bg-indigo-50">
-              <tr>
-                <th
-                  class="py-3 px-6 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider"
-                >
-                  ID
-                </th>
-                <th
-                  class="py-3 px-6 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider"
-                >
-                  Name
-                </th>
-                <th
-                  class="py-3 px-6 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider"
-                >
-                  Price
-                </th>
-                <th
-                  class="py-3 px-6 text-center text-xs font-bold text-indigo-700 uppercase tracking-wider"
-                >
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody id="productsTableBody" class="divide-y divide-indigo-50">
-              <!-- Products will be loaded here -->
-            </tbody>
-          </table>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Sidebar -->
+    <div class="flex">
+        <div class="hidden md:flex md:w-64 md:flex-col">
+            <div class="flex flex-col h-0 flex-1 border-r border-gray-200 bg-white">
+                <div class="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
+                    <div class="flex items-center flex-shrink-0 px-4">
+                        <span class="text-2xl font-bold text-primary-600">eCommerce Admin</span>
+                    </div>
+                    <nav class="mt-5 flex-1 px-2 space-y-1 bg-white">
+                        <a href="/admin" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <i class="fas fa-tachometer-alt mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                            Dashboard
+                        </a>
+                        <a href="/admin/products" class="bg-primary-50 text-primary-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <i class="fas fa-boxes mr-3 text-primary-500"></i>
+                            Products
+                        </a>
+                        <a href="/admin/users" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <i class="fas fa-users mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                            Users
+                        </a>
+                        <a href="/admin/orders" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <i class="fas fa-shopping-cart mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                            Orders
+                        </a>
+                        <a href="/admin/offers" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <i class="fas fa-tag mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                            Offers
+                        </a>
+                        <a href="/admin/logout" class="text-red-600 hover:bg-red-50 hover:text-red-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <i class="fas fa-sign-out-alt mr-3 text-red-400 group-hover:text-red-500"></i>
+                            Logout
+                        </a>
+                    </nav>
+                </div>
+                <div class="flex-shrink-0 flex border-t border-gray-200 p-4">
+                    <div class="flex items-center">
+                        <div>
+                            <div class="text-base font-medium text-gray-800">Admin User</div>
+                            <div class="text-sm font-medium text-gray-500">admin@example.com</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div id="loading" class="mt-6 text-center text-gray-600">
-          Loading products...
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <header class="bg-white shadow-sm">
+                <div class="px-4 py-4 sm:px-6 lg:px-8 flex justify-between items-center">
+                    <h1 class="text-2xl font-semibold text-gray-900">Product Management</h1>
+                    <div class="flex items-center space-x-4">
+                        <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                    </div>
+                </div>
+            </header>
+
+            <main class="flex-1 overflow-y-auto p-6 bg-gray-50">
+                <!-- Create Product Card -->
+                <div class="bg-white shadow rounded-lg mb-8">
+                    <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">
+                            Create New Product
+                        </h3>
+                    </div>
+                    <div class="px-4 py-5 sm:p-6">
+                        <form id="createProductForm" class="space-y-4">
+                            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                <div>
+                                    <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                                        required
+                                    >
+                                </div>
+                                <div>
+                                    <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
+                                    <input
+                                        type="number"
+                                        id="price"
+                                        name="price"
+                                        step="0.01"
+                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                                        required
+                                    >
+                                </div>
+                                <div>
+                                    <label for="quantity" class="block text-sm font-medium text-gray-700">Quantity</label>
+                                    <input
+                                        type="number"
+                                        id="quantity"
+                                        name="quantity"
+                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                                        required
+                                    >
+                                </div>
+                                <div>
+                                    <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
+                                    <select
+                                        id="category"
+                                        name="category"
+                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                                        required
+                                    >
+                                        <option value="" disabled selected>Select a category</option>
+                                        <option value="man">Man</option>
+                                        <option value="women">Women</option>
+                                        <option value="kids">Kids</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                                <textarea
+                                    id="description"
+                                    name="description"
+                                    rows="3"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                                ></textarea>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                <div>
+                                    <label for="image_cover" class="block text-sm font-medium text-gray-700">Cover Image URL</label>
+                                    <input
+                                        type="text"
+                                        id="image_cover"
+                                        name="image_cover"
+                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                                    >
+                                </div>
+                                <div>
+                                    <label for="image_details" class="block text-sm font-medium text-gray-700">Additional Images (JSON array)</label>
+                                    <textarea
+                                        id="image_details"
+                                        name="image_details"
+                                        rows="2"
+                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                                        placeholder='["url1", "url2"]'
+                                    ></textarea>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-end">
+                                <button
+                                    type="submit"
+                                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                                >
+                                    <i class="fas fa-save mr-2"></i> Create Product
+                                </button>
+                            </div>
+                            <div id="createStatus" class="text-sm text-center"></div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Products Table -->
+                <div class="bg-white shadow rounded-lg overflow-hidden">
+                    <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">
+                                All Products
+                            </h3>
+                            <div class="relative">
+                                <select id="categoryFilter" class="block appearance-none bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500">
+                                    <option value="">All Categories</option>
+                                    <option value="man">Man</option>
+                                    <option value="women">Women</option>
+                                    <option value="kids">Kids</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        ID
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Name
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Category
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Price
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Quantity
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Actions
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200" id="productsTable">
+                                <tr>
+                                    <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                                        <i class="fas fa-spinner fa-spin mr-2"></i> Loading products...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
         </div>
-        <div id="error" class="mt-6 text-center text-red-600 hidden"></div>
-      </section>
     </div>
 
     <!-- Edit Product Modal -->
-    <div
-      id="editModal"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50"
-    >
-      <div
-        class="bg-white rounded-2xl max-w-md w-full p-6 relative shadow-xl border border-indigo-100"
-      >
-        <button
-          id="closeEditModal"
-          class="absolute top-3 right-3 text-gray-600 hover:text-gray-900 font-bold text-2xl"
-        >
-          &times;
-        </button>
-        <h3 class="text-2xl font-semibold mb-4 text-indigo-700">
-          Edit Product
-        </h3>
-        <form id="editProductForm" class="space-y-4">
-          <input name="id" type="hidden" />
-          <input
-            name="name"
-            placeholder="Name"
-            required
-            class="w-full px-4 py-3 border border-indigo-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-indigo-50"
-          />
-          <input
-            name="description"
-            placeholder="Description"
-            class="w-full px-4 py-3 border border-indigo-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-indigo-50"
-          />
-          <input
-            name="price"
-            type="number"
-            step="0.01"
-            placeholder="Price"
-            required
-            class="w-full px-4 py-3 border border-indigo-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-indigo-50"
-          />
-          <input
-            name="image_cover"
-            placeholder="Image URL"
-            class="w-full px-4 py-3 border border-indigo-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-indigo-50"
-          />
-
-          <textarea
-            name="image_details"
-            placeholder='Image Details (JSON array, e.g. ["url1","url2"])'
-            class="w-full px-4 py-3 border border-indigo-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-indigo-50"
-            rows="3"
-          ></textarea>
-
-          <input
-            name="quantity"
-            type="number"
-            placeholder="Quantity"
-            required
-            class="w-full px-4 py-3 border border-indigo-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-indigo-50"
-          />
-          <select
-            name="category"
-            required
-            class="w-full px-4 py-3 border border-indigo-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-indigo-50"
-          >
-            <option value="" disabled>Select a category</option>
-            <option value="man">Man</option>
-            <option value="women">Women</option>
-            <option value="kids">Kids</option>
-          </select>
-
-          <button
-            type="submit"
-            class="w-full bg-yellow-400 hover:bg-yellow-500 text-white font-semibold py-3 rounded-lg transition duration-200 shadow"
-          >
-            Update Product
-          </button>
-        </form>
-        <div id="editStatus" class="mt-3 text-center text-sm"></div>
-      </div>
+    <div id="editProductModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-auto">
+            <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                    Edit Product #<span id="editProductIdDisplay"></span>
+                </h3>
+                <button type="button" onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-500">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="px-4 py-5 sm:p-6">
+                <form id="editProductForm" class="space-y-4">
+                    <input type="hidden" id="editProductId" name="id" />
+                    
+                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        <div>
+                            <label for="editName" class="block text-sm font-medium text-gray-700">Name</label>
+                            <input
+                                type="text"
+                                id="editName"
+                                name="name"
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                                required
+                            >
+                        </div>
+                        <div>
+                            <label for="editPrice" class="block text-sm font-medium text-gray-700">Price</label>
+                            <input
+                                type="number"
+                                id="editPrice"
+                                name="price"
+                                step="0.01"
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                                required
+                            >
+                        </div>
+                        <div>
+                            <label for="editQuantity" class="block text-sm font-medium text-gray-700">Quantity</label>
+                            <input
+                                type="number"
+                                id="editQuantity"
+                                name="quantity"
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                                required
+                            >
+                        </div>
+                        <div>
+                            <label for="editCategory" class="block text-sm font-medium text-gray-700">Category</label>
+                            <select
+                                id="editCategory"
+                                name="category"
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                                required
+                            >
+                                <option value="man">Man</option>
+                                <option value="women">Women</option>
+                                <option value="kids">Kids</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="editDescription" class="block text-sm font-medium text-gray-700">Description</label>
+                        <textarea
+                            id="editDescription"
+                            name="description"
+                            rows="3"
+                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                        ></textarea>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        <div>
+                            <label for="editImageCover" class="block text-sm font-medium text-gray-700">Cover Image URL</label>
+                            <input
+                                type="text"
+                                id="editImageCover"
+                                name="image_cover"
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                            >
+                        </div>
+                        <div>
+                            <label for="editImageDetails" class="block text-sm font-medium text-gray-700">Additional Images (JSON array)</label>
+                            <textarea
+                                id="editImageDetails"
+                                name="image_details"
+                                rows="2"
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                                placeholder='["url1", "url2"]'
+                            ></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+                        <button
+                            type="button"
+                            onclick="closeModal()"
+                            class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="submit"
+                            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                        >
+                            <i class="fas fa-save mr-2"></i> Update Product
+                        </button>
+                    </div>
+                    <div id="editStatus" class="text-sm text-center"></div>
+                </form>
+            </div>
+        </div>
     </div>
 
     <script>
-      const apiBase = "/api/products";
-
-      async function fetchProducts() {
-        const loadingEl = document.getElementById("loading");
-        const errorEl = document.getElementById("error");
-        const tbody = document.getElementById("productsTableBody");
-        loadingEl.style.display = "block";
-        errorEl.classList.add("hidden");
-        tbody.innerHTML = "";
-
-        try {
-          const res = await fetch(apiBase);
-          if (!res.ok) throw new Error("Failed to fetch products");
-          const products = await res.json();
-
-          if (products.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-gray-500">No products found.</td></tr>`;
-            loadingEl.style.display = "none";
-            return;
-          }
-
-          for (const product of products) {
-            const tr = document.createElement("tr");
-            tr.classList.add("hover:bg-gray-50");
-            tr.innerHTML = `
-            <td class="py-3 px-6">${product.id}</td>
-            <td class="py-3 px-6 font-medium text-gray-800">${product.name}</td>
-            <td class="py-3 px-6 text-indigo-700 font-semibold">$${Number(
-              product.price
-            ).toFixed(2)}</td>
-            <td class="py-3 px-6 text-center space-x-2">
-              <button onclick="openEditModal(${product.id})" 
-                class="px-3 py-1 bg-yellow-400 hover:bg-yellow-500 rounded-md text-white font-semibold transition">
-                Edit
-              </button>
-              <button onclick="deleteProduct(${product.id})"
-                class="px-3 py-1 bg-red-600 hover:bg-red-700 rounded-md text-white font-semibold transition">
-                Delete
-              </button>
-            </td>
-          `;
-            tbody.appendChild(tr);
-          }
-        } catch (err) {
-          errorEl.textContent = err.message;
-          errorEl.classList.remove("hidden");
-        } finally {
-          loadingEl.style.display = "none";
-        }
-      }
-
-      async function createProduct(event) {
-        event.preventDefault();
-        const form = event.target;
-        const status = document.getElementById("createStatus");
-
-        // Collect form data
-        const data = {
-          name: form.name.value.trim(),
-          description: form.description.value.trim(),
-          price: parseFloat(form.price.value),
-          image_cover: form.image_cover.value.trim(),
-          quantity: parseInt(form.quantity.value, 10),
-          category: form.category.value,
-        };
-
-        // Parse image_details JSON, fallback to empty array
-        try {
-          data.image_details = form.image_details.value
-            ? JSON.parse(form.image_details.value)
-            : [];
-          if (!Array.isArray(data.image_details)) throw new Error();
-        } catch {
-          status.textContent = "Image Details must be a valid JSON array.";
-          status.className = "text-red-600 mt-2";
-          return;
+        // Format price for display
+        function formatPrice(price) {
+            return price ? '$' + Number.parseFloat( price) .toFixed(2) : '-';
         }
 
-        status.textContent = "Creating product...";
-        status.className = "text-indigo-600 mt-2";
-
-        try {
-          const res = await fetch(apiBase, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data),
-          });
-          if (!res.ok) throw new Error("Failed to create product");
-          status.textContent = "Product created successfully!";
-          status.className = "text-green-600 mt-2";
-          form.reset();
-          fetchProducts();
-        } catch (err) {
-          status.textContent = err.message;
-          status.className = "text-red-600 mt-2";
-        }
-      }
-
-      // Edit modal logic
-      const editModal = document.getElementById("editModal");
-      const editForm = document.getElementById("editProductForm");
-      const editStatus = document.getElementById("editStatus");
-
-      function openEditModal(productId) {
-        // Fetch single product data (or get from cached)
-        fetch(`${apiBase}/${productId}`)
-          .then((res) => {
-            if (!res.ok) throw new Error("Failed to fetch product details");
-            return res.json();
-          })
-          .then((product) => {
-            // Fill form inputs
-            editForm.id.value = product.id;
-            editForm.name.value = product.name;
-            editForm.description.value = product.description || "";
-            editForm.price.value = product.price;
-            editForm.image_cover.value = product.image_cover || "";
-            editForm.quantity.value = product.quantity;
-            editForm.category.value = product.category || "";
-            editForm.image_details.value = product.image_details
-              ? JSON.stringify(product.image_details, null, 2)
-              : "[]";
-
-            editStatus.textContent = "";
-            editModal.classList.remove("hidden");
-          })
-          .catch((err) => {
-            alert(err.message);
-          });
-      }
-
-      document.getElementById("closeEditModal").onclick = () => {
-        editModal.classList.add("hidden");
-        editStatus.textContent = "";
-      };
-
-      editForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const data = {
-          id: editForm.id.value,
-          name: editForm.name.value.trim(),
-          description: editForm.description.value.trim(),
-          price: parseFloat(editForm.price.value),
-          image_cover: editForm.image_cover.value.trim(),
-          quantity: parseInt(editForm.quantity.value, 10),
-          category: editForm.category.value,
-        };
-
-        try {
-          data.image_details = editForm.image_details.value
-            ? JSON.parse(editForm.image_details.value)
-            : [];
-          if (!Array.isArray(data.image_details)) throw new Error();
-        } catch {
-          editStatus.textContent = "Image Details must be a valid JSON array.";
-          editStatus.className = "text-red-600 mt-2";
-          return;
+        // Format category for display
+        function formatCategory(category) {
+            if (!category) return '-';
+            return category.charAt(0).toUpperCase() + category.slice(1);
         }
 
-        editStatus.textContent = "Updating product...";
-        editStatus.className = "text-indigo-600 mt-2";
+        // Create product submit handler
+        $("#createProductForm").on("submit", function(e) {
+            e.preventDefault();
+            const form = $(this);
+            const status = $("#createStatus");
+            
+            // Collect form data
+            const data = {
+                name: form.find("#name").val().trim(),
+                description: form.find("#description").val().trim(),
+                price: parseFloat(form.find("#price").val()),
+                image_cover: form.find("#image_cover").val().trim(),
+                quantity: parseInt(form.find("#quantity").val(), 10),
+                category: form.find("#category").val(),
+            };
 
-        try {
-          const res = await fetch(`${apiBase}/${data.id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data),
-          });
-          if (!res.ok) throw new Error("Failed to update product");
-          editStatus.textContent = "Product updated successfully!";
-          editStatus.className = "text-green-600 mt-2";
+            // Parse image_details JSON, fallback to empty array
+            try {
+                data.image_details = form.find("#image_details").val()
+                    ? JSON.parse(form.find("#image_details").val())
+                    : [];
+                if (!Array.isArray(data.image_details)) throw new Error();
+            } catch {
+                status.text("Image Details must be a valid JSON array.");
+                status.removeClass().addClass("text-sm text-center text-red-600");
+                return;
+            }
 
-          fetchProducts();
+            status.text("Creating product...");
+            status.removeClass().addClass("text-sm text-center text-primary-600");
 
-          setTimeout(() => {
-            editModal.classList.add("hidden");
-            editStatus.textContent = "";
-          }, 1500);
-        } catch (err) {
-          editStatus.textContent = err.message;
-          editStatus.className = "text-red-600 mt-2";
+            $.ajax({
+                url: "/api/products",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function() {
+                    status.text("Product created successfully!");
+                    status.removeClass().addClass("text-sm text-center text-green-600");
+                    form[0].reset();
+                    fetchProducts();
+                },
+                error: function(xhr) {
+                    status.text(xhr.responseJSON?.error || "Failed to create product");
+                    status.removeClass().addClass("text-sm text-center text-red-600");
+                }
+            });
+        });
+
+        // Edit product submit handler
+        $("#editProductForm").on("submit", function(e) {
+            e.preventDefault();
+            const form = $(this);
+            const status = $("#editStatus");
+            const productId = form.find("#editProductId").val();
+            
+            // Collect form data
+            const data = {
+                id: productId,
+                name: form.find("#editName").val().trim(),
+                description: form.find("#editDescription").val().trim(),
+                price: parseFloat(form.find("#editPrice").val()),
+                image_cover: form.find("#editImageCover").val().trim(),
+                quantity: parseInt(form.find("#editQuantity").val(), 10),
+                category: form.find("#editCategory").val(),
+            };
+
+            // Parse image_details JSON, fallback to empty array
+            try {
+                data.image_details = form.find("#editImageDetails").val()
+                    ? JSON.parse(form.find("#editImageDetails").val())
+                    : [];
+                if (!Array.isArray(data.image_details)) throw new Error();
+            } catch {
+                status.text("Image Details must be a valid JSON array.");
+                status.removeClass().addClass("text-sm text-center text-red-600");
+                return;
+            }
+
+            status.text("Updating product...");
+            status.removeClass().addClass("text-sm text-center text-primary-600");
+
+            $.ajax({
+                url: `/api/products/${productId}`,
+                type: "PUT",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function() {
+                    status.text("Product updated successfully!");
+                    status.removeClass().addClass("text-sm text-center text-green-600");
+                    fetchProducts();
+                    setTimeout(closeModal, 1500);
+                },
+                error: function(xhr) {
+                    status.text(xhr.responseJSON?.error || "Failed to update product");
+                    status.removeClass().addClass("text-sm text-center text-red-600");
+                }
+            });
+        });
+
+        // Category filter change handler
+        $("#categoryFilter").change(function() {
+            fetchProducts();
+        });
+
+        // Fetch products from API and fill table
+        function fetchProducts() {
+            const categoryFilter = $("#categoryFilter").val();
+            let url = "/api/products";
+            // if (categoryFilter) {
+            //     url += `?category=${categoryFilter}`;
+            // }
+            
+            $.ajax({
+                url: url,
+                method: "GET",
+                success: function(products) {
+                    let html = "";
+                    
+                    console.log(products)
+                    if (products.length === 0) {
+                        html = `
+                            <tr>
+                                <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                                    No products found
+                                </td>
+                            </tr>
+                        `;
+                    } else {
+                        products.forEach((product) => {
+                            html += `
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        ${product.id}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">${product.name}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        ${formatCategory(product.category)}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        ${formatPrice(product.price)}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        ${product.quantity || 0}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <button onclick="openEditModal(${product.id})" class="text-primary-600 hover:text-primary-900 mr-3">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button onclick="deleteProduct(${product.id})" class="text-red-600 hover:text-red-900">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            `;
+                        });
+                    }
+                    
+                    $("#productsTable").html(html);
+                },
+                error: function() {
+                    $("#productsTable").html(`
+                        <tr>
+                            <td colspan="6" class="px-6 py-4 text-center text-red-500">
+                                Failed to load products
+                            </td>
+                        </tr>
+                    `);
+                }
+            });
         }
-      });
 
-      async function deleteProduct(productId) {
-        if (!confirm("Are you sure you want to delete this product?")) return;
-        try {
-          const res = await fetch(`${apiBase}/${productId}`, {
-            method: "DELETE",
-          });
-          if (!res.ok) throw new Error("Failed to delete product");
-          fetchProducts();
-        } catch (err) {
-          alert(err.message);
+        // Open edit modal and fill fields
+        function openEditModal(productId) {
+            $.ajax({
+                url: `/api/products/${productId}`,
+                method: "GET",
+                success: function(product) {
+                    $("#editProductId").val(product.id);
+                    $("#editProductIdDisplay").text(product.id);
+                    $("#editName").val(product.name);
+                    $("#editDescription").val(product.description || "");
+                    $("#editPrice").val(product.price);
+                    $("#editQuantity").val(product.quantity);
+                    $("#editCategory").val(product.category || "man");
+                    $("#editImageCover").val(product.image_cover || "");
+                    $("#editImageDetails").val(
+                        product.image_details ? JSON.stringify(product.image_details, null, 2) : "[]"
+                    );
+                    $("#editStatus").text("");
+                    $("#editProductModal").removeClass("hidden");
+                },
+                error: function() {
+                    alert("Failed to load product details");
+                }
+            });
         }
-      }
 
-      document
-        .getElementById("createProductForm")
-        .addEventListener("submit", createProduct);
+        // Close modal
+        function closeModal() {
+            $("#editProductModal").addClass("hidden");
+        }
 
-      // Load products on page load
-      fetchProducts();
+        // Delete product
+        function deleteProduct(productId) {
+            if (!confirm("Are you sure you want to delete this product?")) return;
+            
+            $.ajax({
+                url: `/api/products/${productId}`,
+                type: "DELETE",
+                success: function() {
+                    alert("Product deleted successfully");
+                    fetchProducts();
+                },
+                error: function() {
+                    alert("Failed to delete product");
+                }
+            });
+        }
+
+        // Initialize page
+        $(document).ready(function() {
+            fetchProducts();
+        });
     </script>
-  </body>
+</body>
 </html>

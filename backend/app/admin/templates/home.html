@@ -1,76 +1,480 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Gojira Admin</title>
+    <title>eCommerce Admin Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body
-    class="bg-gradient-to-br from-gray-100 to-blue-50 min-h-screen flex flex-col items-center"
-  >
-    <header
-      class="w-full bg-white/80 backdrop-blur-md shadow-sm py-6 flex flex-col items-center"
-    >
-      <span class="text-4xl font-extrabold text-blue-700 tracking-tight"
-        >eCommerce Admin</span
-      >
-      <span class="mt-2 text-gray-500 text-lg font-medium"
-        >Bienvenue sur votre espace d’administration</span
-      >
-    </header>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Sidebar -->
+    <div class="flex">
+        <div class="hidden md:flex md:w-64 md:flex-col">
+            <div class="flex flex-col h-0 flex-1 border-r border-gray-200 bg-white">
+                <div class="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
+                    <div class="flex items-center flex-shrink-0 px-4">
+                        <span class="text-2xl font-bold text-primary-600">eCommerce Admin</span>
+                    </div>
+                    <nav class="mt-5 flex-1 px-2 space-y-1 bg-white">
+                        <a href="#" class="bg-primary-50 text-primary-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <i class="fas fa-tachometer-alt mr-3 text-primary-500"></i>
+                            Dashboard
+                        </a>
+                        <a href="/admin/products" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <i class="fas fa-boxes mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                            Products
+                        </a>
+                        <a href="/admin/users" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <i class="fas fa-users mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                            Users
+                        </a>
+                        <a href="/admin/orders" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <i class="fas fa-shopping-cart mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                            Orders
+                        </a>
+                        <a href="/admin/offers" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <i class="fas fa-tag mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                            Offers
+                        </a>
+                           <a href="/admin/logout" class="text-red-600 hover:bg-red-50 hover:text-red-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <i class="fas fa-tag mr-3 text-red-400 group-hover:text-red-500"></i>
+                            logout
+                        </a>
+                    </nav>
+                </div>
+                <div class="flex-shrink-0 flex border-t border-gray-200 p-4">
+                    <div class="flex items-center">
+                        <div>
+                            <div class="text-base font-medium text-gray-800">Admin User</div>
+                            <div class="text-sm font-medium text-gray-500">admin@example.com</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <main class="max-w-3xl w-full px-6 py-12 flex flex-col items-center">
-      <div class="mb-10 rounded-2xl overflow-hidden shadow-lg w-full">
-        <img
-          src="https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=900&q=80"
-          alt="Boutique Clothes"
-          class="w-full h-56 object-cover"
-        />
-      </div>
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <header class="bg-white shadow-sm">
+                <div class="px-4 py-4 sm:px-6 lg:px-8 flex justify-between items-center">
+                    <h1 class="text-2xl font-semibold text-gray-900">Dashboard</h1>
+                    <div class="flex items-center space-x-4">
+                            <!-- <button class="p-2 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none">
+                                <i class="fas fa-bell"></i>
+                            </button> -->
+                        <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                    </div>
+                </div>
+            </header>
 
-      <nav class="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
-        <a
-          href="/admin/users"
-          class="group bg-white border border-blue-100 hover:border-blue-400 transition shadow-sm rounded-xl px-8 py-5 flex flex-col items-center hover:scale-105 duration-200"
-        >
-          <span
-            class="text-blue-600 group-hover:text-blue-800 text-xl font-semibold mb-1"
-            >Users</span
-          >
-          <span class="text-gray-400 text-sm">Manage accounts</span>
-        </a>
-        <a
-          href="/admin/products"
-          class="group bg-white border border-blue-100 hover:border-blue-400 transition shadow-sm rounded-xl px-8 py-5 flex flex-col items-center hover:scale-105 duration-200"
-        >
-          <span
-            class="text-blue-600 group-hover:text-blue-800 text-xl font-semibold mb-1"
-            >Products</span
-          >
-          <span class="text-gray-400 text-sm">Manage catalog</span>
-        </a>
-        <a
-          href="/admin/offers"
-          class="group bg-white border border-blue-100 hover:border-blue-400 transition shadow-sm rounded-xl px-8 py-5 flex flex-col items-center hover:scale-105 duration-200"
-        >
-          <span
-            class="text-blue-600 group-hover:text-blue-800 text-xl font-semibold mb-1"
-            >Offers</span
-          >
-          <span class="text-gray-400 text-sm">Promotions & discounts</span>
-        </a>
-        <a
-          href="/admin/orders"
-          class="group bg-white border border-blue-100 hover:border-blue-400 transition shadow-sm rounded-xl px-8 py-5 flex flex-col items-center hover:scale-105 duration-200"
-        >
-          <span
-            class="text-blue-600 group-hover:text-blue-800 text-xl font-semibold mb-1"
-            >Orders</span
-          >
-          <span class="text-gray-400 text-sm">Order tracking</span>
-        </a>
-      </nav>
-    </main>
-  </body>
+            <main class="flex-1 overflow-y-auto p-6 bg-gray-50">
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+                    <!-- Products Card -->
+                    <div class="bg-white overflow-hidden shadow rounded-lg">
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-blue-500 rounded-md p-3">
+                                    <i class="fas fa-box text-white"></i>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dt class="text-sm font-medium text-gray-500 truncate">
+                                        Total Products
+                                    </dt>
+                                    <dd class="flex items-baseline">
+                                        <div class="text-2xl font-semibold text-gray-900" id="totalProducts">
+                                            <i class="fas fa-spinner fa-spin"></i>
+                                        </div>
+                                    </dd>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Users Card -->
+                    <div class="bg-white overflow-hidden shadow rounded-lg">
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-green-500 rounded-md p-3">
+                                    <i class="fas fa-users text-white"></i>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dt class="text-sm font-medium text-gray-500 truncate">
+                                        Total Users
+                                    </dt>
+                                    <dd class="flex items-baseline">
+                                        <div class="text-2xl font-semibold text-gray-900" id="totalUsers">
+                                            <i class="fas fa-spinner fa-spin"></i>
+                                        </div>
+                                    </dd>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Orders Card -->
+                    <div class="bg-white overflow-hidden shadow rounded-lg">
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-yellow-500 rounded-md p-3">
+                                    <i class="fas fa-shopping-cart text-white"></i>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dt class="text-sm font-medium text-gray-500 truncate">
+                                        Total Orders
+                                    </dt>
+                                    <dd class="flex items-baseline">
+                                        <div class="text-2xl font-semibold text-gray-900" id="totalOrders">
+                                            <i class="fas fa-spinner fa-spin"></i>
+                                        </div>
+                                    </dd>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Offers Card -->
+                    <div class="bg-white overflow-hidden shadow rounded-lg">
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-purple-500 rounded-md p-3">
+                                    <i class="fas fa-tag text-white"></i>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dt class="text-sm font-medium text-gray-500 truncate">
+                                        Active Offers
+                                    </dt>
+                                    <dd class="flex items-baseline">
+                                        <div class="text-2xl font-semibold text-gray-900" id="activeOffers">
+                                            <i class="fas fa-spinner fa-spin"></i>
+                                        </div>
+                                    </dd>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <!-- Users Chart -->
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h2 class="text-lg font-medium text-gray-900 mb-4">User Registrations</h2>
+                        <div class="h-64">
+                            <canvas id="usersChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Orders Chart -->
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h2 class="text-lg font-medium text-gray-900 mb-4">Order Statistics</h2>
+                        <div class="h-64">
+                            <canvas id="ordersChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Orders Table -->
+                <div class="bg-white shadow rounded-lg overflow-hidden">
+                    <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">
+                            Recent Orders
+                        </h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Order ID
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        User
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Total
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Status
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Date
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200" id="recentOrders">
+                                <tr>
+                                    <td colspan="5" class="px-6 py-4 text-center text-gray-500">
+                                        <i class="fas fa-spinner fa-spin mr-2"></i> Loading orders...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Initialize empty charts first
+            const usersCtx = document.getElementById('usersChart').getContext('2d');
+            const ordersCtx = document.getElementById('ordersChart').getContext('2d');
+            
+            const usersChart = new Chart(usersCtx, {
+                type: 'line',
+                data: { labels: [], datasets: [] },
+                options: chartOptions('User Registrations')
+            });
+
+            const ordersChart = new Chart(ordersCtx, {
+                type: 'bar',
+                data: { labels: [], datasets: [] },
+                options: chartOptions('Order Status')
+            });
+
+            function chartOptions(title) {
+                return {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top' },
+                        title: { 
+                            display: true,
+                            text: title,
+                            font: { size: 16 }
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                };
+            }
+
+            // Fetch all data
+         const x =  Promise.all([
+                fetchData('/api/products'),
+                fetchData('/api/auth/users'),
+                fetchData('/api/orders'),
+                fetchData('/api/offers?is_active=true')
+            ]).then(([products, users, orders, offers]) => {
+                // Update cards
+                $('#totalProducts').text(products.length);
+                $('#totalUsers').text(users.length);
+                $('#totalOrders').text(orders.length);
+                $('#activeOffers').text(offers.length);
+
+                // Process orders for recent orders table and charts
+                updateRecentOrders(orders);
+                updateCharts(users, orders);
+            }).catch(error => {
+                console.error('Error loading dashboard data:', error);
+                showErrorMessages();
+            });
+        
+            console.log('Fetching data...');
+            console.log(x);
+
+            function fetchData(endpoint) {
+              return $.ajax({
+                url: endpoint,
+                method: 'GET',
+                dataType: 'json'
+              });
+            }
+
+            function updateRecentOrders(orders) {
+                if (orders.length === 0) {
+                    $('#recentOrders').html(`
+                        <tr>
+                            <td colspan="5" class="px-6 py-4 text-center text-gray-500">
+                                No orders found
+                            </td>
+                        </tr>
+                    `);
+                    return;
+                }
+
+                // Sort by date (newest first)
+                orders.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                
+                let html = '';
+                orders.slice(0, 5).forEach(order => {
+                    html += `
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                #${order.id}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">User #${order.utilisateur_id}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">$${order.total_price.toFixed(2)}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                    ${order.status === 'Completed' ? 'bg-green-100 text-green-800' : 
+                                      order.status === 'Shipped' ? 'bg-blue-100 text-blue-800' : 
+                                      'bg-yellow-100 text-yellow-800'}">
+                                    ${order.status}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                ${new Date(order.created_at).toLocaleDateString()}
+                            </td>
+                        </tr>
+                    `;
+                });
+                $('#recentOrders').html(html);
+            }
+
+            function updateCharts(users, orders) {
+                // Process users data for chart (group by month)
+                const userRegistrations = processDataByMonth(users, 'created_at');
+                usersChart.data = {
+                    labels: userRegistrations.labels,
+                    datasets: [{
+                        label: 'New Users',
+                        data: userRegistrations.counts,
+                        backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                        borderColor: 'rgba(16, 185, 129, 1)',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: true
+                    }]
+                };
+                usersChart.update();
+
+                // Process orders data for chart (group by status and month)
+                const orderStats = processOrderStats(orders);
+                ordersChart.data = {
+                    labels: orderStats.labels,
+                    datasets: [
+                        {
+                            label: 'Completed',
+                            data: orderStats.completed,
+                            backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                            borderColor: 'rgba(59, 130, 246, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Shipped',
+                            data: orderStats.shipped,
+                            backgroundColor: 'rgba(139, 92, 246, 0.7)',
+                            borderColor: 'rgba(139, 92, 246, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Pending',
+                            data: orderStats.pending,
+                            backgroundColor: 'rgba(245, 158, 11, 0.7)',
+                            borderColor: 'rgba(245, 158, 11, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                };
+                ordersChart.update();
+            }
+
+            function processDataByMonth(items, dateField) {
+                const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                const countsByMonth = {};
+                
+                items.forEach(item => {
+                    const date = new Date(item[dateField]);
+                    const monthYear = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+                    
+                    if (!countsByMonth[monthYear]) {
+                        countsByMonth[monthYear] = 0;
+                    }
+                    countsByMonth[monthYear]++;
+                });
+                
+                // Sort by date
+                const sortedMonths = Object.keys(countsByMonth).sort((a, b) => {
+                    return new Date(a) - new Date(b);
+                });
+                
+                return {
+                    labels: sortedMonths,
+                    counts: sortedMonths.map(month => countsByMonth[month])
+                };
+            }
+
+            function processOrderStats(orders) {
+                const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                const stats = {
+                    labels: [],
+                    pending: [],
+                    completed: [],
+                    shipped: []
+                };
+                
+                // Get unique months from all orders
+                const allMonths = new Set();
+                orders.forEach(order => {
+                    const date = new Date(order.created_at);
+                    allMonths.add(`${monthNames[date.getMonth()]} ${date.getFullYear()}`);
+                });
+                
+                stats.labels = Array.from(allMonths).sort((a, b) => {
+                    return new Date(a) - new Date(b);
+                });
+                
+                // Initialize counts for each month
+                stats.labels.forEach(month => {
+                    stats.pending.push(0);
+                    stats.completed.push(0);
+                    stats.shipped.push(0);
+                });
+                
+                // Count orders by status and month
+                orders.forEach(order => {
+                    const date = new Date(order.created_at);
+                    const monthYear = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+                    const index = stats.labels.indexOf(monthYear);
+                    
+                    if (index !== -1) {
+                        if (order.status === 'Pending') stats.pending[index]++;
+                        if (order.status === 'Completed') stats.completed[index]++;
+                        if (order.status === 'Shipped') stats.shipped[index]++;
+                    }
+                });
+                
+                return stats;
+            }
+
+            function showErrorMessages() {
+                $('.stat-card-value').html('<span class="text-red-500">Error loading data</span>');
+                $('#recentOrders').html(`
+                    <tr>
+                        <td colspan="5" class="px-6 py-4 text-center text-red-500">
+                            Error loading orders
+                        </td>
+                    </tr>
+                `);
+            }
+        });
+    </script>
+</body>
 </html>

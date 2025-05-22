@@ -1,266 +1,448 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html lang="en" class="scroll-smooth">
+<head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>User Management</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <style>
-      body {
-        background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
-        min-height: 100vh;
-      }
-      .card {
-        border-radius: 1.5rem;
-        box-shadow: 0 4px 24px 0 rgba(60, 72, 88, 0.08);
-        border: none;
-      }
-      .table thead th {
-        background: #eef2ff;
-        color: #3730a3;
-        font-weight: 700;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-      }
-      .btn-primary,
-      .btn-warning,
-      .btn-danger {
-        border-radius: 0.75rem;
-        font-weight: 500;
-        transition: background 0.2s, color 0.2s;
-      }
-      .btn-primary:hover {
-        background: #3730a3;
-        color: #fff;
-      }
-      .btn-warning:hover {
-        background: #f59e42;
-        color: #fff;
-      }
-      .btn-danger:hover {
-        background: #dc2626;
-        color: #fff;
-      }
-      .modal-content {
-        border-radius: 1.25rem;
-      }
-      .form-control:focus {
-        border-color: #6366f1;
-        box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.15);
-      }
-      .modern-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 2rem;
-      }
-      .modern-header h2 {
-        margin: 0;
-        font-size: 2.2rem;
-        font-weight: 800;
-        color: #3730a3;
-        letter-spacing: -1px;
-      }
-      @media (max-width: 600px) {
-        .modern-header {
-          flex-direction: column;
-          gap: 1rem;
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>User Management - eCommerce Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                        }
+                    }
+                }
+            }
         }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container py-5">
-       <div class="modern-header mb-4">
-         <a
-            href="/admin"
-            class="btn btn-primary px-4 py-2 shadow-sm"
-            style="background: #2563eb; border: none;"
-          >
-            ← Back to dashboard
-          </a> 
-          
-          
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Sidebar -->
+    <div class="flex">
+        <div class="hidden md:flex md:w-64 md:flex-col">
+            <div class="flex flex-col h-0 flex-1 border-r border-gray-200 bg-white">
+                <div class="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
+                    <div class="flex items-center flex-shrink-0 px-4">
+                        <span class="text-2xl font-bold text-primary-600">eCommerce Admin</span>
+                    </div>
+                    <nav class="mt-5 flex-1 px-2 space-y-1 bg-white">
+                        <a href="/admin" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <i class="fas fa-tachometer-alt mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                            Dashboard
+                        </a>
+                        <a href="/admin/products" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <i class="fas fa-boxes mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                            Products
+                        </a>
+                        <a href="/admin/users" class="bg-primary-50 text-primary-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <i class="fas fa-users mr-3 text-primary-500"></i>
+                            Users
+                        </a>
+                        <a href="/admin/orders" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <i class="fas fa-shopping-cart mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                            Orders
+                        </a>
+                        <a href="/admin/offers" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <i class="fas fa-tag mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                            Offers
+                        </a>
+                        <a href="/admin/logout" class="text-red-600 hover:bg-red-50 hover:text-red-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <i class="fas fa-sign-out-alt mr-3 text-red-400 group-hover:text-red-500"></i>
+                            Logout
+                        </a>
+                    </nav>
+                </div>
+                <div class="flex-shrink-0 flex border-t border-gray-200 p-4">
+                    <div class="flex items-center">
+                        <div>
+                            <div class="text-base font-medium text-gray-800">Admin User</div>
+                            <div class="text-sm font-medium text-gray-500">admin@example.com</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      <div class="mx-auto card p-5" style="max-width: 800px">
-        
-        <h2 class="text-4xl font-extrabold mb-14 text-center text-indigo-700 tracking-tight drop-shadow">User Management</h2>
 
-        <!-- Create Form -->
-        <form id="createForm" class="row g-3 mb-4 align-items-end">
-          <div class="col-md-5">
-            <input
-              type="email"
-              class="form-control"
-              id="createEmail"
-              placeholder="Email"
-              required
-            />
-          </div>
-          <div class="col-md-5">
-            <input
-              type="password"
-              class="form-control"
-              id="createPassword"
-              placeholder="Password"
-              required
-            />
-          </div>
-          <div class="col-md-2 d-grid">
-            <button type="submit" class="btn btn-primary">Add User</button>
-          </div>
-        </form>
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <header class="bg-white shadow-sm">
+                <div class="px-4 py-4 sm:px-6 lg:px-8 flex justify-between items-center">
+                    <h1 class="text-2xl font-semibold text-gray-900">User Management</h1>
+                    <div class="flex items-center space-x-4">
+                        <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                    </div>
+                </div>
+            </header>
 
-        <!-- User Table -->
-        <div class="table-responsive rounded-4 shadow-sm">
-          <table class="table table-bordered table-striped bg-white mb-0 align-middle">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Email</th>
-                <th style="width: 150px">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="userTable"></tbody>
-          </table>
+            <main class="flex-1 overflow-y-auto p-6 bg-gray-50">
+                <!-- Create User Card -->
+                <div class="bg-white shadow rounded-lg mb-8">
+                    <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">
+                            Create New User
+                        </h3>
+                    </div>
+                    <div class="px-4 py-5 sm:p-6">
+                        <form id="createUserForm" class="space-y-4">
+                            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                <div>
+                                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                                        required
+                                    >
+                                </div>
+                                <div>
+                                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                                    <input
+                                        type="password"
+                                        id="password"
+                                        name="password"
+                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                                        required
+                                    >
+                                </div>
+                            </div>
+                            <div class="flex justify-end">
+                                <button
+                                    type="submit"
+                                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                                >
+                                    <i class="fas fa-user-plus mr-2"></i> Create User
+                                </button>
+                            </div>
+                            <div id="createStatus" class="text-sm text-center"></div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Users Table -->
+                <div class="bg-white shadow rounded-lg overflow-hidden">
+                    <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">
+                                All Users
+                            </h3>
+                            <div class="relative">
+                                <input
+                                    type="text"
+                                    id="searchUsers"
+                                    placeholder="Search users..."
+                                    class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                                >
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                    <i class="fas fa-search text-gray-400"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        ID
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Email
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Role
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Created At
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Actions
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200" id="usersTable">
+                                <tr>
+                                    <td colspan="5" class="px-6 py-4 text-center text-gray-500">
+                                        <i class="fas fa-spinner fa-spin mr-2"></i> Loading users...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
         </div>
-      </div>
     </div>
 
     <!-- Edit User Modal -->
-    <div class="modal fade" id="editUserModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog">
-        <form id="editForm" class="modal-content">
-          <div class="modal-header border-0 pb-0">
-            <h5 class="modal-title text-indigo-700 fw-bold">Edit User</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <input type="hidden" id="editUserId" />
-            <div class="mb-3">
-              <label for="editEmail" class="form-label">Email</label>
-              <input
-                type="email"
-                class="form-control"
-                id="editEmail"
-                required
-              />
+    <div id="editUserModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md max-h-[90vh] overflow-auto">
+            <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                    Edit User #<span id="editUserIdDisplay"></span>
+                </h3>
+                <button type="button" onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-500">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
-            <div class="mb-3">
-              <label for="editPassword" class="form-label"
-                >New Password (optional)</label
-              >
-              <input type="password" class="form-control" id="editPassword" />
+            <div class="px-4 py-5 sm:p-6">
+                <form id="editUserForm" class="space-y-4">
+                    <input type="hidden" id="editUserId" name="id" />
+                    
+                    <div>
+                        <label for="editEmail" class="block text-sm font-medium text-gray-700">Email</label>
+                        <input
+                            type="email"
+                            id="editEmail"
+                            name="email"
+                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                            required
+                        >
+                    </div>
+                    
+                    <div>
+                        <label for="editPassword" class="block text-sm font-medium text-gray-700">New Password (optional)</label>
+                        <input
+                            type="password"
+                            id="editPassword"
+                            name="password"
+                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                        >
+                    </div>
+                    
+                    <div>
+                        <label for="editRole" class="block text-sm font-medium text-gray-700">Role</label>
+                        <select
+                            id="editRole"
+                            name="role"
+                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                        >
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+                        <button
+                            type="button"
+                            onclick="closeModal()"
+                            class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="submit"
+                            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                        >
+                            <i class="fas fa-save mr-2"></i> Update User
+                        </button>
+                    </div>
+                    <div id="editStatus" class="text-sm text-center"></div>
+                </form>
             </div>
-          </div>
-          <div class="modal-footer border-0 pt-0">
-            <button type="submit" class="btn btn-primary">Update</button>
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
-      </div>
+        </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      const apiUrl = "/api/auth/users";
+        // Format date for display
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            const date = new Date(dateString);
+            return isNaN(date) ? '-' : date.toLocaleDateString();
+        }
 
-      async function fetchUsers() {
-        const res = await fetch(apiUrl);
-        const users = await res.json();
-        const tbody = document.getElementById("userTable");
-        tbody.innerHTML = users
-          .map(
-            (user) => `
-      <tr>
-        <td>${user.id}</td>
-        <td>${user.email}</td>
-        <td>
-          <button class="btn btn-sm btn-warning" onclick="openEditModal(${user.id}, '${user.email}')">Edit</button>
-          <button class="btn btn-sm btn-danger" onclick="deleteUser(${user.id})">Delete</button>
-        </td>
-      </tr>
-    `
-          )
-          .join("");
-      }
+        // Create user submit handler
+        $("#createUserForm").on("submit", function(e) {
+            e.preventDefault();
+            const form = $(this);
+            const status = $("#createStatus");
+            
+            const data = {
+                email: form.find("#email").val().trim(),
+                password: form.find("#password").val()
+            };
 
-      document
-        .getElementById("createForm")
-        .addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const email = document.getElementById("createEmail").value;
-          const password = document.getElementById("createPassword").value;
+            status.text("Creating user...");
+            status.removeClass().addClass("text-sm text-center text-primary-600");
 
-          const res = await fetch("/api/auth/register", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password }),
-          });
-
-          const result = await res.json();
-          alert(result.message || result.error);
-          e.target.reset();
-          fetchUsers();
+            $.ajax({
+                url: "/api/auth/register",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function(response) {
+                    status.text("User created successfully!");
+                    status.removeClass().addClass("text-sm text-center text-green-600");
+                    form[0].reset();
+                    fetchUsers();
+                },
+                error: function(xhr) {
+                    status.text(xhr.responseJSON?.error || "Failed to create user");
+                    status.removeClass().addClass("text-sm text-center text-red-600");
+                }
+            });
         });
 
-      function openEditModal(id, email) {
-        document.getElementById("editUserId").value = id;
-        document.getElementById("editEmail").value = email;
-        document.getElementById("editPassword").value = "";
-        const modal = new bootstrap.Modal(
-          document.getElementById("editUserModal")
-        );
-        modal.show();
-      }
+        // Edit user submit handler
+        $("#editUserForm").on("submit", function(e) {
+            e.preventDefault();
+            const form = $(this);
+            const status = $("#editStatus");
+            const userId = form.find("#editUserId").val();
+            
+            const data = {
+                email: form.find("#editEmail").val().trim(),
+                role: form.find("#editRole").val()
+            };
 
-      document
-        .getElementById("editForm")
-        .addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const id = document.getElementById("editUserId").value;
-          const email = document.getElementById("editEmail").value;
-          const password = document.getElementById("editPassword").value;
+            // Only include password if provided
+            const password = form.find("#editPassword").val();
+            if (password) {
+                data.password = password;
+            }
 
-          const payload = { email };
-          if (password) payload.password = password;
+            status.text("Updating user...");
+            status.removeClass().addClass("text-sm text-center text-primary-600");
 
-          const res = await fetch(`${apiUrl}/${id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-          });
-
-          const result = await res.json();
-          alert(result.message || result.error);
-          bootstrap.Modal.getInstance(
-            document.getElementById("editUserModal")
-          ).hide();
-          fetchUsers();
+            $.ajax({
+                url: `/api/auth/users/${userId}`,
+                type: "PUT",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function(response) {
+                    status.text("User updated successfully!");
+                    status.removeClass().addClass("text-sm text-center text-green-600");
+                    fetchUsers();
+                    setTimeout(closeModal, 1500);
+                },
+                error: function(xhr) {
+                    status.text(xhr.responseJSON?.error || "Failed to update user");
+                    status.removeClass().addClass("text-sm text-center text-red-600");
+                }
+            });
         });
 
-      async function deleteUser(id) {
-        if (!confirm("Are you sure?")) return;
-        const res = await fetch(`${apiUrl}/${id}`, { method: "DELETE" });
-        const result = await res.json();
-        alert(result.message || result.error);
-        fetchUsers();
-      }
+        // Search users handler
+        $("#searchUsers").on("input", function() {
+            const searchTerm = $(this).val().toLowerCase();
+            $("#usersTable tr").each(function() {
+                const email = $(this).find("td:nth-child(2)").text().toLowerCase();
+                const id = $(this).find("td:first-child").text().toLowerCase();
+                if (email.includes(searchTerm) || id.includes(searchTerm)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
 
-      fetchUsers();
+        // Fetch users from API and fill table
+        function fetchUsers() {
+            $.ajax({
+                url: "/api/auth/users",
+                method: "GET",
+                success: function(users) {
+                    let html = "";
+                    
+                    if (users.length === 0) {
+                        html = `
+                            <tr>
+                                <td colspan="5" class="px-6 py-4 text-center text-gray-500">
+                                    No users found
+                                </td>
+                            </tr>
+                        `;
+                    } else {
+                        users.forEach((user) => {
+                            html += `
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        ${user.id}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">${user.email}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                            ${user.role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'}">
+                                            ${user.role || 'user'}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        ${formatDate(user.created_at)}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <button onclick="openEditModal(${user.id}, '${user.email}', '${user.role}')" class="text-primary-600 hover:text-primary-900 mr-3">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button onclick="deleteUser(${user.id})" class="text-red-600 hover:text-red-900">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            `;
+                        });
+                    }
+                    
+                    $("#usersTable").html(html);
+                },
+                error: function() {
+                    $("#usersTable").html(`
+                        <tr>
+                            <td colspan="5" class="px-6 py-4 text-center text-red-500">
+                                Failed to load users
+                            </td>
+                        </tr>
+                    `);
+                }
+            });
+        }
+
+        // Open edit modal and fill fields
+        function openEditModal(userId, email, role) {
+            $("#editUserId").val(userId);
+            $("#editUserIdDisplay").text(userId);
+            $("#editEmail").val(email);
+            $("#editRole").val(role || 'user');
+            $("#editPassword").val("");
+            $("#editStatus").text("");
+            $("#editUserModal").removeClass("hidden");
+        }
+
+        // Close modal
+        function closeModal() {
+            $("#editUserModal").addClass("hidden");
+        }
+
+        // Delete user
+        function deleteUser(userId) {
+            if (!confirm("Are you sure you want to delete this user?")) return;
+            
+            $.ajax({
+                url: `/api/auth/users/${userId}`,
+                type: "DELETE",
+                success: function() {
+                    alert("User deleted successfully");
+                    fetchUsers();
+                },
+                error: function() {
+                    alert("Failed to delete user");
+                }
+            });
+        }
+
+        // Initialize page
+        $(document).ready(function() {
+            fetchUsers();
+        });
     </script>
-  </body>
+</body>
 </html>
