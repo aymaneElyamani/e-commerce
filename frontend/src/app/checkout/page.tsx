@@ -41,7 +41,9 @@ const CheckoutPage = () => {
           product_data: {
             name: e.name,
           },
-          unit_amount: +e.price * e.quantity * 100,
+          // unit_amount: +e.price * e.quantity * 100,
+          unit_amount: Math.round(e.price * 100),
+
         },
         quantity: e.quantity,
       };

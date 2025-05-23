@@ -66,7 +66,7 @@ const Success = () => {
           if (data.success) {
             await handleOrder();
           } else {
-            toast.error("Payment was not successful.");
+            // toast.error("Payment was not successful.");
           }
         } catch {
           toast.error("An error occurred while verifying payment status.");

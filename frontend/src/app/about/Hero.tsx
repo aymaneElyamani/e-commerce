@@ -48,7 +48,7 @@ export default function Hero() {
       <div className="grid md:grid-cols-2 gap-10 items-center">
         <div>
           <p className="text-gray-700 mb-4 transition-opacity duration-500 hover:opacity-80">
-            Welcome to our space — a fresh, student-powered online shop launched
+            Welcome to our space  a fresh, student-powered online shop launched
             by Aymane El Yamani, Mohammed Assou and Mohamed Anour. What started
             as a university project quickly grew into a passion-driven venture.
             We dive into thrift shops, dig up hidden gems, and bring them to you
@@ -60,9 +60,9 @@ export default function Hero() {
           </p>
           <p className="text-gray-700 mb-4 transition-opacity duration-500 hover:opacity-80">
             We’ve poured our energy, creativity, and late nights into making
-            this site not just a school project — but something real. Something
+            this site not just a school project  but something real. Something
             that could grow. So whether you’re here to support, explore, or
-            score your next favorite fit — welcome to the beginning of something
+            score your next favorite fit  welcome to the beginning of something
             special.
           </p>
           <p className="text-gray-700 transition-opacity duration-500 hover:opacity-80">
