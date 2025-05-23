@@ -21,7 +21,7 @@ import { useRouter } from "next/navigation";
 const navItems = [
   { text: "Home", href: "/" },
   { text: "Blogs", href: "/blogs" },
-  { text: "Contact", href: "/contact" },
+  // { text: "Contact", href: "/contact" },
   { text: "About", href: "/about" },
 ];
 
