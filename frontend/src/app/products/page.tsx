@@ -1,11 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 import { useSearchParams, usePathname } from "next/navigation";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import clsx from "clsx";
 import CardProduct from "@/components/cardProduct";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton"; // Import Skeleton from Shadcn
@@ -154,10 +152,18 @@ export default function Page() {
           </motion.div>
 
           <Section title="Products" products={filteredProducts} />
-        
-        <br /><br />
+        {
+          category != "kids" && 
+          <div>
+            <br /><br />
       <KidsCollection />
+
+
       <br />
+          </div>
+
+        }
+        
         
         </>
       )}

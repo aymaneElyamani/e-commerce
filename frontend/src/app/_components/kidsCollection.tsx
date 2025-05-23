@@ -3,9 +3,9 @@ import React from "react";
 
 const KidsCollection = () => {
   return (
-    <section className="relative py-12 bg-[url('/bg_bebe.png')] bg-cover bg-center">
+    <section className="relative py-12 bg-[url(/bg_bebe.png)] bg-cover bg-center">
       {/* Overlay */}
-      <div className="absolute inset-0 bg-gray-900/40  z-0"></div>
+      <div className="absolute inset-0 bg-gray-900/40 z-0"></div>
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 flex flex-col md:flex-row items-center gap-8">
@@ -26,7 +26,7 @@ const KidsCollection = () => {
         {/* Text */}
         <div className="md:w-1/2 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            Kid's Collection
+            Kids Collection
           </h2>
 
           <div className="prose prose-sm md:prose-lg text-white mb-8 max-w-none">
@@ -40,16 +40,16 @@ const KidsCollection = () => {
             </p>
             <p>
               Mama, a strong family member and provider, has been the cornerstone of this collection.
-              The kids' works are attached to their creation dates as part of their art,
+              The kids works are attached to their creation dates as part of their art,
               helping young readers understand their historical significance.
             </p>
           </div>
-      <Link  href={"/products?category=kids"} className="cursor-pointer">
-          <button className="bg-primary  text-white font-semibold py-3 px-8 rounded-lg transition duration-300">
-            Discover More
-          </button>
-      </Link>
-      
+
+          <Link href="/products?category=kids" className="cursor-pointer">
+            <button className="bg-primary text-white font-semibold py-3 px-8 rounded-lg transition duration-300">
+              Discover More
+            </button>
+          </Link>
         </div>
       </div>
     </section>

@@ -6,7 +6,6 @@ import { Sheet, SheetTrigger, SheetContent, SheetTitle } from '@/components/ui/s
 import { Trash2Icon } from 'lucide-react';
 import useCartStore from '@/store/useCartStore';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 export default function AddToCart() {

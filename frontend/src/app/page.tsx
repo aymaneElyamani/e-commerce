@@ -4,13 +4,13 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getProfile } from "@/services/auth";
 import { WhatWeOffer } from "./_components/WhatWeOffer";
-import { FeaturedProductsSection } from "./_components/FeaturedProductsSection";
+// import { FeaturedProductsSection } from "./_components/FeaturedProductsSection";
 import { TestimonialsSection } from "./_components/TestimonialsSection";
 import useAuthStore from "@/store/useAuthStore";
 import { CategoriesCloches } from "./_components/categoriesClothes";
 import { BenefitsSection } from "./_components/BenefitsSection";
 import { HeroSection } from "./_components/HeroSection";
-import { CallToActionSection } from "./_components/CallToActionSection";
+// import { CallToActionSection } from "./_components/CallToActionSection";
 
 const Home = () => {
   const router = useRouter();

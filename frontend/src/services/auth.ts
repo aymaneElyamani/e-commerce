@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:5000/api/auth'; // Change if your Flask API is hosted elsewhere
+const API_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/auth`; // Change if your Flask API is hosted elsewhere
 
 // Create Axios instance
 const api = axios.create({
@@ -18,19 +18,23 @@ interface AuthCredentials {
 // Register User
 // ============================
 
+interface ErrorResponse {
+  error?: string;
+}
+
 export const register = async ({ email, password }: AuthCredentials): Promise<string> => {
   try {
-    const res = await api.post('/register', { email, password } );
+    const res = await api.post('/register', { email, password });
     return res.data.message;
   } catch (err) {
     if (axios.isAxiosError(err) && err.response) {
-      // take the JSON “error” field if present
-      const serverMsg = (err.response.data as any).error;
+      const serverMsg = (err.response.data as ErrorResponse).error;
       throw new Error(serverMsg || 'Registration failed');
     }
     throw err;
   }
 };
+
 // ============================
 // Login User and Save Token
 // ============================

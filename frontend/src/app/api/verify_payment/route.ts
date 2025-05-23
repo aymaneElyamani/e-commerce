@@ -28,8 +28,11 @@ export async function GET(request: NextRequest) {
     } else {
       return NextResponse.json({ success: false });
     }
-  } catch (err: any) {
-    console.error(err);
-    return NextResponse.json({ error: err.message }, { status: 500 });
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      console.error(err);
+      return NextResponse.json({ error: err.message }, { status: 500 });
+    }
+    return NextResponse.json({ error: 'Unknown error occurred' }, { status: 500 });
   }
 }

@@ -6,20 +6,23 @@ import useCartStore from "@/store/useCartStore";
 import { CheckCircle } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 const Success = () => {
   const searchParams = useSearchParams();
   const [sessionId, setSessionId] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true); // <-- loading state
+  const [loading, setLoading] = useState(true);
 
   const { products, clearCart } = useCartStore();
   const { user } = useAuthStore();
 
+  const handleOrder = useCallback(async () => {
+    if (!user?.id) {
+      toast.error("User not authenticated.");
+      return;
+    }
 
-  const handleOrder = async () => {
     const orderItems: OrderItem[] = products.map((p: AddToCardType) => ({
       product_id: p.idProduct,
       color: p.color,
@@ -28,60 +31,53 @@ const Success = () => {
     }));
 
     try {
- 
-   
-      setLoading(true); // start loading when placing order
-      const orderResponse = await createOrder(user?.id!, orderItems);
+      setLoading(true);
+      const orderResponse = await createOrder(user.id, orderItems);
 
-       
-      console.log(orderResponse);
       if (orderResponse && orderResponse.order_id) {
         clearCart();
-        
+        // toast.success("Order placed successfully.");
       } else {
-        // toast.error("Something went wrong. Please try again.");
+        toast.error("Something went wrong. Please try again.");
       }
-    } catch (error) {
-
-      // console.error(error);
-      // toast.error("An error occurred while processing your order.");
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred while processing your order.");
     } finally {
-      setLoading(false); // stop loading after done
+      setLoading(false);
     }
-  };
+  }, [user?.id, products, clearCart]);
 
   useEffect(() => {
-    const session_id = searchParams.get('session_id');
+    const session_id = searchParams.get("session_id");
     if (session_id) {
       setSessionId(session_id);
     }
   }, [searchParams]);
 
   useEffect(() => {
-     
     if (sessionId) {
       const verifyPaymentStatus = async () => {
         try {
-          setLoading(true); // start loading when verifying payment
+          setLoading(true);
           const response = await fetch(`/api/verify_payment?session_id=${sessionId}`);
           const data = await response.json();
 
           if (data.success) {
             await handleOrder();
-            // toast.success('Payment was successful!');
           } else {
-            // toast.error('Payment was not successful.');
+            toast.error("Payment was not successful.");
           }
-        } catch (error) {
-          toast.error('An error occurred while verifying payment status.');
+        } catch {
+          toast.error("An error occurred while verifying payment status.");
         } finally {
-          setLoading(false); // stop loading after verification + order creation
+          setLoading(false);
         }
       };
 
       verifyPaymentStatus();
     }
-  }, [sessionId]);
+  }, [sessionId, handleOrder]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-50 text-center">

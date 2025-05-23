@@ -2,7 +2,6 @@
 
 import { register } from "@/services/auth";
 import useAuthStore from "@/store/useAuthStore";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { toast } from "sonner";

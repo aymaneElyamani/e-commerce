@@ -7,7 +7,6 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import useCartStore from "@/store/useCartStore";
-import useAuthStore from "@/store/useAuthStore";
 import { loadStripe } from "@stripe/stripe-js";
 import Stripe from "stripe";
 
@@ -17,8 +16,8 @@ const stripePromise = loadStripe(
 type line = Stripe.Checkout.SessionCreateParams.LineItem;
 
 const CheckoutPage = () => {
-  const { products, clearCart, updateProduct, removeProduct } = useCartStore();
-  const { user } = useAuthStore();
+  const { products, updateProduct, removeProduct } = useCartStore();
+  // const { user } = useAuthStore();
   const [loading, setLoading] = useState(false);
 
   const totalPrice = products.reduce((t, p) => t + p.price * p.quantity, 0);

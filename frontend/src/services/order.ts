@@ -1,10 +1,5 @@
-// order_services.ts
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/orders`;
-
-
-console.log(BASE_URL)
-// Create a new order
 export const createOrder = async (
   utilisateur_id: number,
   items: OrderItem[]
@@ -19,16 +14,19 @@ export const createOrder = async (
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
+      const errorData: { error?: string } = await response.json();
       throw new Error(errorData.error || "Failed to create order.");
     }
 
     return await response.json();
-  } catch (error: any) {
-    // console.error("Error creating order:", error.message);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw new Error("Failed to create order. Please try again. " + error.message);
+    }
     throw new Error("Failed to create order. Please try again.");
   }
 };
+
 
 // Get all orders
 export const getAllOrders = async (): Promise<Order[]> => {
