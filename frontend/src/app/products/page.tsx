@@ -9,6 +9,7 @@ import clsx from "clsx";
 import CardProduct from "@/components/cardProduct";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton"; // Import Skeleton from Shadcn
+import KidsCollection from "../_components/kidsCollection";
 
 const Section = ({
   title,
@@ -153,19 +154,11 @@ export default function Page() {
           </motion.div>
 
           <Section title="Products" products={filteredProducts} />
-
-          <motion.footer
-            className="mt-12 bg-gray-100 p-6 rounded-xl text-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            <h3 className="text-xl font-semibold mb-2">Kid's Collection</h3>
-            <p className="text-gray-600 mb-4">Explore adorable outfits for kids!</p>
-            <Button className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">
-              Browse Now
-            </Button>
-          </motion.footer>
+        
+        <br /><br />
+      <KidsCollection />
+      <br />
+        
         </>
       )}
     </main>
