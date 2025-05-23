@@ -57,7 +57,7 @@ export const CategoriesCloches = (): JSX.Element => {
               viewport={{ once: true }}
             >
               <Link href={category.href}>
-                <Card className="group w-full h-[320px] sm:h-[400px] border-none rounded-3xl overflow-hidden  duration-300">
+                <Card className="group w-full h-[320px] sm:h-[400px]  overflow-hidden bg-[#f9f9f9] shadow-none duration-300 ml-4">
                   <CardContent className="p-0 h-full w-full relative">
                     {/* Full-cover image */}
                     <div className="absolute inset-0 z-0">
