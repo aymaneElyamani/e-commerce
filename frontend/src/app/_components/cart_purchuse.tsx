@@ -1,22 +1,30 @@
 'use client';
 
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetTrigger, SheetContent, SheetTitle } from '@/components/ui/sheet';
 import { Trash2Icon } from 'lucide-react';
 import useCartStore from '@/store/useCartStore';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function AddToCart() {
   const { products, removeProduct } = useCartStore();
+  const [open, setOpen] = useState(false);
+  const router = useRouter();
 
   const total = products.reduce(
     (sum, item) => sum + item.price * (item.quantity || 1),
     0
   );
 
+  const handleCheckout = () => {
+    setOpen(false);
+    router.push('/checkout');
+  };
+
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button variant="outline" className="text-black">
           🛒 Cart ({products.length})
@@ -71,12 +79,12 @@ export default function AddToCart() {
         </div>
 
         {products.length > 0 && (
-          <Link href={"/checkout"}>
-          
-          <Button className="mt-2 w-full sticky bottom-0 left-0 z-10">
+          <Button
+            className="mt-2 w-full sticky bottom-0 left-0 z-10"
+            onClick={handleCheckout}
+          >
             Checkout
           </Button>
-          </Link>
         )}
       </SheetContent>
     </Sheet>

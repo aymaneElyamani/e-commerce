@@ -20,7 +20,7 @@ function Page() {
 
   return (
     <div className="max-w-7xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">Your Wishlist</h1>
+      <h1 className="text-3xl font-bold mb-6 text-primary">Your Wishlist</h1>
 
       {wishlist.length === 0 ? (
         <p className="text-muted-foreground text-center mt-20 text-lg">
@@ -33,8 +33,8 @@ function Page() {
               key={product.id}
               className="rounded-2xl shadow-sm hover:shadow-md transition"
             >
-              <CardContent className="p-4">
-                <div className="relative w-full h-40 mb-4 rounded-lg overflow-hidden bg-muted">
+              <CardContent className="px-4">
+                <div className="relative w-full h-60 mb-6 rounded-lg overflow-hidden bg-muted">
                   <Image
                     src={product.image_cover || "/placeholder.jpg"}
                     alt={product.name}
@@ -47,7 +47,7 @@ function Page() {
                   ${product.price}
                 </p>
               </CardContent>
-              <CardFooter className="flex justify-between p-4">
+              <CardFooter className="flex justify-between px-2">
                 <Button
                   variant="outline"
                   size="sm"

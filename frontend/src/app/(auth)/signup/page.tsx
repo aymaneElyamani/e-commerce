@@ -2,7 +2,6 @@
 
 import { register } from "@/services/auth";
 import useAuthStore from "@/store/useAuthStore";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { toast } from "sonner";
@@ -11,6 +10,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 
 // Zod schema for validation
 const SignupSchema = z.object({
@@ -50,75 +50,78 @@ function Signup() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <div className="grid grid-cols-1 md:grid-cols-2 bg-white shadow-md rounded-lg overflow-hidden">
-        
-        {/* Left: Image */}
-        <div className="flex items-center justify-center p-8 bg-blue-50">
-          <img
-            src="/imglogin.png"
-            alt="Illustration d'inscription"
-            className="max-w-full h-auto w-3/4"
-          />
-        </div>
-
-        {/* Right: Signup Form */}
-        <div className="p-8 w-full max-w-md">
-          <h2 className="text-2xl font-bold mb-2">Créer un compte</h2>
-          <p className="text-gray-500 mb-6">Entrez vos informations ci-dessous</p>
-
-          <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-            <div>
-              <Input
-                type="email"
-                placeholder="Email"
-                autoComplete="email"
-                {...formRegister("email")}
-              />
-              {errors.email && (
-                <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>
-              )}
-            </div>
-
-            <div>
-              <Input
-                type="password"
-                placeholder="Mot de passe"
-                autoComplete="new-password"
-                {...formRegister("password")}
-              />
-              {errors.password && (
-                <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>
-              )}
-            </div>
-
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
-              {isSubmitting ? "Création du compte..." : "Créer un compte"}
-            </Button>
-
-            <Button
-              type="button"
-              variant="outline"
-              className="w-full flex items-center justify-center"
-            >
-              <img
-                src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-                alt="Logo Google"
-                className="w-5 h-5 mr-2"
-              />
-              S&apos;inscrire avec Google
-            </Button>
-          </form>
-
-          <p className="text-center text-sm text-gray-600 mt-4">
-            Vous avez déjà un compte ?{" "}
-            <Link href="/login" className="text-black font-medium">
-              Connectez-vous
-            </Link>
-          </p>
-        </div>
-      </div>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+  <div className="flex w-full max-w-4xl bg-white rounded-lg shadow-md overflow-hidden">
+    {/* Left Panel */}
+    <div className="hidden md:flex w-1/2 items-center justify-center bg-[#EAF1FB]">
+      <img src="/imglogin.png" alt="Signup visual" className="w-3/4" />
     </div>
+
+    {/* Right Panel */}
+    <div className="w-full md:w-1/2 px-8 py-12">
+      <h2 className="text-2xl font-bold text-gray-900 mb-1">Create an Account</h2>
+      <p className="text-sm text-gray-500 mb-6">Enter your details below</p>
+
+      <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+        <div>
+          <Label htmlFor="email">Email</Label>
+          <Input
+            id="email"
+            type="email"
+            placeholder="Email"
+            autoComplete="email"
+            {...formRegister("email")}
+          />
+          {errors.email && (
+            <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+          )}
+        </div>
+
+        <div>
+          <Label htmlFor="password">Password</Label>
+          <Input
+            id="password"
+            type="password"
+            placeholder="Password"
+            autoComplete="new-password"
+            {...formRegister("password")}
+          />
+          {errors.password && (
+            <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+          )}
+        </div>
+
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Creating account..." : "Sign Up"}
+        </Button>
+
+        <Button
+          type="button"
+          variant="outline"
+          className="w-full flex items-center justify-center"
+        >
+          <img
+            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+            alt="Google"
+            className="w-5 h-5 mr-2"
+          />
+          Sign up with Google
+        </Button>
+      </form>
+
+      <p className="text-center text-sm text-gray-600 mt-6">
+        Already have an account?{" "}
+        <a href="/login" className="text-black font-semibold hover:underline">
+          Log in
+        </a>
+      </p>
+    </div>
+  </div>
+</div>
   );
 }
 

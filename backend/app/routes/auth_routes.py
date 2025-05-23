@@ -59,7 +59,7 @@ def login():
 
     conn = get_db()
     cur = conn.cursor()
-    cur.execute('SELECT * FROM utilisateurs WHERE email = %s', (email,))
+    cur.execute('SELECT password , email , id , name  FROM utilisateurs WHERE email = %s', (email,))
     user = cur.fetchone()
     cur.close()
     conn.close()
@@ -101,10 +101,10 @@ def get_all_users():
     conn = get_db()
     cur = conn.cursor()
     try:
-        cur.execute('SELECT id, email FROM utilisateurs')  # Select only necessary fields
+        cur.execute('SELECT id, email  , created_at FROM utilisateurs')  # Select only necessary fields
         users = cur.fetchall()
         # Convert to list of dicts
-        users_list = [{"id": u["id"], "email": u["email"]} for u in users]
+        users_list = [{"id": u["id"], "email": u["email"] , "created_at" : u["created_at"]} for u in users]
         return jsonify(users_list), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500

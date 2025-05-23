@@ -22,7 +22,7 @@ const slides = [
   },
   {
     image: '/hero1.png',
-    title: 'Bloom Every Season',
+    title: 'Blossom with the changing seasons',
     description:
       'Discover seasonal flowers that bloom with beauty and elegance, making every season special at your home.',
   },
@@ -53,7 +53,7 @@ export const HeroSection = () => {
   }, [emblaApi, onSelect]);
 
   return (
-    <section className="relative w-full h-[700px] overflow-hidden">
+    <section className="relative w-full -top-8 h-[700px] overflow-hidden">
       {/* Slider Images */}
       <div className="absolute inset-0 " ref={emblaRef} >
         <div className="flex h-full">
@@ -73,7 +73,7 @@ export const HeroSection = () => {
       </div>
 
       {/* Dynamic Hero Text */}
-      <div className="absolute top-[190px] left-0 w-full flex flex-col items-center z-10">
+      <div className="absolute top-[180px] left-0 w-full flex flex-col items-center z-10">
         <h1 className="font-['Lato',Helvetica] font-bold text-white text-2xl sm:text-[64px] max-w-[1000px] text-center px-10">
           {slides[selectedIndex].title}
         </h1>
@@ -86,13 +86,20 @@ export const HeroSection = () => {
               Shop Now
             </Button>
           </Link>
-          <Button
-            variant="outline"
-            className="px-[35px] py-2 rounded-[3px] border border-solid border-white bg-transparent flex items-center gap-2.5 font-['Lato',Helvetica] font-semibold text-white text-sm tracking-[0.28px] leading-[16.8px]"
-          >
-            <PlayIcon className="w-6 h-6" />
-            Watch Video
-          </Button>
+          <Link
+  href="https://youtu.be/wf4F2-9UXUo?si=4cnSf99L417xvPMa"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <Button
+    variant="outline"
+    className="px-[35px] py-2 rounded-[3px] border border-solid border-white bg-transparent flex items-center gap-2.5 font-['Lato',Helvetica] font-semibold text-white text-sm tracking-[0.28px] leading-[16.8px]"
+  >
+    <PlayIcon className="w-6 h-6" />
+    Watch Video
+  </Button>
+</Link>
+
         </div>
       </div>
 

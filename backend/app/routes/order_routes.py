@@ -9,6 +9,7 @@ def create_order():
     data = request.get_json()
     user_id = data.get("utilisateur_id")
     items = data.get("items", [])
+    status = data.get("status", "Pending")  # Default status
 
     if not user_id or not items:
         return jsonify({"error": "utilisateur_id and items are required"}), 400
@@ -25,10 +26,10 @@ def create_order():
     cur = conn.cursor()
     try:
         cur.execute("""
-            INSERT INTO orders (utilisateur_id, total_price)
-            VALUES (%s, 0)
+            INSERT INTO orders (utilisateur_id, total_price, status)
+            VALUES (%s, 0, %s)
             RETURNING id
-        """, (user_id,))
+        """, (user_id, status))
         order_id = cur.fetchone()["id"]
 
         total = 0
@@ -45,12 +46,9 @@ def create_order():
                 raise ValueError(f"Product {pid} not found")
 
             price = float(row["price"])
-            print(f"Product {pid}: price={price}, quantity={qty}")
             total += price * qty
 
             line_orders.append((order_id, pid, qty, price, size, color))
-
-        print(f"Calculated total price: {total}")
 
         cur.executemany("""
             INSERT INTO line_orders (order_id, product_id, quantity, price, size, color)
@@ -58,10 +56,9 @@ def create_order():
         """, line_orders)
 
         cur.execute("UPDATE orders SET total_price=%s WHERE id=%s", (total, order_id))
-        print(f"Updated order {order_id} total price, rows affected: {cur.rowcount}")
 
         conn.commit()
-        return jsonify({"message": "Order created", "order_id": order_id}), 201
+        return jsonify({"message": "Order created", "order_id": order_id, "status": status}), 201
 
     except Exception as e:
         conn.rollback()
@@ -71,14 +68,12 @@ def create_order():
         cur.close()
         conn.close()
 
-
-
 @order_bp.route("", methods=["GET"])
 def list_orders():
     conn = get_db()
     cur = conn.cursor()
     cur.execute("""
-        SELECT o.id, o.utilisateur_id, o.total_price, o.created_at
+        SELECT o.id, o.utilisateur_id, o.total_price, o.status, o.created_at
         FROM orders o
         ORDER BY o.created_at DESC
     """)
@@ -95,7 +90,7 @@ def get_order(order_id):
     cur = conn.cursor()
 
     cur.execute("""
-        SELECT id, utilisateur_id, total_price, created_at
+        SELECT id, utilisateur_id, total_price, created_at, status
         FROM orders WHERE id=%s
     """, (order_id,))
     order = cur.fetchone()
@@ -124,7 +119,7 @@ def get_user_orders(user_id):
     cur = conn.cursor()
 
     cur.execute("""
-        SELECT o.id, o.total_price, o.created_at
+        SELECT o.id, o.total_price, o.created_at, o.status
         FROM orders o
         WHERE o.utilisateur_id = %s
         ORDER BY o.created_at DESC
@@ -149,12 +144,11 @@ def get_user_orders(user_id):
     return jsonify(orders), 200
 
 
-
-
 @order_bp.route("/<int:order_id>", methods=["PUT"])
 def update_order(order_id):
     data = request.get_json()
     items = data.get("items", [])
+    status = data.get("status")  # Get status if provided
 
     if not items:
         return jsonify({"error": "items are required"}), 400
@@ -194,7 +188,10 @@ def update_order(order_id):
             VALUES (%s, %s, %s, %s, %s, %s)
         """, new_lines)
 
-        cur.execute("UPDATE orders SET total_price=%s WHERE id=%s", (total, order_id))
+        if status is not None:
+            cur.execute("UPDATE orders SET total_price=%s, status=%s WHERE id=%s", (total, status, order_id))
+        else:
+            cur.execute("UPDATE orders SET total_price=%s WHERE id=%s", (total, order_id))
         conn.commit()
         return jsonify({"message": "Order updated", "order_id": order_id}), 200
 
