@@ -1,9 +1,11 @@
 from flask import Blueprint, request, jsonify
-from app import get_db
+from app.database import get_db
+from app.models import Order, LineOrder, Product, OrderStatus
+from sqlalchemy.orm import joinedload
 
 order_bp = Blueprint("orders", __name__, url_prefix="/api/orders")
-from flask import jsonify, request
-# from flask_sqlalchemy import SQLAlchemy
+
+
 @order_bp.route("", methods=["POST"])
 def create_order():
     data = request.get_json()
@@ -22,126 +24,133 @@ def create_order():
         if "size" not in item or "color" not in item:
             return jsonify({"error": f"Missing size or color for product {item.get('product_id')}"}), 400
 
-    conn = get_db()
-    cur = conn.cursor()
+    db = get_db()
     try:
-        cur.execute("""
-            INSERT INTO orders (utilisateur_id, total_price, status)
-            VALUES (%s, 0, %s)
-            RETURNING id
-        """, (user_id, status))
-        order_id = cur.fetchone()["id"]
+        # Create new order using ORM
+        new_order = Order(
+            utilisateur_id=user_id,
+            total_price=0,
+            status=OrderStatus[status]
+        )
+        db.add(new_order)
+        db.flush()  # Flush to get the order ID
 
         total = 0
-        line_orders = []
         for it in items:
             pid = it["product_id"]
             qty = it["quantity"]
             size = it["size"]
             color = it["color"]
 
-            cur.execute("SELECT price FROM products WHERE id=%s", (pid,))
-            row = cur.fetchone()
-            if not row:
+            # Get product price using ORM
+            product = db.query(Product).filter(Product.id == pid).first()
+            if not product:
                 raise ValueError(f"Product {pid} not found")
 
-            price = float(row["price"])
+            price = float(product.price)
             total += price * qty
 
-            line_orders.append((order_id, pid, qty, price, size, color))
+            # Create line order using ORM
+            line_order = LineOrder(
+                order_id=new_order.id,
+                product_id=pid,
+                quantity=qty,
+                price=price,
+                size=size,
+                color=color
+            )
+            db.add(line_order)
 
-        cur.executemany("""
-            INSERT INTO line_orders (order_id, product_id, quantity, price, size, color)
-            VALUES (%s, %s, %s, %s, %s, %s)
-        """, line_orders)
-
-        cur.execute("UPDATE orders SET total_price=%s WHERE id=%s", (total, order_id))
-
-        conn.commit()
-        return jsonify({"message": "Order created", "order_id": order_id, "status": status}), 201
+        # Update total price
+        new_order.total_price = total
+        db.commit()
+        
+        return jsonify({"message": "Order created", "order_id": new_order.id, "status": status}), 201
 
     except Exception as e:
-        conn.rollback()
+        db.rollback()
         return jsonify({"error": str(e)}), 400
-
     finally:
-        cur.close()
-        conn.close()
+        db.close()
+
 
 @order_bp.route("", methods=["GET"])
 def list_orders():
-    conn = get_db()
-    cur = conn.cursor()
-    cur.execute("""
-        SELECT o.id, o.utilisateur_id, o.total_price, o.status, o.created_at
-        FROM orders o
-        ORDER BY o.created_at DESC
-    """)
-    orders = cur.fetchall()
-    for o in orders:
-        o["total_price"] = float(o["total_price"])
-    cur.close()
-    conn.close()
-    return jsonify(orders), 200
+    db = get_db()
+    try:
+        # Query all orders using ORM
+        orders = db.query(Order).order_by(Order.created_at.desc()).all()
+        
+        orders_list = []
+        for o in orders:
+            order_dict = o.to_dict()
+            orders_list.append(order_dict)
+        
+        return jsonify(orders_list), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        db.close()
+
 
 @order_bp.route("/<int:order_id>", methods=["GET"])
 def get_order(order_id):
-    conn = get_db()
-    cur = conn.cursor()
+    db = get_db()
+    try:
+        # Query order with line items using ORM with eager loading
+        order = db.query(Order).options(
+            joinedload(Order.line_orders).joinedload(LineOrder.product)
+        ).filter(Order.id == order_id).first()
+        
+        if not order:
+            return jsonify({"error": "Order not found"}), 404
+        
+        # Build response with order details
+        order_dict = order.to_dict()
+        
+        # Add line items
+        items = []
+        for line_order in order.line_orders:
+            item_dict = line_order.to_dict()
+            item_dict['name'] = line_order.product.name
+            items.append(item_dict)
+        
+        order_dict['items'] = items
+        return jsonify(order_dict), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        db.close()
 
-    cur.execute("""
-        SELECT id, utilisateur_id, total_price, created_at, status
-        FROM orders WHERE id=%s
-    """, (order_id,))
-    order = cur.fetchone()
-    if not order:
-        cur.close(); conn.close()
-        return jsonify({"error": "Order not found"}), 404
-    order["total_price"] = float(order["total_price"])
-
-    cur.execute("""
-        SELECT lo.id, lo.product_id, lo.quantity, lo.price, lo.size, lo.color, p.name
-        FROM line_orders lo
-        JOIN products p ON p.id = lo.product_id
-        WHERE lo.order_id = %s
-    """, (order_id,))
-    items = cur.fetchall()
-    for i in items:
-        i["price"] = float(i["price"])
-
-    cur.close()
-    conn.close()
-    return jsonify({**order, "items": items}), 200
 
 @order_bp.route("/user/<int:user_id>", methods=["GET"])
 def get_user_orders(user_id):
-    conn = get_db()
-    cur = conn.cursor()
-
-    cur.execute("""
-        SELECT o.id, o.total_price, o.created_at, o.status
-        FROM orders o
-        WHERE o.utilisateur_id = %s
-        ORDER BY o.created_at DESC
-    """, (user_id,))
-    orders = cur.fetchall()
-
-    for order in orders:
-        cur.execute("""
-            SELECT lo.id, lo.product_id, lo.quantity, lo.price, lo.size, lo.color, p.name
-            FROM line_orders lo
-            JOIN products p ON p.id = lo.product_id
-            WHERE lo.order_id = %s
-        """, (order["id"],))
-        items = cur.fetchall()
-        for item in items:
-            item["price"] = float(item["price"])
-        order["items"] = items
-        order["total_price"] = float(order["total_price"])
-
-    cur.close()
-    conn.close()
-    return jsonify(orders), 200
+    db = get_db()
+    try:
+        # Query orders for specific user using ORM with eager loading
+        orders = db.query(Order).options(
+            joinedload(Order.line_orders).joinedload(LineOrder.product)
+        ).filter(Order.utilisateur_id == user_id).order_by(Order.created_at.desc()).all()
+        
+        orders_list = []
+        for order in orders:
+            order_dict = order.to_dict()
+            
+            # Add line items
+            items = []
+            for line_order in order.line_orders:
+                item_dict = line_order.to_dict()
+                item_dict['name'] = line_order.product.name
+                items.append(item_dict)
+            
+            order_dict['items'] = items
+            orders_list.append(order_dict)
+        
+        return jsonify(orders_list), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        db.close()
 
 
 @order_bp.route("/<int:order_id>", methods=["PUT"])
@@ -161,62 +170,73 @@ def update_order(order_id):
         if "size" not in item or "color" not in item:
             return jsonify({"error": f"Missing size or color for product {item['product_id']}"}), 400
 
-    conn = get_db()
-    cur = conn.cursor()
+    db = get_db()
     try:
-        # Delete old line items
-        cur.execute("DELETE FROM line_orders WHERE order_id = %s", (order_id,))
+        # Query order using ORM
+        order = db.query(Order).filter(Order.id == order_id).first()
+        if not order:
+            return jsonify({"error": "Order not found"}), 404
+        
+        # Delete old line items using ORM
+        db.query(LineOrder).filter(LineOrder.order_id == order_id).delete()
+        
         total = 0
-        new_lines = []
         for it in items:
             pid = it["product_id"]
             qty = it["quantity"]
             size = it["size"]
             color = it["color"]
 
-            cur.execute("SELECT price FROM products WHERE id=%s", (pid,))
-            row = cur.fetchone()
-            if not row:
+            # Get product using ORM
+            product = db.query(Product).filter(Product.id == pid).first()
+            if not product:
                 raise ValueError(f"Product {pid} not found")
 
-            price = float(row["price"])
+            price = float(product.price)
             total += price * qty
-            new_lines.append((order_id, pid, qty, price, size, color))
+            
+            # Create new line order using ORM
+            line_order = LineOrder(
+                order_id=order_id,
+                product_id=pid,
+                quantity=qty,
+                price=price,
+                size=size,
+                color=color
+            )
+            db.add(line_order)
 
-        cur.executemany("""
-            INSERT INTO line_orders (order_id, product_id, quantity, price, size, color)
-            VALUES (%s, %s, %s, %s, %s, %s)
-        """, new_lines)
-
+        # Update order total and status
+        order.total_price = total
         if status is not None:
-            cur.execute("UPDATE orders SET total_price=%s, status=%s WHERE id=%s", (total, status, order_id))
-        else:
-            cur.execute("UPDATE orders SET total_price=%s WHERE id=%s", (total, order_id))
-        conn.commit()
+            order.status = OrderStatus[status]
+        
+        db.commit()
         return jsonify({"message": "Order updated", "order_id": order_id}), 200
 
     except Exception as e:
-        conn.rollback()
+        db.rollback()
         return jsonify({"error": str(e)}), 400
     finally:
-        cur.close()
-        conn.close()
+        db.close()
 
 
 @order_bp.route("/<int:order_id>", methods=["DELETE"])
 def delete_order(order_id):
-    conn = get_db()
-    cur = conn.cursor()
+    db = get_db()
     try:
-        # First, delete associated line orders
-        cur.execute("DELETE FROM line_orders WHERE order_id = %s", (order_id,))
-        # Then, delete the order itself
-        cur.execute("DELETE FROM orders WHERE id = %s", (order_id,))
-        conn.commit()
+        # Query and delete order using ORM
+        # Line orders will be automatically deleted due to cascade
+        order = db.query(Order).filter(Order.id == order_id).first()
+        
+        if not order:
+            return jsonify({"error": "Order not found"}), 404
+        
+        db.delete(order)
+        db.commit()
         return jsonify({"message": "Order deleted"}), 200
     except Exception as e:
-        conn.rollback()
+        db.rollback()
         return jsonify({"error": str(e)}), 400
     finally:
-        cur.close()
-        conn.close()
+        db.close()
