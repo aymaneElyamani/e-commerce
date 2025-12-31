@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:5000/api/auth";
+const BASE_URL = "http://localhost:8000/api/auth";
 
 const headers = {
   "Content-Type": "application/json",

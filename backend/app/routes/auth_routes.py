@@ -14,11 +14,17 @@ SECRET_KEY = 'your-secret-key'
 
 # Helper function to encode JWT
 def encode_jwt(user_data):
-    expiration = datetime.utcnow() + timedelta(days=10)  # Token expires in 10 days
-    return jwt.encode({
+    expiration = datetime.now() + timedelta(days=10)  # Token expires in 10 days
+    token = jwt.encode({
         'user': user_data,
         'exp': expiration
     }, SECRET_KEY, algorithm='HS256')
+
+    # PyJWT v1 returns bytes; v2 returns str
+    if isinstance(token, bytes):
+        token = token.decode('utf-8')
+
+    return token
 
 
 # Helper function to decode JWT

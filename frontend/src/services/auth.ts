@@ -45,14 +45,13 @@ type loginReturn = {
 }
 
 export const login = async ({ email, password }: AuthCredentials): Promise<loginReturn> => {
-  const res = await api.post('/login', { email, password });
+  const res = await api.post('/login' ,  { email, password });
   const token = res.data.token;
   const id = res.data.token;
 
 
-  if (typeof window !== 'undefined') {
+
     localStorage.setItem('token', token);
-  }
 
   return {token : token  , user : {id : id , email: email ,cover_img : undefined , name : ""  }};
 };
