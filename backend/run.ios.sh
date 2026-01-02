@@ -10,7 +10,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # Activate the virtual environment
-source "./.venv/Scripts/activate"
+source "./.venv/bin/activate"
 
 # Print colorful info message
 echo -e "${GREEN}🚀 Flask server is starting...${NC}"
@@ -20,4 +20,4 @@ echo -e "${YELLOW}🌐 admin running at:${NC} http://localhost:5000/admin"
 echo
 
 # Run the app
-FLASK_ENV=development python app.py
+FLASK_ENV=development python3 app.py
