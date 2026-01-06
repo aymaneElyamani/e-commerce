@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Geist_Mono } from "next/font/google";
 import "./globals.css";
 // import { Providers } from "./providers";
 import { Toaster } from "sonner";
 import Navbar from "@/common/Navbar";
 import FooterSwitcher from "@/common/FooterSwitcher";
-import { CallToActionSection } from "./_components/CallToActionSection";
 import Link from "next/link";
 
-const geistSans = Geist({
+const geistSans = Inter({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
@@ -81,7 +80,7 @@ export default function RootLayout({
         <Link
           href="/chat"
           aria-label="Open chat assistant"
-          className="fixed left-4 bottom-4 z-50 rounded-full bg-blue-600 text-white shadow-lg px-4 py-3 hover:bg-blue-700 transition-colors"
+          className="fixed left-4 bottom-4 z-50 rounded-full bg-primary text-primary-foreground shadow-lg px-4 py-3 hover:bg-primary/90 transition-colors"
         >
           💬 Chat
         </Link>

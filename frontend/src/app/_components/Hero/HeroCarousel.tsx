@@ -28,18 +28,18 @@ const HeroCarousal = ({offers} : {offers: Offer[]}) => {
       <div className="flex items-center pt-6 sm:pt-0 flex-col-reverse sm:flex-row">
         <div className="max-w-[394px] py-10 sm:py-15 lg:py-24.5 pl-4 sm:pl-7.5 lg:pl-12.5">
           <div className="flex items-center gap-4 mb-7.5 sm:mb-10">
-            <span className="block font-bold text-xl sm:text-5xl text-blue text-green-700">
+            <span className="block font-bold text-xl sm:text-5xl text-primary">
               {/* 30% */}
               {offer.discount_percentage}%
             </span>
-            <span className="block text-dark text-sm sm:text-custom-1 sm:leading-[24px]">
+            <span className="block text-foreground text-sm sm:text-custom-1 sm:leading-[24px]">
               Sale
               <br />
               Off
             </span>
           </div>
 
-          <h1 className="font-semibold text-dark text-xl sm:text-3xl mb-3">
+          <h1 className="font-semibold text-foreground text-xl sm:text-3xl mb-3">
             <a href="#">{offer.title}</a>
           </h1>
 
@@ -50,7 +50,7 @@ const HeroCarousal = ({offers} : {offers: Offer[]}) => {
 
           <a
             href={`./products/${offer.product_id}`}
-            className="inline-flex font-medium text-white text-custom-sm rounded-md bg-dark py-3 px-9 ease-out duration-200 hover:bg-blue mt-10"
+            className="inline-flex font-medium text-primary-foreground text-custom-sm rounded-md bg-primary py-3 px-9 ease-out duration-200 hover:bg-primary/90 mt-10"
           >
             Shop Now
           </a>

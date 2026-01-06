@@ -84,7 +84,7 @@ const CheckoutPage = () => {
         animate={{ opacity: 1, x: 0 }}
         className="text-muted-foreground mb-8"
       >
-        <Link href="/" className="text-black font-semibold">
+        <Link href="/" className="text-foreground font-semibold">
           Home
         </Link>{" "}
         / checkout
@@ -94,7 +94,7 @@ const CheckoutPage = () => {
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="text-center text-gray-500 mt-32"
+          className="text-center text-muted-foreground mt-32"
         >
           Your cart is empty.
         </motion.p>
@@ -116,7 +116,7 @@ const CheckoutPage = () => {
           <div className="w-full overflow-x-auto">
             <table className="w-full text-sm border-separate [border-spacing:0]">
               <thead>
-                <tr className="bg-muted text-left text-gray-600 text-xs uppercase tracking-wider">
+                <tr className="bg-muted text-left text-muted-foreground text-xs uppercase tracking-wider">
                   <th className="py-3 pl-6 w-1/2">Product</th>
                   <th className="py-3">Price</th>
                   <th className="py-3">Quantity</th>
@@ -232,7 +232,7 @@ const CheckoutPage = () => {
                   placeholder="Coupon code"
                   className="border rounded px-4 py-2 w-52"
                 />
-                <Button className="bg-emerald-800 hover:bg-emerald-900">
+                <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
                   Apply coupon
                 </Button>
               </div>
@@ -258,7 +258,7 @@ const CheckoutPage = () => {
               <Button
                 disabled={loading}
                 onClick={handleCheckout}
-                className="w-full bg-emerald-800 hover:bg-emerald-900 mt-2"
+                className="w-full bg-primary text-primary-foreground hover:bg-primary/90 mt-2"
               >
                 Proceed to checkout
               </Button>

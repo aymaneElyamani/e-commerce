@@ -123,10 +123,10 @@
         return (
           <div className="min-h-[calc(100vh-5rem)] flex">
             {/* Sidebar with conversations */}
-            <aside className="w-72 border-r bg-white dark:bg-neutral-900 p-3 flex flex-col gap-3">
+            <aside className="w-72 border-r bg-card p-3 flex flex-col gap-3">
               <button
                 onClick={startNewChat}
-                className="w-full rounded-md bg-blue-600 text-white px-3 py-2 hover:bg-blue-700"
+                className="w-full rounded-md bg-primary text-primary-foreground px-3 py-2 hover:bg-primary/90"
               >
                 + New Chat
               </button>
@@ -136,12 +136,12 @@
                     key={c.id}
                     onClick={() => setActiveId(c.id)}
                     className={`w-full text-left px-3 py-2 rounded-md mb-2 ${
-                      c.id === activeId ? "bg-blue-50 dark:bg-neutral-800" : "bg-gray-100 dark:bg-neutral-800"
+                      c.id === activeId ? "bg-muted" : "bg-muted/60"
                     }`}
                     title={c.title}
                   >
                     <div className="font-medium truncate">{c.title || "Untitled"}</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400 truncate">
+                    <div className="text-sm text-muted-foreground truncate">
                       {c.messages[c.messages.length - 1]?.content || ""}
                     </div>
                   </button>
@@ -152,7 +152,7 @@
             {/* Main chat area */}
             <div className="flex-1 flex flex-col px-4 py-6">
               <h1 className="text-2xl font-semibold mb-4">Chat Assistant</h1>
-              <div className="flex-1 overflow-y-auto rounded-lg border bg-white dark:bg-neutral-900 p-4 space-y-3">
+              <div className="flex-1 overflow-y-auto rounded-lg border bg-card p-4 space-y-3">
                 {(active?.messages || []).map((m, i) => (
                   <div
                     key={i}
@@ -161,8 +161,8 @@
                     <div
                       className={
                         m.role === "user"
-                          ? "max-w-[80%] rounded-2xl bg-blue-600 text-white px-4 py-2"
-                          : "max-w-[80%] rounded-2xl bg-gray-100 dark:bg-neutral-800 px-4 py-2"
+                          ? "max-w-[80%] rounded-2xl bg-primary text-primary-foreground px-4 py-2"
+                          : "max-w-[80%] rounded-2xl bg-muted px-4 py-2"
                       }
                     >
                       {m.content}
@@ -177,12 +177,12 @@
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Ask about products or orders..."
-                  className="flex-1 rounded-md border px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-neutral-900"
+                  className="flex-1 rounded-md border bg-background px-4 py-3 focus:outline-none focus:ring-2 focus:ring-ring"
                 />
                 <button
                   type="submit"
                   disabled={loading || !active}
-                  className="rounded-md bg-blue-600 text-white px-5 py-3 disabled:opacity-50"
+                  className="rounded-md bg-primary text-primary-foreground px-5 py-3 hover:bg-primary/90 disabled:opacity-50"
                 >
                   {loading ? "Sending..." : "Send"}
                 </button>

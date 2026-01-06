@@ -26,7 +26,7 @@ export default function AddToCart() {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="outline" className="text-black">
+        <Button variant="outline" className="text-foreground">
           🛒 Cart ({products.length})
         </Button>
       </SheetTrigger>
@@ -35,7 +35,7 @@ export default function AddToCart() {
         <SheetTitle className="text-xl font-bold mb-4">Your Cart</SheetTitle>
 
         {products.length === 0 ? (
-          <p className="text-sm text-gray-500">Your cart is empty.</p>
+          <p className="text-sm text-muted-foreground">Your cart is empty.</p>
         ) : (
           <ScrollArea className="h-[calc(100vh-200px)]">
             <ul className="space-y-4">
@@ -52,7 +52,7 @@ export default function AddToCart() {
                   )}
                   <div className="flex-1">
                     <div className="font-medium">{item.name}</div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-sm text-muted-foreground">
                       ${item.price} × {item.quantity || 1}
                     </div>
                   </div>
@@ -65,7 +65,7 @@ export default function AddToCart() {
                     className="p-1"
                     onClick={() => removeProduct(item.idCart!)}
                   >
-                    <Trash2Icon className="w-4 h-4 text-red-500" />
+                    <Trash2Icon className="w-4 h-4 text-destructive" />
                   </Button>
                 </li>
               ))}

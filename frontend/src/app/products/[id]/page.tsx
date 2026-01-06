@@ -106,7 +106,7 @@ export default function ProductPage() {
           <div
             key={index}
             className={`relative w-24 h-24 rounded overflow-hidden border-2 cursor-pointer ${
-              selectedImage === index ? "border-blue-500" : "border-transparent"
+              selectedImage === index ? "border-primary" : "border-transparent"
             }`}
             onClick={() => setSelectedImage(index)}
           >
@@ -127,17 +127,17 @@ export default function ProductPage() {
           className="object-contain w-full h-full rounded"
         />
         <button
-          className="absolute top-2 right-2 bg-white/80 p-1 rounded-full hover:bg-white"
+          className="absolute top-2 right-2 bg-background/80 p-1 rounded-full hover:bg-background"
           onClick={() => setFullscreenImage(product.image_details[selectedImage])}
         >
-          <Maximize2 className="h-5 w-5 text-gray-700" />
+          <Maximize2 className="h-5 w-5 text-foreground" />
         </button>
       </div>
 
       {/* Fullscreen Image Dialog */}
       <Dialog open={!!fullscreenImage} onOpenChange={() => setFullscreenImage(null)}>
         <DialogTitle />
-        <DialogContent className="max-w-4xl w-full p-0 overflow-hidden bg-black">
+        <DialogContent className="max-w-4xl w-full p-0 overflow-hidden bg-background">
           {fullscreenImage && (
             <img
               src={fullscreenImage}
@@ -158,12 +158,12 @@ export default function ProductPage() {
           <div className="flex items-center gap-2 mb-4">
             {
               product.discount_percentage &&
- <span className="text-xl text-gray-600 font-semibold line-through">
+ <span className="text-xl text-muted-foreground font-semibold line-through">
               ${product.price}
             </span>
             }
               
-            <span className="text-xl text-green-600 font-semibold">
+            <span className="text-xl text-primary font-semibold">
               ${ product.discount_percentage ? (product.price - product.price * product.discount_percentage/100).toFixed(2) : product.price}
             </span>
           </div>
@@ -174,7 +174,7 @@ export default function ProductPage() {
               onClick={()=>  setSelectedColor(color)}
                 key={color}
                 style={{ backgroundColor: color }}
-                className={`h-5 w-5 cursor-pointer  ${selectedColor == color ? "border-blue-600 border-2 " : "border-none"}`}
+                className={`h-5 w-5 cursor-pointer  ${selectedColor == color ? "border-primary border-2 " : "border-none"}`}
               />
             ))}
           </div>
@@ -186,7 +186,7 @@ export default function ProductPage() {
 
             <div className=" flex gap-x-2">
              { SIZES.map((ele , index)=>{
-              return <h1 key = {index} onClick={()=>setSelectedSize(ele)} className={`px-2 py-2 ${selectedSize == ele ? "bg-primary text-white" : "text-primary bg-white "} border-primary border  w-20 text-center cursor-pointer`}>
+              return <h1 key = {index} onClick={()=>setSelectedSize(ele)} className={`px-2 py-2 ${selectedSize == ele ? "bg-primary text-primary-foreground" : "text-primary bg-background"} border-primary border  w-20 text-center cursor-pointer`}>
                 {ele}
               </h1>
              })}
@@ -208,7 +208,7 @@ export default function ProductPage() {
             </Button>
           </div>
 
-          <Button onClick={handleAdd} className=" mt-5 bg-transparent border border-primary text-primary w-full hover:text-white">Ajouter</Button>
+          <Button onClick={handleAdd} className=" mt-5 bg-transparent border border-primary text-primary w-full hover:bg-primary hover:text-primary-foreground">Ajouter</Button>
           {/* <Button className="ml-2">Checkout</Button> */}
         </div>
       </div>
@@ -232,10 +232,10 @@ export default function ProductPage() {
     {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => (
       <div 
         key={item}
-        className="flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full"
+        className="flex items-center justify-center w-16 h-16 bg-muted rounded-full"
       >
         <svg 
-          className="w-8 h-8 text-gray-500" 
+          className="w-8 h-8 text-muted-foreground" 
           fill="none" 
           stroke="currentColor" 
           viewBox="0 0 24 24"

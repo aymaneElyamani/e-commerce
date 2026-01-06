@@ -33,7 +33,7 @@ export const WhatWeOffer = (): JSX.Element => {
 
   return (
     <section className="w-full px-4 sm:px-6 lg:px-0 max-w-[1200px] mx-auto py-12 md:py-16">
-      <h2 className="text-center text-xl sm:text-2xl text-primary font-normal tracking-wide leading-snug mb-10 font-['Lato',Helvetica] ">
+      <h2 className="text-center text-xl sm:text-2xl text-primary font-normal tracking-wide leading-snug mb-10">
         What We Offer To You
       </h2>
 
@@ -42,7 +42,7 @@ export const WhatWeOffer = (): JSX.Element => {
           ? Array.from({ length: 8 }).map((_, index) => (
               <div
                 key={index}
-                className="w-full h-[320px] rounded-lg bg-gray-200 animate-pulse"
+                className="w-full h-[320px] rounded-lg bg-muted animate-pulse"
               />
             ))
           : products.length > 0
@@ -50,7 +50,7 @@ export const WhatWeOffer = (): JSX.Element => {
               <CardProduct product={product} key={index} />
             ))
           : (
-              <p className="col-span-full text-center text-gray-500">No products found.</p>
+              <p className="col-span-full text-center text-muted-foreground">No products found.</p>
             )}
       </div>
     </section>

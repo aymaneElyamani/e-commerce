@@ -44,7 +44,7 @@ export default function BlogGridWithSidebar(): JSX.Element {
         {blogs.map((blog) => (
           <motion.div
             key={blog.id}
-            className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+            className="bg-card border border-border rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
@@ -52,9 +52,9 @@ export default function BlogGridWithSidebar(): JSX.Element {
             <Link href={blog.href}>
               <div className="h-60 w-full bg-cover bg-center" style={{ backgroundImage: `url(${blog.image})` }}></div>
               <div className="p-5">
-                <p className="text-sm text-gray-500 mb-1">{blog.date}</p>
+                <p className="text-sm text-muted-foreground mb-1">{blog.date}</p>
                 <h2 className="text-xl font-semibold text-primary mb-2">{blog.title}</h2>
-                <p className="text-sm text-gray-700 mb-3 line-clamp-3">{blog.summary}</p>
+                <p className="text-sm text-muted-foreground mb-3 line-clamp-3">{blog.summary}</p>
                 <div className="flex gap-2 flex-wrap">
                   {blog.tags.map((tag) => (
                     <span
@@ -86,7 +86,7 @@ export default function BlogGridWithSidebar(): JSX.Element {
                 key={tag}
                 variant="outline"
                 size="sm"
-                className="rounded-full text-xs px-3 border-primary text-primary hover:bg-primary hover:text-white"
+                className="rounded-full text-xs px-3 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
               >
                 #{tag}
               </Button>
@@ -96,7 +96,7 @@ export default function BlogGridWithSidebar(): JSX.Element {
 
         <div>
           <h3 className="text-xl font-semibold text-primary mb-4">About Us</h3>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-muted-foreground">
             We are a community of fashion lovers sharing tips and guides for sustainable, trendy living. Stay inspired with our latest blogs.
           </p>
         </div>

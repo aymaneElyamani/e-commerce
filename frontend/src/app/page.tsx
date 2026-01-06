@@ -37,7 +37,7 @@ const Home = () => {
       {customerUrl && (
         <button
           onClick={() => router.push(customerUrl)}
-          className="fixed z-50 bottom-4 right-4 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-5 rounded-lg shadow-md z-50"
+          className="fixed z-50 bottom-4 right-4 bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-3 px-5 rounded-lg shadow-md z-50"
         >
           Create my Customer t-shirt
         </button>

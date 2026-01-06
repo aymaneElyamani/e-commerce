@@ -23,7 +23,7 @@ const Profile = () => {
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.1 }}
       >
-      <span className="text-black font-semibold">Home / Profile</span>
+      <span className="text-foreground font-semibold">Home / Profile</span>
       </motion.h1>
 
       <motion.section
@@ -60,7 +60,7 @@ const Profile = () => {
                     <span className="font-bold text-xl">{`${user?.name ?? "uknowon"}`}</span>
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="text-sm text-gray-700 space-y-2">
+                <CardContent className="text-sm text-muted-foreground space-y-2">
                   <div><span className="font-semibold">Email:</span> {user?.email}</div>
                   <div><span className="font-semibold">Phone:</span> +212 600 0001 00</div>
                 </CardContent>
@@ -78,7 +78,7 @@ const Profile = () => {
           transition={{ delay: 0.4 }}
         >
           <Button
-            className="w-full md:w-auto px-6 py-2 text-white bg-blue-600 hover:bg-blue-500"
+            className="w-full md:w-auto px-6 py-2 text-primary-foreground bg-primary hover:bg-primary/90"
             onClick={handleEdit}
           >
             Edit Profile

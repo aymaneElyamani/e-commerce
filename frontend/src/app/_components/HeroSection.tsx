@@ -9,19 +9,19 @@ import useEmblaCarousel from 'embla-carousel-react';
 // Array with image + text per slide
 const slides = [
   {
-    image: '/image.png',
+    image: '/im1.jpeg',
     title: "Nature's Beauty Delivered to You",
     description:
       "Nature's beauty is just a click away with our online flower and plant shop. We offer a wide variety of flowers that will bring a touch of nature to your home!",
   },
   {
-    image: '/hero2.png',
+    image: '/im2.jpeg',
     title: 'Bring Green to Your Living Space',
     description:
       'Explore our premium collection of indoor plants that not only enhance your decor but also purify your air.',
   },
   {
-    image: '/hero1.png',
+    image: '/im5.jpeg',
     title: 'Blossom with the changing seasons',
     description:
       'Discover seasonal flowers that bloom with beauty and elegance, making every season special at your home.',
@@ -53,7 +53,7 @@ export const HeroSection = () => {
   }, [emblaApi, onSelect]);
 
   return (
-    <section className="relative w-full -top-8 h-[700px] overflow-hidden">
+    <section className="relative w-full h-[700px] overflow-hidden">
       {/* Slider Images */}
       <div className="absolute inset-0 " ref={emblaRef} >
         <div className="flex h-full">
@@ -74,15 +74,15 @@ export const HeroSection = () => {
 
       {/* Dynamic Hero Text */}
       <div className="absolute top-[180px] left-0 w-full flex flex-col items-center z-10">
-        <h1 className="font-['Lato',Helvetica] font-bold text-white text-2xl sm:text-[64px] max-w-[1000px] text-center px-10">
+        <h1 className="font-bold text-background text-2xl sm:text-[64px] max-w-[1000px] text-center px-10">
           {slides[selectedIndex].title}
         </h1>
-        <p className="max-w-[787px] mt-[50px] font-['Poppins',Helvetica] font-medium text-[#f8f8f8] text-sm px-20 sm:text-lg text-center leading-[25.2px]">
+        <p className="max-w-[787px] mt-[50px] font-medium text-background/90 text-sm px-20 sm:text-lg text-center leading-[25.2px]">
           {slides[selectedIndex].description}
         </p>
         <div className="flex gap-[35px] mt-[38px]">
           <Link href="#categories">
-            <Button className="px-[50px] py-3 bg-primary rounded-[3px] font-['Lato',Helvetica] font-bold text-white text-sm tracking-[0.28px] leading-[16.8px]">
+            <Button className="px-[50px] py-3 bg-primary rounded-[3px] font-bold text-primary-foreground text-sm tracking-[0.28px] leading-[16.8px]">
               Shop Now
             </Button>
           </Link>
@@ -93,7 +93,7 @@ export const HeroSection = () => {
 >
   <Button
     variant="outline"
-    className="px-[35px] py-2 rounded-[3px] border border-solid border-white bg-transparent flex items-center gap-2.5 font-['Lato',Helvetica] font-semibold text-white text-sm tracking-[0.28px] leading-[16.8px]"
+    className="px-[35px] py-2 rounded-[3px] border border-solid border-background bg-transparent flex items-center gap-2.5 font-semibold text-background text-sm tracking-[0.28px] leading-[16.8px] hover:bg-background/10"
   >
     <PlayIcon className="w-6 h-6" />
     Watch Video
@@ -108,10 +108,10 @@ export const HeroSection = () => {
         {slides.map((_, index) => (
           <div
             key={index}
-            className={`font-['Lato',Helvetica] text-base cursor-pointer transition-colors duration-300 ${
+            className={`text-base cursor-pointer transition-colors duration-300 ${
               index === selectedIndex
                 ? 'font-black text-primary underline'
-                : 'opacity-70 font-medium text-white'
+                : 'opacity-70 font-medium text-background'
             }`}
             onClick={() => emblaApi?.scrollTo(index)}
           >

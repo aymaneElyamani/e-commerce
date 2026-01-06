@@ -66,17 +66,17 @@ const handleLogin = async (e: React.FormEvent) => {
 };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div className="flex w-full max-w-4xl bg-white rounded-lg shadow-md overflow-hidden">
+    <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="flex w-full max-w-4xl bg-card rounded-lg shadow-md overflow-hidden border border-border">
         {/* Left Panel */}
-        <div className="hidden md:flex w-1/2 items-center justify-center bg-[#EAF1FB]">
+        <div className="hidden md:flex w-1/2 items-center justify-center bg-muted">
           <img src="/imglogin.png" alt="Login visual" className="w-3/4" />
         </div>
 
         {/* Right Panel */}
         <div className="w-full md:w-1/2 px-8 py-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-1">Log in to Exclusive</h2>
-          <p className="text-sm text-gray-500 mb-6">Enter your details below</p>
+          <h2 className="text-2xl font-bold text-foreground mb-1">Log in to Exclusive</h2>
+          <p className="text-sm text-muted-foreground mb-6">Enter your details below</p>
 
           <form className="space-y-4" onSubmit={handleLogin}>
             <div>
@@ -88,7 +88,7 @@ const handleLogin = async (e: React.FormEvent) => {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email or Phone Number"
               />
-              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+              {errors.email && <p className="text-destructive text-sm mt-1">{errors.email}</p>}
             </div>
 
             <div>
@@ -100,11 +100,11 @@ const handleLogin = async (e: React.FormEvent) => {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
               />
-              {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+              {errors.password && <p className="text-destructive text-sm mt-1">{errors.password}</p>}
             </div>
 
             <div className="flex justify-end">
-              <a href="#" className="text-sm text-gray-500 hover:underline">
+              <a href="#" className="text-sm text-muted-foreground hover:underline">
                 Forgot Password?
               </a>
             </div>
@@ -119,7 +119,7 @@ const handleLogin = async (e: React.FormEvent) => {
 
             <button
               type="button"
-              className="flex items-center justify-center w-full py-2 border border-gray-300 rounded hover:bg-gray-100"
+              className="flex items-center justify-center w-full py-2 border border-border rounded hover:bg-muted"
             >
               <img
                 src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
@@ -130,9 +130,9 @@ const handleLogin = async (e: React.FormEvent) => {
             </button>
           </form>
 
-          <p className="text-center text-sm text-gray-600 mt-6">
+          <p className="text-center text-sm text-muted-foreground mt-6">
             Don’t have an account?{" "}
-            <a href="/signup" className="text-black font-semibold hover:underline">
+            <a href="/signup" className="text-foreground font-semibold hover:underline">
               Sign up
             </a>
           </p>

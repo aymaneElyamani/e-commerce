@@ -3,9 +3,9 @@ import React from "react";
 
 const KidsCollection = () => {
   return (
-    <section className="relative py-12 bg-[url(/bg_bebe.png)] bg-cover bg-center">
+    <section className="relative py-12 bg-[url(/aassoi.png)] bg-cover bg-center">
       {/* Overlay */}
-      <div className="absolute inset-0 bg-gray-900/40 z-0"></div>
+      <div className="absolute inset-0 bg-foreground/40 z-0"></div>
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 flex flex-col md:flex-row items-center gap-8">
@@ -25,28 +25,24 @@ const KidsCollection = () => {
 
         {/* Text */}
         <div className="md:w-1/2 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            Kids Collection
+          <h2 className="text-3xl md:text-4xl font-bold text-background mb-6">
+            Accessories Collection
           </h2>
 
-          <div className="prose prose-sm md:prose-lg text-white mb-8 max-w-none">
+          <div className="prose prose-sm md:prose-lg text-background mb-8 max-w-none">
             <p>
-              Layne Evans is a large charity, dedicated to printing and presenting books since the 1500s.
-              Mama has worked with this paper tradition, having published many such books throughout history.
+              Complete your look with our curated accessories selection, designed to elevate every outfit.
             </p>
             <p>
-              With a commitment to natural legal documentation and free exemplary language,
-              these works follow the requests of their actual owners.
+              From everyday essentials to statement pieces, find the perfect details that match your style.
             </p>
             <p>
-              Mama, a strong family member and provider, has been the cornerstone of this collection.
-              The kids works are attached to their creation dates as part of their art,
-              helping young readers understand their historical significance.
+              Explore the latest arrivals and timeless favorites, all in one place.
             </p>
           </div>
 
-          <Link href="/products?category=kids" className="cursor-pointer">
-            <button className="bg-primary text-white font-semibold py-3 px-8 rounded-lg transition duration-300">
+          <Link href="/products?category=accessories" className="cursor-pointer">
+            <button className="bg-primary text-primary-foreground font-semibold py-3 px-8 rounded-lg transition duration-300">
               Discover More
             </button>
           </Link>

@@ -23,6 +23,9 @@ def create_product():
     if not name or price is None or quantity is None or not category:
         return jsonify({'error': 'Name, price, quantity, and category are required'}), 400
 
+    if category not in ProductCategory.__members__:
+        return jsonify({'error': f'Invalid category: {category}'}), 400
+
     db = get_db()
     try:
         # Create new product using ORM
@@ -51,6 +54,9 @@ def create_product():
 def get_products():
     category = request.args.get('category')
     elements = request.args.get('elements', type=int)
+
+    if category and category not in ProductCategory.__members__:
+        return jsonify({'error': f'Invalid category: {category}'}), 400
 
     db = get_db()
     try:
@@ -98,6 +104,9 @@ def get_products():
 @products_bq.route('/products/recommande', methods=['GET'])
 def get_random_products():
     category = request.args.get('category')
+
+    if category and category not in ProductCategory.__members__:
+        return jsonify({'error': f'Invalid category: {category}'}), 400
 
     db = get_db()
     try:
@@ -151,6 +160,9 @@ def update_product(product_id):
 
     if not name or price is None or quantity is None or not category:
         return jsonify({'error': 'Name, price, quantity, and category are required'}), 400
+
+    if category not in ProductCategory.__members__:
+        return jsonify({'error': f'Invalid category: {category}'}), 400
 
     db = get_db()
     try:

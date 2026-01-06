@@ -35,7 +35,7 @@ export const TestimonialsSection = (): JSX.Element => {
 
   return (
     <section className="w-full max-w-[1220px] mx-auto py-10">
-      <h2 className="text-center text-4xl text-primary font-normal tracking-[1.44px] leading-[50.4px] mb-8 font-['Lato',Helvetica]">
+      <h2 className="text-center text-4xl text-primary font-normal tracking-[1.44px] leading-[50.4px] mb-8">
         What Do They Say About Us
       </h2>
 
@@ -43,7 +43,7 @@ export const TestimonialsSection = (): JSX.Element => {
         {testimonials.map((testimonial, index) => (
           <Card
             key={testimonial.id}
-            className={`w-[360px] rounded-[10px] overflow-hidden ${index === 2 ? "bg-[#f8f8f8] relative" : "bg-[#f8f8f8]"}`}
+            className={`w-[360px] rounded-[10px] overflow-hidden bg-card ${index === 2 ? "relative" : ""}`}
           >
             <CardContent className="p-0">
               <div className="relative p-10">
@@ -53,13 +53,13 @@ export const TestimonialsSection = (): JSX.Element => {
                     alt={`${testimonial.name} profile`}
                     src={testimonial.image}
                   />
-                  <h3 className="ml-5 mt-3 font-['Lato',Helvetica] font-black text-primary text-xl leading-7">
+                  <h3 className="ml-5 mt-3 font-black text-primary text-xl leading-7">
                     {testimonial.name}
                   </h3>
                 </div>
 
                 <div className="mt-10 relative">
-                  <p className="opacity-80 font-['Raleway',Helvetica] font-medium text-[#121212] text-base leading-6 max-w-[243px] relative z-10">
+                  <p className="opacity-80 font-medium text-muted-foreground text-base leading-6 max-w-[243px] relative z-10">
                     {testimonial.quote}
                   </p>
                   <div className="absolute right-0 bottom-0 overflow-hidden opacity-5 z-0">

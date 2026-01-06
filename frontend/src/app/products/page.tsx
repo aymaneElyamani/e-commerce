@@ -89,7 +89,7 @@ export default function Page() {
         transition={{ delay: 0.1 }}
       >
         <Link href={"/"}>Home</Link>/{" "}
-        <span className="text-black font-medium">{formatPath(pathname)}</span>
+        <span className="text-foreground font-medium">{formatPath(pathname)}</span>
       </motion.h1>
 
       {loading ? (
@@ -153,7 +153,7 @@ export default function Page() {
 
           <Section title="Products" products={filteredProducts} />
         {
-          category != "kids" && 
+            category != "accessories" && 
           <div>
             <br /><br />
       <KidsCollection />

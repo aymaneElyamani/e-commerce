@@ -19,6 +19,11 @@ class ProductCategory(enum.Enum):
     man = "man"
     women = "women"
     kids = "kids"
+    clothes = "clothes"
+    accessoire = "accessoire"
+    chaussures = "chaussures"
+    accessories = "accessories"
+    shoes = "shoes"
 
 
 class OrderStatus(enum.Enum):

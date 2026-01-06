@@ -52,7 +52,7 @@ export const CallToActionSection = (): JSX.Element => {
   return (
     <section className="relative w-full h-[400px] bg-[url(/emailp.png)] bg-cover bg-center">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between max-w-[1240px] mx-auto px-6 h-full">
-        <div className="max-w-full md:max-w-[570px] mt-[100px] md:mt-0 font-bold text-white text-2xl sm:text-3xl md:text-[32px] tracking-normal leading-snug md:leading-[48px] font-[Lato]">
+        <div className="max-w-full md:max-w-[570px] mt-[100px] md:mt-0 font-bold text-background text-2xl sm:text-3xl md:text-[32px] tracking-normal leading-snug md:leading-[48px]">
           Enter Your Email Address For Our Mailing Promo Or Other Interesting Things
         </div>
 
@@ -65,14 +65,14 @@ export const CallToActionSection = (): JSX.Element => {
                  >
                    <Card className="p-6 border-none bg-transparent"> {/* shadow-xl removed */}
                      <CardContent className="p-0 space-y-6">
-                       <h2 className="text-3xl font-bold text-white">Contact Us</h2>
-                       <p className="text-white">
+                       <h2 className="text-3xl font-bold text-background">Contact Us</h2>
+                       <p className="text-background">
                          Got a question or feedback? Fill in the form and our team will get back to you.
                        </p>
                        <form className="space-y-4" onSubmit={handleSubmit}>
                          <Input
                            type="text"
-                           className="bg-[#d9d9d908] rounded-[5px] border border-white backdrop-blur-[2.5px] backdrop-brightness-[100%] opacity-80 font-[Raleway] font-medium text-white text-base placeholder:text-white placeholder:opacity-80 focus-visible:ring-0 focus-visible:ring-offset-0"
+                           className="bg-background/10 rounded-[5px] border border-background/60 backdrop-blur-[2.5px] backdrop-brightness-[100%] opacity-80 font-medium text-background text-base placeholder:text-background placeholder:opacity-80 focus-visible:ring-0 focus-visible:ring-offset-0"
                            name="name"
                            placeholder="Your Name"
                            value={form.name}
@@ -81,7 +81,7 @@ export const CallToActionSection = (): JSX.Element => {
                          />
                          <Input
                            type="email"
-                              className="bg-[#d9d9d908] rounded-[5px] border border-white backdrop-blur-[2.5px] backdrop-brightness-[100%] opacity-80 font-[Raleway] font-medium text-white text-base placeholder:text-white placeholder:opacity-80 focus-visible:ring-0 focus-visible:ring-offset-0"
+                              className="bg-background/10 rounded-[5px] border border-background/60 backdrop-blur-[2.5px] backdrop-brightness-[100%] opacity-80 font-medium text-background text-base placeholder:text-background placeholder:opacity-80 focus-visible:ring-0 focus-visible:ring-offset-0"
                            name="email"
                            placeholder="Your Email"
                            value={form.email}
@@ -89,7 +89,7 @@ export const CallToActionSection = (): JSX.Element => {
                            required
                          />
                          <Textarea
-                            className="bg-[#d9d9d908] rounded-[5px] border border-white backdrop-blur-[2.5px] backdrop-brightness-[100%] opacity-80 font-[Raleway] font-medium text-white text-base placeholder:text-white placeholder:opacity-80 focus-visible:ring-0 focus-visible:ring-offset-0"
+                            className="bg-background/10 rounded-[5px] border border-background/60 backdrop-blur-[2.5px] backdrop-brightness-[100%] opacity-80 font-medium text-background text-base placeholder:text-background placeholder:opacity-80 focus-visible:ring-0 focus-visible:ring-offset-0"
                            name="message"
                            placeholder="Your Message..."
                            rows={5}
@@ -99,7 +99,7 @@ export const CallToActionSection = (): JSX.Element => {
                          />
                          <Button
                            type="submit"
-                           className="bg-primary hover:bg-[#1e4734] text-white w-full"
+                           className="bg-primary hover:bg-primary/90 text-primary-foreground w-full"
                            disabled={loading}
                          >
                            {loading ? "Sending..." : "Send Message"}
@@ -113,14 +113,3 @@ export const CallToActionSection = (): JSX.Element => {
     </section>
   );
 };
-
-
-
-
-// <Input
-//             className="w-full sm:w-[475px] h-12 bg-[#d9d9d908] rounded-[5px] border border-white backdrop-blur-[2.5px] backdrop-brightness-[100%] opacity-80 font-[Raleway] font-medium text-white text-base placeholder:text-white placeholder:opacity-80 focus-visible:ring-0 focus-visible:ring-offset-0"
-//             placeholder="Enter your email"
-//           />
-//           <Button className="px-10 py-3 bg-primary rounded-[5px] backdrop-blur-[2.5px] backdrop-brightness-[100%] opacity-80 font-[Raleway] font-bold text-white text-base whitespace-nowrap hover:bg-[#1e4332]">
-//             Submit
-//           </Button>

@@ -82,13 +82,13 @@ function OrdersPage() {
   };
 
   const OrderItem = ({ order }: { order: Order }) => (
-    <div className="bg-white/90 shadow-md rounded-2xl p-6 mb-6 border border-primary-100 hover:shadow-lg transition-all group relative overflow-hidden">
+    <div className="bg-card shadow-md rounded-2xl p-6 mb-6 border border-border hover:shadow-lg transition-all group relative overflow-hidden">
       <div className="flex justify-between items-center mb-2">
         <h3 className="text-lg font-bold text-primary flex items-center gap-2">
           <span className="inline-block w-2 h-2 rounded-full bg-primary mr-2"></span>
           Order #{order.id}
         </h3>
-        <span className="text-xs text-gray-400">
+        <span className="text-xs text-muted-foreground">
           {new Date(order.created_at).toLocaleDateString()}
         </span>
       </div>
@@ -96,38 +96,38 @@ function OrdersPage() {
         <span
           className={`px-3 py-1 rounded-full text-xs font-semibold ${
             order.status === "Completed"
-              ? "bg-green-100 text-primary"
+              ? "bg-muted text-primary"
               : order.status === "Pending"
-              ? "bg-yellow-100 text-yellow-700"
-              : "bg-primary-100 text-primary"
+              ? "bg-muted text-muted-foreground"
+              : "bg-muted text-primary"
           }`}
         >
           {order.status}
           {/* Pending */}
         </span>
-        <span className="text-gray-700 font-medium">
+        <span className="text-foreground font-medium">
           Total:{" "}
-          <span className="text-primary-700">${order.total_price.toFixed(2)}</span>
+          <span className="text-primary">${order.total_price.toFixed(2)}</span>
         </span>
       </div>
       <div className="mt-2 space-y-1">
         {order.items!.slice(0, 2).map((item) => (
-          <div key={item.id} className="flex justify-between text-sm text-gray-600">
+          <div key={item.id} className="flex justify-between text-sm text-muted-foreground">
             <span>
-              {item.name} <span className="text-gray-400">x{item.quantity}</span>
+              {item.name} <span className="text-muted-foreground/70">x{item.quantity}</span>
             </span>
             <span>${(item.price * item.quantity).toFixed(2)}</span>
           </div>
         ))}
         {order.items!.length > 2 && (
-          <div className="text-xs text-gray-400 italic">
+          <div className="text-xs text-muted-foreground italic">
             + {order.items!.length - 2} more items
           </div>
         )}
       </div>
       <button
         onClick={() => setSelectedOrder(order)}
-        className="absolute right-6 bottom-6 bg-primary text-white px-4 py-2 rounded-lg  hover:bg-green-700 transition-all font-semibold"
+        className="absolute right-6 bottom-6 bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-all font-semibold"
       >
         View Details
       </button>
@@ -135,7 +135,7 @@ function OrdersPage() {
   );
 
   const OrderSkeleton = () => (
-    <div className="bg-white/80 rounded-2xl p-6 mb-6 border border-primary-50">
+    <div className="bg-card rounded-2xl p-6 mb-6 border border-border">
       <div className="flex justify-between items-center">
         <Skeleton className="w-1/3 h-6 rounded" />
         <Skeleton className="w-1/6 h-6 rounded" />
@@ -149,35 +149,35 @@ function OrdersPage() {
   return (
     <div className="container mx-auto px-4 py-10 max-w-3xl">
       <h1 className="text-4xl font-extrabold mb-8 text-primary tracking-tight text-center">
-        <FaFilter className="inline mr-2 text-primary-400" /> My Orders
+        <FaFilter className="inline mr-2 text-primary" /> My Orders
       </h1>
 
       {/* Filter Section */}
-      <div className="bg-white/90 rounded-xl p-6 mb-10 border border-primary-100 flex flex-wrap gap-4 items-end justify-between">
+      <div className="bg-card rounded-xl p-6 mb-10 border border-border flex flex-wrap gap-4 items-end justify-between">
         <div className="flex flex-col gap-1">
-          <label className="text-gray-600 text-sm">Start Date</label>
+          <label className="text-muted-foreground text-sm">Start Date</label>
           <input
             type="date"
             value={filter.startDate}
             onChange={(e) => setFilter({ ...filter, startDate: e.target.value })}
-            className="p-2 border border-primary-200 rounded-md focus:ring-2 focus:ring-primary-400 bg-primary-50"
+            className="p-2 border border-border rounded-md focus:ring-2 focus:ring-ring bg-background"
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-gray-600 text-sm">End Date</label>
+          <label className="text-muted-foreground text-sm">End Date</label>
           <input
             type="date"
             value={filter.endDate}
             onChange={(e) => setFilter({ ...filter, endDate: e.target.value })}
-            className="p-2 border border-primary-200 rounded-md focus:ring-2 focus:ring-primary-400 bg-primary-50"
+            className="p-2 border border-border rounded-md focus:ring-2 focus:ring-ring bg-background"
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-gray-600 text-sm">Status</label>
+          <label className="text-muted-foreground text-sm">Status</label>
           <select
             value={filter.status}
             onChange={(e) => setFilter({ ...filter, status: e.target.value })}
-            className="p-2 border border-primary-200 rounded-md focus:ring-2 focus:ring-primary-400 bg-primary-50"
+            className="p-2 border border-border rounded-md focus:ring-2 focus:ring-ring bg-background"
           >
             <option value="">All</option>
             <option value="Pending">Pending</option>
@@ -186,7 +186,7 @@ function OrdersPage() {
           </select>
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-gray-600 text-sm">Price Range</label>
+          <label className="text-muted-foreground text-sm">Price Range</label>
           <div className="flex gap-2">
             <input
               type="number"
@@ -194,7 +194,7 @@ function OrdersPage() {
               onChange={(e) =>
                 setFilter({ ...filter, minPrice: parseFloat(e.target.value) || 0 })
               }
-              className="p-2 border border-primary-200 rounded-md w-20 focus:ring-2 focus:ring-primary-400 bg-primary-50"
+              className="p-2 border border-border rounded-md w-20 focus:ring-2 focus:ring-ring bg-background"
               placeholder="Min"
             />
             <input
@@ -203,14 +203,14 @@ function OrdersPage() {
               onChange={(e) =>
                 setFilter({ ...filter, maxPrice: parseFloat(e.target.value) || 1000 })
               }
-              className="p-2 border border-primary-200 rounded-md w-20 focus:ring-2 focus:ring-primary-400 bg-primary-50"
+              className="p-2 border border-border rounded-md w-20 focus:ring-2 focus:ring-ring bg-background"
               placeholder="Max"
             />
           </div>
         </div>
         <button
           onClick={resetFilter}
-          className="ml-auto bg-primary-500 text-white px-4 py-2 rounded hover:bg-primary-600 transition"
+          className="ml-auto bg-primary text-primary-foreground px-4 py-2 rounded hover:bg-primary/90 transition"
         >
           Reset Filters
         </button>
@@ -225,7 +225,7 @@ function OrdersPage() {
       ) : filteredOrders.length > 0 ? (
         filteredOrders.map((order) => <OrderItem key={order.id} order={order} />)
       ) : (
-        <p className="text-center text-gray-500">No orders found.</p>
+        <p className="text-center text-muted-foreground">No orders found.</p>
       )}
 
       {/* Dialog for selected order */}

@@ -51,7 +51,7 @@ function CardProduct({ product }: { product: Product }) {
   return (
     <motion.div
       whileHover={{ scale: 1.015 }}
-      className="relative group rounded-xl shadow-md bg-white border border-gray-100 overflow-hidden transition-all duration-300 "
+      className="relative group rounded-xl shadow-md bg-card border border-border overflow-hidden transition-all duration-300 "
     >
       {/* Product Image */}
       <div className="relative h-[250px] w-full overflow-hidden">
@@ -71,7 +71,7 @@ function CardProduct({ product }: { product: Product }) {
           <Button
             variant="ghost"
             size="icon"
-            className="bg-white/90 hover:bg-white rounded-full p-1 shadow"
+            className="bg-background/90 hover:bg-background rounded-full p-1 shadow"
             onClick={() => {
               if(!isAuthenticated){
       toast.info("You should log in first")
@@ -88,7 +88,7 @@ function CardProduct({ product }: { product: Product }) {
             }}
           >
             {isFavorite ? (
-              <FaHeart className="text-red-500 w-5 h-5" />
+              <FaHeart className="text-destructive w-5 h-5" />
             ) : (
               <HeartIcon className="w-5 h-5 " />
             )}
@@ -98,9 +98,9 @@ function CardProduct({ product }: { product: Product }) {
             <Button
               variant="ghost"
               size="icon"
-              className="bg-white/90 hover:bg-white rounded-full p-1 shadow"
+              className="bg-background/90 hover:bg-background rounded-full p-1 shadow"
             >
-              <IoEyeSharp className="w-5 h-5 text-gray-800 cursor-pointer" />
+              <IoEyeSharp className="w-5 h-5 text-foreground cursor-pointer" />
             </Button>
           </Link>
         </motion.div>
@@ -134,7 +134,7 @@ function CardProduct({ product }: { product: Product }) {
           <Button
             onClick={handleAdd}
             size="sm"
-            className="bg-primary text-white px-4 py-1 text-xs font-semibold"
+            className="bg-primary text-primary-foreground px-4 py-1 text-xs font-semibold"
           >
             Add to Cart
           </Button>
@@ -142,7 +142,7 @@ function CardProduct({ product }: { product: Product }) {
 
         {/* Discount badge */}
         {product.discount_percentage && (
-          <div className="absolute top-3 left-3 bg-red-500 text-white text-[10px] px-2 py-1 rounded-full font-bold shadow-md">
+          <div className="absolute top-3 left-3 bg-destructive text-primary-foreground text-[10px] px-2 py-1 rounded-full font-bold shadow-md">
             -{product.discount_percentage}%
           </div>
         )}

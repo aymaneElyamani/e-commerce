@@ -50,17 +50,17 @@ function Signup() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-  <div className="flex w-full max-w-4xl bg-white rounded-lg shadow-md overflow-hidden">
+    <div className="min-h-screen bg-background flex items-center justify-center">
+  <div className="flex w-full max-w-4xl bg-card rounded-lg shadow-md overflow-hidden border border-border">
     {/* Left Panel */}
-    <div className="hidden md:flex w-1/2 items-center justify-center bg-[#EAF1FB]">
+    <div className="hidden md:flex w-1/2 items-center justify-center bg-muted">
       <img src="/imglogin.png" alt="Signup visual" className="w-3/4" />
     </div>
 
     {/* Right Panel */}
     <div className="w-full md:w-1/2 px-8 py-12">
-      <h2 className="text-2xl font-bold text-gray-900 mb-1">Create an Account</h2>
-      <p className="text-sm text-gray-500 mb-6">Enter your details below</p>
+      <h2 className="text-2xl font-bold text-foreground mb-1">Create an Account</h2>
+      <p className="text-sm text-muted-foreground mb-6">Enter your details below</p>
 
       <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
         <div>
@@ -73,7 +73,7 @@ function Signup() {
             {...formRegister("email")}
           />
           {errors.email && (
-            <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+            <p className="text-destructive text-sm mt-1">{errors.email.message}</p>
           )}
         </div>
 
@@ -87,7 +87,7 @@ function Signup() {
             {...formRegister("password")}
           />
           {errors.password && (
-            <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+            <p className="text-destructive text-sm mt-1">{errors.password.message}</p>
           )}
         </div>
 
@@ -113,9 +113,9 @@ function Signup() {
         </Button>
       </form>
 
-      <p className="text-center text-sm text-gray-600 mt-6">
+      <p className="text-center text-sm text-muted-foreground mt-6">
         Already have an account?{" "}
-        <a href="/login" className="text-black font-semibold hover:underline">
+        <a href="/login" className="text-foreground font-semibold hover:underline">
           Log in
         </a>
       </p>

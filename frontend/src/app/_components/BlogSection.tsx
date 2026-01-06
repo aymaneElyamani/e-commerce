@@ -33,7 +33,7 @@ export const BlogSection = (): JSX.Element => {
 
   return (
     <section className="w-full py-16 max-w-[1220px] mx-auto">
-      <h2 className="text-center mb-10 text-4xl tracking-[1.44px] leading-[50.4px] font-normal text-primary [-webkit-text-stroke:1.1px_#285a43] [font-family:'Lato',Helvetica]">
+      <h2 className="text-center mb-10 text-4xl tracking-[1.44px] leading-[50.4px] font-normal text-primary [-webkit-text-stroke:1.1px_var(--accent)]">
         Interesting Blog To Read
       </h2>
 
@@ -47,24 +47,24 @@ export const BlogSection = (): JSX.Element => {
                 src={post.image}
               />
 
-              <h3 className="mt-4 [font-family:'Lato',Helvetica] font-black text-primary text-xl tracking-[0] leading-7">
+              <h3 className="mt-4 font-black text-primary text-xl tracking-[0] leading-7">
                 {post.title}
               </h3>
 
-              <p className="mt-4 opacity-80 [font-family:'Raleway',Helvetica] font-medium text-[#121212] text-base tracking-[0] leading-6">
+              <p className="mt-4 opacity-80 font-medium text-muted-foreground text-base tracking-[0] leading-6">
                 {post.excerpt}
               </p>
 
               <div className="mt-6 flex items-center justify-between">
                 <div className="flex items-center">
-                  <CalendarIcon className="w-6 h-6 text-[#121212cc]" />
-                  <span className="ml-2 opacity-80 [font-family:'Raleway',Helvetica] font-medium text-[#121212cc] text-base tracking-[0] leading-6">
+                  <CalendarIcon className="w-6 h-6 text-muted-foreground" />
+                  <span className="ml-2 opacity-80 font-medium text-muted-foreground text-base tracking-[0] leading-6">
                     {post.date}
                   </span>
                 </div>
 
                 <div className="flex items-center">
-                  <span className="[font-family:'Lato',Helvetica] font-black text-primary text-base tracking-[0] leading-[22.4px]">
+                  <span className="font-black text-primary text-base tracking-[0] leading-[22.4px]">
                     Read More
                   </span>
                   <ArrowRightIcon className="ml-1 w-6 h-6 text-primary" />

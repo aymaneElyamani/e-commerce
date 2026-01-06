@@ -31,9 +31,9 @@ export const FeaturedProductsSection = (): JSX.Element => {
   ];
 
   return (
-    <section className="w-screen py-16 bg-gray-50">
+    <section className="w-screen py-16 bg-muted">
       <div className="w-full flex flex-col items-center">
-        <h2 className="text-4xl text-primary font-normal tracking-[1.44px] leading-[50.4px] font-['Lato',Helvetica] [-webkit-text-stroke:1.1px_#285a43] mb-12">
+        <h2 className="text-4xl text-primary font-normal tracking-[1.44px] leading-[50.4px] [-webkit-text-stroke:1.1px_var(--accent)] mb-12">
           Our Gallery View
         </h2>
       </div>
@@ -45,16 +45,16 @@ export const FeaturedProductsSection = (): JSX.Element => {
             style={{ backgroundImage: "url('/images.svg')" }}
           ></div>
           {/* Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black opacity-70 group-hover:opacity-80 transition-opacity duration-500"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-foreground via-transparent to-foreground opacity-70 group-hover:opacity-80 transition-opacity duration-500"></div>
           {/* Text Content */}
           <div className="absolute inset-0 flex flex-col justify-center items-start px-10">
-            <h2 className="text-white text-4xl md:text-5xl font-bold mb-4">
+            <h2 className="text-background text-4xl md:text-5xl font-bold mb-4">
               We Are Hexashop
             </h2>
-            <p className="text-white text-lg mb-6">
+            <p className="text-background text-lg mb-6">
               Discover the best products for your style and comfort.
             </p>
-            <Button className="bg-white text-black font-semibold px-6 py-2 rounded-md hover:bg-gray-100 transition">
+            <Button className="bg-background text-foreground font-semibold px-6 py-2 rounded-md hover:bg-muted transition">
               Shop Now
             </Button>
           </div>
@@ -76,16 +76,16 @@ export const FeaturedProductsSection = (): JSX.Element => {
                     className="absolute w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                   {/* Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-foreground via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
                   {/* Text Content */}
                   <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4">
-                    <h3 className="text-white text-2xl font-semibold">
+                    <h3 className="text-background text-2xl font-semibold">
                       {category.title}
                     </h3>
-                    <p className="text-white text-sm mt-2">
+                    <p className="text-background text-sm mt-2">
                       {category.description}
                     </p>
-                    <Button className="mt-4 border border-white text-white bg-transparent px-4 py-2 rounded-md hover:bg-white hover:text-black transition">
+                    <Button className="mt-4 border border-background text-background bg-transparent px-4 py-2 rounded-md hover:bg-background hover:text-foreground transition">
                       Discover More
                     </Button>
                   </div>

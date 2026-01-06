@@ -51,7 +51,7 @@ export default function ContactPage() {
   }
 
   return (
-    <section className="min-h-screen w-full px-6 py-16 bg-white">
+    <section className="min-h-screen w-full px-6 py-16 bg-background">
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         {/* Left Image */}
         <motion.div
@@ -78,7 +78,7 @@ export default function ContactPage() {
           <Card className="p-6 border-none"> {/* shadow-xl removed */}
             <CardContent className="p-0 space-y-6">
               <h2 className="text-3xl font-bold text-primary">Contact Us</h2>
-              <p className="text-gray-600">
+              <p className="text-muted-foreground">
                 Got a question or feedback? Fill in the form and our team will get back to you.
               </p>
               <form className="space-y-4" onSubmit={handleSubmit}>
@@ -108,7 +108,7 @@ export default function ContactPage() {
                 />
                 <Button
                   type="submit"
-                  className="bg-primary hover:bg-[#1e4734] text-white w-full"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground w-full"
                   disabled={loading}
                 >
                   {loading ? "Sending..." : "Send Message"}

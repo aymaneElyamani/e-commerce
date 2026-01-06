@@ -46,19 +46,19 @@ export default function Navbar() {
   };
 
   return (
-    <header className="bg-white text-white fixed top-0 left-0 w-full z-50 shadow-md">
-      <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
+    <header className="bg-background text-foreground fixed top-0 left-0 w-full z-50 shadow-md">
+      <div className="max-w-7xl flex justify-between items-center px-6 py-6">
         {/* Logo */}
-        <div className="flex items-center justify-start flex-1 ml-16">
+        <div className="relative flex items-center justify-start flex-1 ml-16">
           <Link
             href="/"
-            className="text-4xl font-bold text-primary cursor-pointer "
+            className="text-4xl font-bold text-primary cursor-pointer z-50 "
           >
             <div>
             <img
-                src="/logo1.png"
+                src="/logoDouaa.png"
                 alt="logo"
-                className="w-25 h-8 cursor-pointer"
+                className="absolute -top-6 w-36 h-28 cursor-pointer "
               />
         </div>
 
@@ -71,7 +71,7 @@ export default function Navbar() {
             <Link
               key={item.text}
               href={item.href}
-              className="text-base hover:underline text-black"
+              className="text-base hover:underline text-foreground"
             >
               {item.text}
             </Link>
@@ -90,10 +90,10 @@ export default function Navbar() {
               <img
                 src="/avatar.png"
                 alt="Profile"
-                className="w-10 h-10 rounded-full border-2 border-white cursor-pointer"
+                className="w-10 h-10 rounded-full border-2 border-border cursor-pointer"
               />
               <div
-                className={`absolute right-0 mt-2 w-48 bg-white text-black rounded shadow-lg transition-opacity duration-300 ease-in-out ${
+                className={`absolute right-0 mt-2 w-48 bg-popover text-popover-foreground border border-border rounded shadow-lg transition-opacity duration-300 ease-in-out ${
                   profileMenuVisible
                     ? "opacity-100 visible"
                     : "opacity-0 invisible"
@@ -104,28 +104,28 @@ export default function Navbar() {
                 </div>
                 <Link
                   href="/profile"
-                  className="w-full px-4 py-2 hover:bg-gray-100 text-sm flex items-center gap-2"
+                  className="w-full px-4 py-2 hover:bg-muted text-sm flex items-center gap-2"
                 >
                   <User size={16} />
                   Profile
                 </Link>
                 <Link
                   href="/orders"
-                  className="w-full px-4 py-2 hover:bg-gray-100 text-sm flex items-center gap-2"
+                  className="w-full px-4 py-2 hover:bg-muted text-sm flex items-center gap-2"
                 >
                   <ShoppingCart size={16} />
                   My Orders
                 </Link>
                 <Link
                   href="/wishlist"
-                  className="w-full px-4 py-2 hover:bg-gray-100 text-sm flex items-center gap-2"
+                  className="w-full px-4 py-2 hover:bg-muted text-sm flex items-center gap-2"
                 >
                   <FaHeart size={16} />
                   My wishList
                 </Link>
                 <Link
                   href="/email"
-                  className="w-full px-4 py-2 hover:bg-gray-100 text-sm flex items-center gap-2"
+                  className="w-full px-4 py-2 hover:bg-muted text-sm flex items-center gap-2"
                 >
                   <User size={16} />
                   Email
@@ -137,7 +137,7 @@ export default function Navbar() {
                     logout();
                     route.push("/");
                   }}
-                  className="w-full px-4 py-2 hover:bg-gray-100 text-sm flex items-center gap-2"
+                  className="w-full px-4 py-2 hover:bg-muted text-sm flex items-center gap-2"
                 >
                   <LogOut size={16} />
                   Logout
@@ -172,10 +172,10 @@ export default function Navbar() {
                 size="icon"
                 onClick={() => setIsSheetOpen(true)}
               >
-                <Menu className="text-black" />
+                <Menu className="text-foreground" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="bg-green-800 text-white">
+            <SheetContent side="right" className="bg-foreground text-background">
               <div className="flex flex-col gap-4 mt-10">
                 {navItems.map((item) => (
                   <Link key={item.text} href={item.href} className="text-lg">
@@ -189,7 +189,7 @@ export default function Navbar() {
                     <Link href="/profile">
                       <Button
                         variant="outline"
-                        className="border-white text-black w-full"
+                        className="w-full border-background/40 text-background hover:bg-background/10"
                       >
                         Profile
                       </Button>
@@ -197,7 +197,7 @@ export default function Navbar() {
                     <Link href="/orders">
                       <Button
                         variant="outline"
-                        className="border-white text-black w-full"
+                        className="w-full border-background/40 text-background hover:bg-background/10"
                       >
                         My Orders
                       </Button>
@@ -205,7 +205,7 @@ export default function Navbar() {
                     <Link href="/email">
                       <Button
                         variant="outline"
-                        className="border-white text-black w-full"
+                        className="w-full border-background/40 text-background hover:bg-background/10"
                       >
                         Email
                       </Button>
@@ -217,7 +217,7 @@ export default function Navbar() {
                         setIsSheetOpen(false);
                         route.push("/");
                       }}
-                      className="w-full text-left px-4 py-2 hover:bg-white/20 text-sm"
+                      className="w-full text-left px-4 py-2 hover:bg-background/10 text-sm"
                     >
                       Logout
                     </button>
@@ -227,18 +227,18 @@ export default function Navbar() {
                     <Link href="/signup">
                       <Button
                         variant="outline"
-                        className="border-white text-white bg-transparent hover:bg-white/20 w-full"
+                        className="border-background/40 text-background bg-transparent hover:bg-background/10 w-full"
                       >
-                        <UserPlus className="text-white" />
+                        <UserPlus className="text-background" />
                         <span>Sign Up</span>
                       </Button>
                     </Link>
                     <Link href="/login">
                       <Button
                         variant="outline"
-                        className="border-white text-white bg-transparent hover:bg-white/20 w-full"
+                        className="border-background/40 text-background bg-transparent hover:bg-background/10 w-full"
                       >
-                        <LogIn className="text-white" />
+                        <LogIn className="text-background" />
                         <span>Log In</span>
                       </Button>
                     </Link>

@@ -36,7 +36,7 @@ export default function Hero() {
   return (
     <div className="min-h-screen px-6 py-12 md:px-20">
       {/* Breadcrumb */}
-      <nav className="text-sm text-gray-500 mb-6">
+      <nav className="text-sm text-muted-foreground mb-6">
         <span className="hover:underline cursor-pointer">Home</span> /{" "}
         <span>About</span>
       </nav>
@@ -47,25 +47,25 @@ export default function Hero() {
       {/* Section texte + image */}
       <div className="grid md:grid-cols-2 gap-10 items-center">
         <div>
-          <p className="text-gray-700 mb-4 transition-opacity duration-500 hover:opacity-80">
+          <p className="text-muted-foreground mb-4 transition-opacity duration-500 hover:opacity-80">
             Welcome to our space  a fresh, student-powered online shop launched
             by Aymane El Yamani, Mohammed Assou and Mohamed Anour. What started
             as a university project quickly grew into a passion-driven venture.
             We dive into thrift shops, dig up hidden gems, and bring them to you
             for unbeatable prices.
           </p>
-          <p className="text-gray-700 mb-4 transition-opacity duration-500 hover:opacity-80">
+          <p className="text-muted-foreground mb-4 transition-opacity duration-500 hover:opacity-80">
             Mainly focused on clothing, our platform is built on the belief that
             fashion doesn’t have to be expensive to be expressive.
           </p>
-          <p className="text-gray-700 mb-4 transition-opacity duration-500 hover:opacity-80">
+          <p className="text-muted-foreground mb-4 transition-opacity duration-500 hover:opacity-80">
             We’ve poured our energy, creativity, and late nights into making
             this site not just a school project  but something real. Something
             that could grow. So whether you’re here to support, explore, or
             score your next favorite fit  welcome to the beginning of something
             special.
           </p>
-          <p className="text-gray-700 transition-opacity duration-500 hover:opacity-80">
+          <p className="text-muted-foreground transition-opacity duration-500 hover:opacity-80">
             Exclusive has more than a thousand products to offer, growing at a
             very fast pace.
           </p>
@@ -73,7 +73,7 @@ export default function Hero() {
 
         <div className="w-full">
           <Image
-            src="/about.png"
+            src="/im4.jpeg"
             alt="Two women shopping"
             width={600}
             height={400}
@@ -92,12 +92,12 @@ export default function Hero() {
               key={idx}
               onClick={() => setActiveIndex(idx)}
               className={`p-6 rounded-lg text-center cursor-pointer border transition-all duration-200 shadow-sm
-                ${isActive ? "bg-primary text-white scale-105" : "bg-white text-gray-800"}
+                ${isActive ? "bg-primary text-primary-foreground scale-105" : "bg-card text-card-foreground"}
               `}
             >
               <div
                 className={`w-12 h-12 mx-auto flex items-center justify-center rounded-full mb-4 
-                  ${isActive ? "bg-white text-green-800" : "bg-black text-white"}
+                  ${isActive ? "bg-background text-primary" : "bg-foreground text-background"}
                 `}
               >
                 {stat.icon}

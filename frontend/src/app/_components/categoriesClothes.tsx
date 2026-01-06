@@ -9,29 +9,29 @@ export const CategoriesCloches = (): JSX.Element => {
   const categories = [
     {
       id: 1,
-      name: "WOMEN",
+      name: "CLOTHES",
       backgroundImage: "/img/categories/image1.png",
       textColor: "primary",
-      href: "/products?category=women",
+      href: "/products?category=clothes",
     },
     {
       id: 2,
-      name: "KIDS",
+      name: "ACCESSORIES",
       backgroundImage: "/img/categories/image2.png",
       textColor: "white",
-      href: "/products?category=kids",
+      href: "/products?category=accessories",
     },
     {
       id: 3,
-      name: "MEN",
+      name: "SHOES",
       backgroundImage: "/img/categories/image3.png",
       textColor: "primary",
-      href: "/products?category=man",
+      href: "/products?category=shoes",
     },
   ];
 
   return (
-    <section className="w-full py-14 px-6 bg-[#f9f9f9]" id = "categories">
+    <section className="w-full py-14 px-6 bg-muted" id="categories">
       <div className="max-w-screen-xl mx-auto">
         {/* Header */}
         <motion.div
@@ -41,7 +41,7 @@ export const CategoriesCloches = (): JSX.Element => {
           viewport={{ once: true }}
           className="flex flex-col md:flex-row justify-between mb-12"
         >
-          <h2 className="text-primary text-3xl md:text-4xl font-semibold leading-tight md:max-w-md font-['Lato']">
+          <h2 className="text-primary text-3xl md:text-4xl font-semibold leading-tight md:max-w-md">
             We Help Choose The Most Suitable Clothes For You
           </h2>
         </motion.div>
@@ -57,7 +57,7 @@ export const CategoriesCloches = (): JSX.Element => {
               viewport={{ once: true }}
             >
               <Link href={category.href}>
-                <Card className="group w-full h-[320px] sm:h-[400px]  overflow-hidden bg-[#f9f9f9] shadow-none duration-300 ml-4">
+                <Card className="group w-full h-[320px] sm:h-[400px] overflow-hidden bg-muted shadow-none duration-300 ml-4">
                   <CardContent className="p-0 h-full w-full relative">
                     {/* Full-cover image */}
                     <div className="absolute inset-0 z-0">
@@ -74,10 +74,10 @@ export const CategoriesCloches = (): JSX.Element => {
 
                     {/* Category Name */}
                     <div
-                      className={`absolute inset-0 z-20 flex items-center justify-center text-3xl sm:text-4xl md:text-5xl font-extrabold text-center px-4 transition-transform duration-500 group-hover:scale-105 text-${category.textColor}`}
-                      style={{
-                        textShadow: "2px 2px 10px rgba(0,0,0,0.5)",
-                      }}
+                      className={`absolute inset-0 z-20 flex items-center justify-center text-3xl sm:text-4xl md:text-5xl font-extrabold text-center px-4 transition-transform duration-500 group-hover:scale-105 ${
+                        category.textColor === "white" ? "text-background" : "text-primary"
+                      }`}
+                      style={{ textShadow: "2px 2px 10px rgba(0,0,0,0.5)" }}
                     >
                       {category.name}
                     </div>
