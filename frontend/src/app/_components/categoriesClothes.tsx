@@ -10,21 +10,21 @@ export const CategoriesCloches = (): JSX.Element => {
     {
       id: 1,
       name: "CLOTHES",
-      backgroundImage: "/img/categories/image1.png",
+      backgroundImage: "/ca1.jpeg",
       textColor: "primary",
       href: "/products?category=clothes",
     },
     {
       id: 2,
       name: "ACCESSORIES",
-      backgroundImage: "/img/categories/image2.png",
+      backgroundImage: "/ca2.jpeg",
       textColor: "white",
       href: "/products?category=accessories",
     },
     {
       id: 3,
       name: "SHOES",
-      backgroundImage: "/img/categories/image3.png",
+      backgroundImage: "/ca3.jpeg",
       textColor: "primary",
       href: "/products?category=shoes",
     },
@@ -57,12 +57,12 @@ export const CategoriesCloches = (): JSX.Element => {
               viewport={{ once: true }}
             >
               <Link href={category.href}>
-                <Card className="group w-full h-[320px] sm:h-[400px] overflow-hidden bg-muted shadow-none duration-300 ml-4">
+                <Card className="group w-full h-[360px] sm:h-[460px] lg:h-[520px] overflow-hidden bg-muted shadow-none duration-300 ml-4">
                   <CardContent className="p-0 h-full w-full relative">
                     {/* Full-cover image */}
                     <div className="absolute inset-0 z-0">
                       <div
-                        className="w-full h-full bg-center bg-cover transition-transform duration-700 group-hover:scale-105"
+                        className="w-full h-full bg-center bg-contain bg-no-repeat transition-transform duration-700 group-hover:scale-105"
                         style={{
                           backgroundImage: `url(${category.backgroundImage})`,
                         }}

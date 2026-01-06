@@ -49,7 +49,7 @@ export default function Hero() {
         <div>
           <p className="text-muted-foreground mb-4 transition-opacity duration-500 hover:opacity-80">
             Welcome to our space  a fresh, student-powered online shop launched
-            by Aymane El Yamani, Mohammed Assou and Mohamed Anour. What started
+            by douaa el yachioui. What started
             as a university project quickly grew into a passion-driven venture.
             We dive into thrift shops, dig up hidden gems, and bring them to you
             for unbeatable prices.
@@ -73,7 +73,7 @@ export default function Hero() {
 
         <div className="w-full">
           <Image
-            src="/im4.jpeg"
+            src="/im10.jpeg"
             alt="Two women shopping"
             width={600}
             height={400}

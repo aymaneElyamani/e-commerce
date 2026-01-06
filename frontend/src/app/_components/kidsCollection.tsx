@@ -3,7 +3,7 @@ import React from "react";
 
 const KidsCollection = () => {
   return (
-    <section className="relative py-12 bg-[url(/aassoi.png)] bg-cover bg-center">
+    <section className="relative py-12 bg-[url(/4.jpg)] bg-cover bg-center">
       {/* Overlay */}
       <div className="absolute inset-0 bg-foreground/40 z-0"></div>
 
@@ -12,12 +12,12 @@ const KidsCollection = () => {
         {/* Images */}
         <div className="flex flex-col md:flex-row justify-center items-center gap-4 md:w-1/2">
           <img
-            src="/bebe1.png"
+            src="/2.jpg"
             alt="bebe1"
             className="w-48 md:w-64 object-contain"
           />
           <img
-            src="/bebe2.png"
+            src="/7.jpg"
             alt="bebe2"
             className="w-48 md:w-64 object-contain"
           />
