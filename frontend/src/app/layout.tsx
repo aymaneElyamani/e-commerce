@@ -4,8 +4,9 @@ import "./globals.css";
 // import { Providers } from "./providers";
 import { Toaster } from "sonner";
 import Navbar from "@/common/Navbar";
-import Footer from "@/common/FooterSection";
+import FooterSwitcher from "@/common/FooterSwitcher";
 import { CallToActionSection } from "./_components/CallToActionSection";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -76,10 +77,16 @@ export default function RootLayout({
       <Navbar />
 
         {children}
+        {/* Floating Chat Button (bottom-left) */}
+        <Link
+          href="/chat"
+          aria-label="Open chat assistant"
+          className="fixed left-4 bottom-4 z-50 rounded-full bg-blue-600 text-white shadow-lg px-4 py-3 hover:bg-blue-700 transition-colors"
+        >
+          💬 Chat
+        </Link>
         {/* </Providers> */}
-    <CallToActionSection/>
-
-        <Footer/>
+        <FooterSwitcher/>
 
       </body>
     </html>

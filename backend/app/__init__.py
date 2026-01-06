@@ -23,12 +23,14 @@ def create_app():
     
     # Import and register blueprints
     from .routes import products_bq, auth_bq, order_bp, offers_bp, admin, blogs_bp
+    from .routes.opnai_routes import opnai_bp
 
     app.register_blueprint(products_bq)
     app.register_blueprint(auth_bq)
     app.register_blueprint(order_bp)
     app.register_blueprint(offers_bp)
     app.register_blueprint(blogs_bp)
+    app.register_blueprint(opnai_bp)
     app.register_blueprint(admin)
 
     # Teardown: remove session at the end of each request
