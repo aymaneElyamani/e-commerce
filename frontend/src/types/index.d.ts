@@ -67,3 +67,12 @@ interface Offer {
   created_at: string;
   items?: LineItem[];
 }
+
+interface Blog {
+  id: number;
+  title: string;
+  content: string;
+  image_url: string | null;
+  is_published: boolean;
+  created_at: string | null;
+}

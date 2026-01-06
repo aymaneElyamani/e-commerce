@@ -2,45 +2,63 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { JSX } from "react";
+import { JSX, useEffect, useMemo, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import useAuthStore from "@/store/useAuthStore";
+import { getBlogs } from "@/services/blog";
 
-const blogs = [
-  {
-    id: "1",
-    title: "Top 10 Fashion Trends of 2025",
-    summary: "Explore the hottest fashion styles and what to expect in the coming seasons.",
-    image: "/fashion1.png",
-    date: "May 1, 2025",
-    href: "/blogs/top-10-fashion-trends-2025",
-    tags: ["Fashion", "Trends"],
-  },
-  {
-    id: "2",
-    title: "How to Choose Outfits for Any Occasion",
-    summary: "A quick guide to mastering outfits whether it's casual, formal or festive.",
-    image: "/fashion2.jpg",
-    date: "April 25, 2025",
-    href: "/blogs/how-to-choose-outfits",
-    tags: ["Style", "Guide"],
-  },
-  {
-    id: "3",
-    title: "Sustainable Fashion: Why It Matters",
-    summary: "Understand how sustainable clothing is reshaping the fashion industry.",
-    image: "/fashion3.jpg",
-    date: "April 15, 2025",
-    href: "/blogs/sustainable-fashion",
-    tags: ["Eco", "Lifestyle"],
-  },
-];
+function formatDate(iso?: string | null) {
+  if (!iso) return "";
+  try {
+    return new Date(iso).toLocaleDateString();
+  } catch {
+    return "";
+  }
+}
 
 export default function BlogGridWithSidebar(): JSX.Element {
+  const token = useAuthStore((s) => s.token);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+
+  const authHeader = useMemo(() => ({ token: token ?? undefined }), [token]);
+
+  useEffect(() => {
+    let cancelled = false;
+    const load = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await getBlogs(authHeader);
+        if (!cancelled) setBlogs(data);
+      } catch (e) {
+        if (!cancelled) setError(e instanceof Error ? e.message : "Failed to load blogs");
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, [authHeader]);
+
   return (
     <div className="max-w-screen-xl mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-[3fr_1fr] gap-10">
       {/* Blog Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {loading && (
+          <div className="col-span-full text-sm text-muted-foreground">Loading blogs...</div>
+        )}
+        {error && (
+          <div className="col-span-full text-sm text-red-600">{error}</div>
+        )}
+        {!loading && !error && blogs.length === 0 && (
+          <div className="col-span-full text-sm text-muted-foreground">No blogs found.</div>
+        )}
+
         {blogs.map((blog) => (
           <motion.div
             key={blog.id}
@@ -49,22 +67,17 @@ export default function BlogGridWithSidebar(): JSX.Element {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
           >
-            <Link href={blog.href}>
-              <div className="h-60 w-full bg-cover bg-center" style={{ backgroundImage: `url(${blog.image})` }}></div>
+            <Link href={`/blogs/${blog.id}`}>
+              <div
+                className="h-60 w-full bg-cover bg-center"
+                style={{ backgroundImage: `url(${blog.image_url ?? "/img/blog/placeholder.jpg"})` }}
+              ></div>
               <div className="p-5">
-                <p className="text-sm text-muted-foreground mb-1">{blog.date}</p>
+                <p className="text-sm text-muted-foreground mb-1">{formatDate(blog.created_at)}</p>
                 <h2 className="text-xl font-semibold text-primary mb-2">{blog.title}</h2>
-                <p className="text-sm text-muted-foreground mb-3 line-clamp-3">{blog.summary}</p>
-                <div className="flex gap-2 flex-wrap">
-                  {blog.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="bg-primary/10 text-primary px-2 py-1 text-xs rounded-full"
-                    >
-                      #{tag}
-                    </span>
-                  ))}
-                </div>
+                <p className="text-sm text-muted-foreground mb-3 line-clamp-3">
+                  {blog.content}
+                </p>
               </div>
             </Link>
           </motion.div>
