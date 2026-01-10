@@ -1,33 +1,43 @@
-# hkIjs7JqaaJMYtIqfTKHHjbaTPvzOFT31GmIQ29DwcIPmkRkxDTz5NSE
-import requests
 import random
+import requests
 
-API_URL = "http://localhost:5000/api/products"  # Your backend URL
-PEXELS_API_KEY = "hkIjs7JqaaJMYtIqfTKHHjbaTPvzOFT31GmIQ29DwcIPmkRkxDTz5NSE"
+
+API_URL = "http://localhost:8080/api/products"  # Backend URL (dev compose maps 8000->5000)
+PEXELS_API_KEY = ""
 
 headers = {"Content-Type": "application/json"}
 PEXELS_HEADERS = {"Authorization": PEXELS_API_KEY}
 
-# Updated counts per category
+# Counts per enum category
 PRODUCT_COUNTS = {
-    "man": 40,
-    "women": 10,
-    "kids": 30
+    "clothes": 30,
+    "shoes": 20,
+    "chaussures": 15,
+    "accessories": 12,
 }
 
+# Map fetch sources to enum categories
 categories = {
-    "man": {
-        "dummyjson": ["mens-shirts", "mens-shoes"],
-        "fakestore": ["men's clothing"]
+    "clothes": {
+        "dummyjson": ["mens-shirts", "womens-dresses", "tops"],
+        "fakestore": ["men's clothing", "women's clothing"],
+        "pexels_query": "fashion clothes"
     },
-    "women": {
-        "dummyjson": ["womens-dresses", "womens-shoes", "womens-bags"],
-        "fakestore": ["women's clothing"]
+    "shoes": {
+        "dummyjson": ["mens-shoes", "womens-shoes"],
+        "fakestore": [],
+        "pexels_query": "fashion shoes"
     },
-    "kids": {
-        "dummyjson": ["tops"],
-        "fakestore": []
-    }
+    "chaussures": {
+        "dummyjson": ["mens-shoes", "womens-shoes"],
+        "fakestore": [],
+        "pexels_query": "chaussures"
+    },
+    "accessories": {
+        "dummyjson": ["womens-bags"],
+        "fakestore": [],
+        "pexels_query": "fashion accessories"
+    },
 }
 
 def fetch_dummyjson_products(category):
@@ -79,26 +89,18 @@ def normalize_fakestore_product(p):
         "colors": random.sample(["black", "white", "red", "blue", "green", "beige", "gray"], 2)
     }
 
-def create_women_products_with_pexels(dummy_products, fakestore_products, count):
-    # Combine normalized dummy + fakestore women products
-    products = []
-    for p in dummy_products:
-        products.append(normalize_dummyjson_product(p))
-    for p in fakestore_products:
-        products.append(normalize_fakestore_product(p))
-
-    # Fetch pexels images for "women fashion clothes"
-    pexels_imgs = fetch_pexels_images("women fashion clothes", per_page=count)
-    print(f"Fetched {len(pexels_imgs)} images from Pexels for women category.")
-
-    # Assign pexels images as image_cover or in details randomly
-    for i in range(min(count, len(products))):
-        product = products[i]
-        product["image_cover"] = pexels_imgs[i]
-        product["image_details"] = pexels_imgs[i:i+3]  # assign up to 3 images, may overlap
-    return products[:count]
+def attach_pexels_images(products, query, count):
+    """Fetch images from Pexels and attach to products to diversify visuals."""
+    pexels_imgs = fetch_pexels_images(query, per_page=count)
+    print(f"Fetched {len(pexels_imgs)} images from Pexels for '{query}'.")
+    for i in range(min(count, len(products), len(pexels_imgs))):
+        products[i]["image_cover"] = pexels_imgs[i]
+        products[i]["image_details"] = pexels_imgs[i:i+3]
+    return products
 
 def post_products(products, category_label, max_count):
+  
+
     posted = 0
     random.shuffle(products)
     seen_names = set()
@@ -110,10 +112,7 @@ def post_products(products, category_label, max_count):
             continue  # skip duplicates by name
         seen_names.add(p["name"])
 
-        payload = {
-            **p,
-            "category": category_label
-        }
+        payload = {**p, "category": category_label}
 
         print(f"Posting {category_label} product: {payload['name']}")
         res = requests.post(API_URL, json=payload, headers=headers)
@@ -125,20 +124,17 @@ def post_products(products, category_label, max_count):
 
 for category_label, apis in categories.items():
     all_products = []
-    # Fetch DummyJSON products
+
     dummy_products_raw = fetch_dummyjson_products(apis.get("dummyjson", []))
-    # Fetch Fakestore products
     fakestore_products_raw = fetch_fakestore_products(apis.get("fakestore", []))
 
-    if category_label == "women":
-        # Special handling for women with Pexels images
-        women_products = create_women_products_with_pexels(dummy_products_raw, fakestore_products_raw, PRODUCT_COUNTS["women"])
-        post_products(women_products, "women", PRODUCT_COUNTS["women"])
-    else:
-        # Normal flow for man and kids
-        dummy_products = [normalize_dummyjson_product(p) for p in dummy_products_raw]
-        fakestore_products = [normalize_fakestore_product(p) for p in fakestore_products_raw]
-        all_products.extend(dummy_products)
-        all_products.extend(fakestore_products)
+    dummy_products = [normalize_dummyjson_product(p) for p in dummy_products_raw]
+    fakestore_products = [normalize_fakestore_product(p) for p in fakestore_products_raw]
+    all_products.extend(dummy_products)
+    all_products.extend(fakestore_products)
 
-        post_products(all_products, category_label, PRODUCT_COUNTS[category_label])
+    # Optionally enrich with Pexels images for this category
+    if apis.get("pexels_query"):
+        all_products = attach_pexels_images(all_products, apis["pexels_query"], PRODUCT_COUNTS[category_label])
+
+    post_products(all_products, category_label, PRODUCT_COUNTS[category_label])
