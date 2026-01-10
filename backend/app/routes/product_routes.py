@@ -7,6 +7,17 @@ from datetime import datetime
 products_bq = Blueprint("products", __name__, url_prefix="/api")
 
 
+# Get all available product categories
+@products_bq.route('/products/categories', methods=['GET'])
+def get_categories():
+    """Return all available product categories"""
+    try:
+        categories = [{"value": cat.value, "label": cat.value.capitalize()} for cat in ProductCategory]
+        return jsonify(categories), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
 # Create a new product
 @products_bq.route('/products', methods=['POST'])
 def create_product():

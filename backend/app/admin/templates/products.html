@@ -137,9 +137,7 @@
                                         required
                                     >
                                         <option value="" disabled selected>Select a category</option>
-                                        <option value="man">Man</option>
-                                        <option value="women">Women</option>
-                                        <option value="kids">Kids</option>
+                                        <!-- Categories loaded dynamically -->
                                     </select>
                                 </div>
                             </div>
@@ -199,9 +197,7 @@
                             <div class="relative">
                                 <select id="categoryFilter" class="block appearance-none bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500">
                                     <option value="">All Categories</option>
-                                    <option value="man">Man</option>
-                                    <option value="women">Women</option>
-                                    <option value="kids">Kids</option>
+                                    <!-- Categories loaded dynamically -->
                                 </select>
                                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                                     <i class="fas fa-chevron-down"></i>
@@ -302,9 +298,7 @@
                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
                                 required
                             >
-                                <option value="man">Man</option>
-                                <option value="women">Women</option>
-                                <option value="kids">Kids</option>
+                                <!-- Categories loaded dynamically -->
                             </select>
                         </div>
                     </div>
@@ -596,8 +590,42 @@
             });
         }
 
+        // Fetch and populate categories
+        function fetchCategories() {
+            $.ajax({
+                url: "/api/products/categories",
+                method: "GET",
+                success: function(categories) {
+                    // Populate create form category dropdown
+                    let createOptions = '<option value="" disabled selected>Select a category</option>';
+                    categories.forEach(cat => {
+                        createOptions += `<option value="${cat.value}">${cat.label}</option>`;
+                    });
+                    $("#category").html(createOptions);
+                    
+                    // Populate filter dropdown
+                    let filterOptions = '<option value="">All Categories</option>';
+                    categories.forEach(cat => {
+                        filterOptions += `<option value="${cat.value}">${cat.label}</option>`;
+                    });
+                    $("#categoryFilter").html(filterOptions);
+                    
+                    // Populate edit form category dropdown
+                    let editOptions = '';
+                    categories.forEach(cat => {
+                        editOptions += `<option value="${cat.value}">${cat.label}</option>`;
+                    });
+                    $("#editCategory").html(editOptions);
+                },
+                error: function() {
+                    console.error("Failed to fetch categories");
+                }
+            });
+        }
+
         // Initialize page
         $(document).ready(function() {
+            fetchCategories();
             fetchProducts();
         });
     </script>

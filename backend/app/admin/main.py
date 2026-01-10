@@ -1,11 +1,12 @@
+import os
 from flask import render_template, request, redirect, url_for, Blueprint, session, flash
 from functools import wraps
 
 admin = Blueprint("admin", __name__, url_prefix="/admin", template_folder="templates")
 
 # Dummy admin credentials
-ADMIN_EMAIL = "admin@gojira.com"
-ADMIN_PASSWORD = "admin123"
+ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "admin@gmail.com")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "admin123")
 
 # Decorator to protect routes
 def login_required(f):
