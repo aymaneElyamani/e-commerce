@@ -36,7 +36,7 @@ const Footer: React.FC = () => {
         <a href="#" className="hover:underline">Contact Us</a>
       </div>
       <div className="text-center text-xs text-background/70 mt-4 ">
-        © {new Date().getFullYear()} Gojira. Tous droits réservés.
+        © {new Date().getFullYear()} Sorelle. Tous droits réservés.
       </div>
     </footer>
   );

@@ -3,3 +3,25 @@
 *prod.yml
 
 key.md
+
+
+*/**.tex
+*/**.log
+*/**.tmp
+*/**.aux
+*/**.out
+*/**.toc
+*/**.lof
+*/**.lot
+
+*/**.fls
+*/**.fdb_latexmk
+
+.DS_Store
+.vscode/
+.idea/
+node_modules/
+dist/
+build/
+.env
+
