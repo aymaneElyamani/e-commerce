@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import useChatStore, { Conversation, Message } from "@/store/useChatStore";
+import useChatStore, { Message } from "@/store/useChatStore";
 
 export default function ChatPage() {
   const { conversations, activeId, setActiveId, setConversations, startNewChat } =

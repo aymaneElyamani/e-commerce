@@ -1,0 +1,127 @@
+services:
+  # Frontend - Next.js Application (Development)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: e-commerce-frontend:latest
+    container_name: ecommerce-frontend-dev
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      NEXT_PUBLIC_API_URL: http://localhost:8080
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      - backend
+    networks:
+      - ecommerce-network
+    command: npm run dev
+
+  # # Model3D - 3D Customizer (Vite + React Three Fiber)
+  # model3d:
+  #   build:
+  #     context: ./model3d
+  #     dockerfile: Dockerfile
+  #   image: e-commerce-model3d:latest
+  #   container_name: ecommerce-model3d-dev
+  #   restart: unless-stopped
+  #   environment:
+  #     NODE_ENV: development
+  #   ports:
+  #     - "5173:5173"
+  #   volumes:
+  #     - ./model3d:/app
+  #     - /app/node_modules
+  #   networks:
+  #     - ecommerce-network
+  #   command: npm run dev
+
+  # Backend - Flask Application (Development)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: e-commerce-backend:latest
+    container_name: ecommerce-backend-dev
+    restart: unless-stopped
+    environment:
+      FLASK_ENV: development
+      FLASK_DEBUG: 1
+      PYTHONUNBUFFERED: 1
+      PYTHONDONTWRITEBYTECODE: 1
+      # Database
+      DATABASE_URL: postgresql://admin:admin@db:5432/ecomdb
+      # Security
+      SECRET_KEY: dev-secret-key
+      JWT_SECRET_KEY: dev_jwt_secret_key
+      # Admin
+      ADMIN_EMAIL: admin@gmail.com
+      ADMIN_PASSWORD: admin
+      # Cloudinary
+      CLOUDINARY_CLOUD_NAME: dy78nevg0
+      CLOUDINARY_API_KEY: 233
+      CLOUDINARY_API_SECRET: key
+      # OpenAI
+      OPENAI_API_KEY: sk-proj-xxxxx
+    ports:
+      - "8080:8080"
+
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - ecommerce-network
+    volumes:
+      - ./backend:/app
+    command: python app.py
+
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    container_name: ecommerce-db-dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: ecomdb
+    ports:
+      - "5430:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - ecommerce-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Adminer - Database Management UI
+  adminer:
+    # image: adminer:4-alpine
+    image: adminer:latest
+    container_name: ecommerce-adminer-dev
+    restart: unless-stopped
+    ports:
+      - "8081:8080"
+    depends_on:
+      - db
+    networks:
+      - ecommerce-network
+
+  # Redis Cache (Optional)
+  
+volumes:
+  db_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  ecommerce-network:
+    driver: bridge

@@ -7,6 +7,7 @@ import { IoEyeSharp } from "react-icons/io5";
 import { FaHeart } from "react-icons/fa";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import useCartStore from "@/store/useCartStore";
 import useWishlistStore from "@/store/useWishList";
 import { toast } from "sonner";
@@ -55,11 +56,13 @@ function CardProduct({ product }: { product: Product }) {
     >
       {/* Product Image */}
       <div className="relative h-[250px] w-full overflow-hidden">
-        <img
-          src={product.image_cover ?? ""}
-          alt={product.name}
-          className="object-cover w-full h-full"
-        />
+          <Image
+            src={product.image_cover ?? "/images/placeholder.png"}
+            alt={product.name}
+            fill
+            className="object-cover w-full h-full"
+            priority={false}
+          />
 
         {/* Hovered icons container */}
         <motion.div
