@@ -154,23 +154,57 @@
                             
                             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                 <div>
-                                    <label for="image_cover" class="block text-sm font-medium text-gray-700">Cover Image URL</label>
-                                    <input
-                                        type="text"
-                                        id="image_cover"
-                                        name="image_cover"
-                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
-                                    >
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Cover Image</label>
+                                    <div class="space-y-2">
+                                        <div>
+                                            <label for="image_cover_file" class="block text-xs text-gray-600">Upload File</label>
+                                            <input
+                                                type="file"
+                                                id="image_cover_file"
+                                                name="image_cover_file"
+                                                accept="image/*"
+                                                class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100"
+                                            >
+                                        </div>
+                                        <div class="text-center text-xs text-gray-500">OR</div>
+                                        <div>
+                                            <label for="image_cover" class="block text-xs text-gray-600">Image URL</label>
+                                            <input
+                                                type="text"
+                                                id="image_cover"
+                                                name="image_cover"
+                                                placeholder="https://example.com/image.jpg"
+                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 text-sm"
+                                            >
+                                        </div>
+                                    </div>
                                 </div>
                                 <div>
-                                    <label for="image_details" class="block text-sm font-medium text-gray-700">Additional Images (JSON array)</label>
-                                    <textarea
-                                        id="image_details"
-                                        name="image_details"
-                                        rows="2"
-                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
-                                        placeholder='["url1", "url2"]'
-                                    ></textarea>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Additional Images</label>
+                                    <div class="space-y-2">
+                                        <div>
+                                            <label for="image_details_files" class="block text-xs text-gray-600">Upload Files (Multiple)</label>
+                                            <input
+                                                type="file"
+                                                id="image_details_files"
+                                                name="image_details_files"
+                                                accept="image/*"
+                                                multiple
+                                                class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100"
+                                            >
+                                        </div>
+                                        <div class="text-center text-xs text-gray-500">OR</div>
+                                        <div>
+                                            <label for="image_details" class="block text-xs text-gray-600">Image URLs (JSON array)</label>
+                                            <textarea
+                                                id="image_details"
+                                                name="image_details"
+                                                rows="2"
+                                                placeholder='["url1", "url2"]'
+                                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 text-sm"
+                                            ></textarea>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             
@@ -315,23 +349,57 @@
                     
                     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <div>
-                            <label for="editImageCover" class="block text-sm font-medium text-gray-700">Cover Image URL</label>
-                            <input
-                                type="text"
-                                id="editImageCover"
-                                name="image_cover"
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
-                            >
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Cover Image</label>
+                            <div class="space-y-2">
+                                <div>
+                                    <label for="editImageCoverFile" class="block text-xs text-gray-600">Upload File</label>
+                                    <input
+                                        type="file"
+                                        id="editImageCoverFile"
+                                        name="image_cover_file"
+                                        accept="image/*"
+                                        class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100"
+                                    >
+                                </div>
+                                <div class="text-center text-xs text-gray-500">OR</div>
+                                <div>
+                                    <label for="editImageCover" class="block text-xs text-gray-600">Image URL</label>
+                                    <input
+                                        type="text"
+                                        id="editImageCover"
+                                        name="image_cover"
+                                        placeholder="https://example.com/image.jpg"
+                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 text-sm"
+                                    >
+                                </div>
+                            </div>
                         </div>
                         <div>
-                            <label for="editImageDetails" class="block text-sm font-medium text-gray-700">Additional Images (JSON array)</label>
-                            <textarea
-                                id="editImageDetails"
-                                name="image_details"
-                                rows="2"
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
-                                placeholder='["url1", "url2"]'
-                            ></textarea>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Additional Images</label>
+                            <div class="space-y-2">
+                                <div>
+                                    <label for="editImageDetailsFiles" class="block text-xs text-gray-600">Upload Files (Multiple)</label>
+                                    <input
+                                        type="file"
+                                        id="editImageDetailsFiles"
+                                        name="image_details_files"
+                                        accept="image/*"
+                                        multiple
+                                        class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100"
+                                    >
+                                </div>
+                                <div class="text-center text-xs text-gray-500">OR</div>
+                                <div>
+                                    <label for="editImageDetails" class="block text-xs text-gray-600">Image URLs (JSON array)</label>
+                                    <textarea
+                                        id="editImageDetails"
+                                        name="image_details"
+                                        rows="2"
+                                        placeholder='["url1", "url2"]'
+                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 text-sm"
+                                    ></textarea>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
@@ -357,6 +425,56 @@
     </div>
 
     <script>
+        // Upload image to Cloudinary
+        async function uploadImage(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('folder', 'ecommerce/products');
+            
+            try {
+                const response = await fetch('/api/upload/image', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                if (result.success) {
+                    return result.url;
+                } else {
+                    throw new Error(result.error || 'Upload failed');
+                }
+            } catch (error) {
+                console.error('Upload error:', error);
+                throw error;
+            }
+        }
+
+        // Upload multiple images to Cloudinary
+        async function uploadMultipleImages(files) {
+            const formData = new FormData();
+            for (let file of files) {
+                formData.append('files', file);
+            }
+            formData.append('folder', 'ecommerce/products');
+            
+            try {
+                const response = await fetch('/api/upload/images', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                if (result.success) {
+                    return result.urls;
+                } else {
+                    throw new Error(result.error || 'Upload failed');
+                }
+            } catch (error) {
+                console.error('Upload error:', error);
+                throw error;
+            }
+        }
+
         // Format price for display
         function formatPrice(price) {
             return price ? '$' + Number.parseFloat( price) .toFixed(2) : '-';
@@ -369,103 +487,157 @@
         }
 
         // Create product submit handler
-        $("#createProductForm").on("submit", function(e) {
+        $("#createProductForm").on("submit", async function(e) {
             e.preventDefault();
             const form = $(this);
             const status = $("#createStatus");
             
-            // Collect form data
-            const data = {
-                name: form.find("#name").val().trim(),
-                description: form.find("#description").val().trim(),
-                price: parseFloat(form.find("#price").val()),
-                image_cover: form.find("#image_cover").val().trim(),
-                quantity: parseInt(form.find("#quantity").val(), 10),
-                category: form.find("#category").val(),
-            };
-
-            // Parse image_details JSON, fallback to empty array
-            try {
-                data.image_details = form.find("#image_details").val()
-                    ? JSON.parse(form.find("#image_details").val())
-                    : [];
-                if (!Array.isArray(data.image_details)) throw new Error();
-            } catch {
-                status.text("Image Details must be a valid JSON array.");
-                status.removeClass().addClass("text-sm text-center text-red-600");
-                return;
-            }
-
-            status.text("Creating product...");
+            status.text("Processing...");
             status.removeClass().addClass("text-sm text-center text-primary-600");
-
-            $.ajax({
-                url: "/api/products",
-                type: "POST",
-                contentType: "application/json",
-                data: JSON.stringify(data),
-                success: function() {
-                    status.text("Product created successfully!");
-                    status.removeClass().addClass("text-sm text-center text-green-600");
-                    form[0].reset();
-                    fetchProducts();
-                },
-                error: function(xhr) {
-                    status.text(xhr.responseJSON?.error || "Failed to create product");
-                    status.removeClass().addClass("text-sm text-center text-red-600");
+            
+            try {
+                // Handle cover image upload
+                let imageCoverUrl = form.find("#image_cover").val().trim();
+                const coverFile = form.find("#image_cover_file")[0].files[0];
+                
+                if (coverFile) {
+                    status.text("Uploading cover image...");
+                    imageCoverUrl = await uploadImage(coverFile);
                 }
-            });
+                
+                // Handle additional images upload
+                let imageDetailsArray = [];
+                const detailsInput = form.find("#image_details").val().trim();
+                
+                if (detailsInput) {
+                    try {
+                        imageDetailsArray = JSON.parse(detailsInput);
+                        if (!Array.isArray(imageDetailsArray)) throw new Error();
+                    } catch {
+                        status.text("Image Details must be a valid JSON array.");
+                        status.removeClass().addClass("text-sm text-center text-red-600");
+                        return;
+                    }
+                }
+                
+                const detailsFiles = form.find("#image_details_files")[0].files;
+                if (detailsFiles.length > 0) {
+                    status.text(`Uploading ${detailsFiles.length} additional images...`);
+                    const uploadedUrls = await uploadMultipleImages(Array.from(detailsFiles));
+                    imageDetailsArray = [...imageDetailsArray, ...uploadedUrls];
+                }
+                
+                // Collect form data
+                const data = {
+                    name: form.find("#name").val().trim(),
+                    description: form.find("#description").val().trim(),
+                    price: parseFloat(form.find("#price").val()),
+                    image_cover: imageCoverUrl,
+                    image_details: imageDetailsArray,
+                    quantity: parseInt(form.find("#quantity").val(), 10),
+                    category: form.find("#category").val(),
+                };
+
+                status.text("Creating product...");
+
+                $.ajax({
+                    url: "/api/products",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(data),
+                    success: function() {
+                        status.text("Product created successfully!");
+                        status.removeClass().addClass("text-sm text-center text-green-600");
+                        form[0].reset();
+                        fetchProducts();
+                    },
+                    error: function(xhr) {
+                        status.text(xhr.responseJSON?.error || "Failed to create product");
+                        status.removeClass().addClass("text-sm text-center text-red-600");
+                    }
+                });
+            } catch (error) {
+                status.text("Error: " + error.message);
+                status.removeClass().addClass("text-sm text-center text-red-600");
+            }
         });
 
         // Edit product submit handler
-        $("#editProductForm").on("submit", function(e) {
+        $("#editProductForm").on("submit", async function(e) {
             e.preventDefault();
             const form = $(this);
             const status = $("#editStatus");
             const productId = form.find("#editProductId").val();
             
-            // Collect form data
-            const data = {
-                id: productId,
-                name: form.find("#editName").val().trim(),
-                description: form.find("#editDescription").val().trim(),
-                price: parseFloat(form.find("#editPrice").val()),
-                image_cover: form.find("#editImageCover").val().trim(),
-                quantity: parseInt(form.find("#editQuantity").val(), 10),
-                category: form.find("#editCategory").val(),
-            };
-
-            // Parse image_details JSON, fallback to empty array
-            try {
-                data.image_details = form.find("#editImageDetails").val()
-                    ? JSON.parse(form.find("#editImageDetails").val())
-                    : [];
-                if (!Array.isArray(data.image_details)) throw new Error();
-            } catch {
-                status.text("Image Details must be a valid JSON array.");
-                status.removeClass().addClass("text-sm text-center text-red-600");
-                return;
-            }
-
-            status.text("Updating product...");
+            status.text("Processing...");
             status.removeClass().addClass("text-sm text-center text-primary-600");
-
-            $.ajax({
-                url: `/api/products/${productId}`,
-                type: "PUT",
-                contentType: "application/json",
-                data: JSON.stringify(data),
-                success: function() {
-                    status.text("Product updated successfully!");
-                    status.removeClass().addClass("text-sm text-center text-green-600");
-                    fetchProducts();
-                    setTimeout(closeModal, 1500);
-                },
-                error: function(xhr) {
-                    status.text(xhr.responseJSON?.error || "Failed to update product");
-                    status.removeClass().addClass("text-sm text-center text-red-600");
+            
+            try {
+                // Handle cover image upload
+                let imageCoverUrl = form.find("#editImageCover").val().trim();
+                const coverFile = form.find("#editImageCoverFile")[0].files[0];
+                
+                if (coverFile) {
+                    status.text("Uploading cover image...");
+                    imageCoverUrl = await uploadImage(coverFile);
                 }
-            });
+                
+                // Handle additional images upload
+                let imageDetailsArray = [];
+                const detailsInput = form.find("#editImageDetails").val().trim();
+                
+                if (detailsInput) {
+                    try {
+                        imageDetailsArray = JSON.parse(detailsInput);
+                        if (!Array.isArray(imageDetailsArray)) throw new Error();
+                    } catch {
+                        status.text("Image Details must be a valid JSON array.");
+                        status.removeClass().addClass("text-sm text-center text-red-600");
+                        return;
+                    }
+                }
+                
+                const detailsFiles = form.find("#editImageDetailsFiles")[0].files;
+                if (detailsFiles.length > 0) {
+                    status.text(`Uploading ${detailsFiles.length} additional images...`);
+                    const uploadedUrls = await uploadMultipleImages(Array.from(detailsFiles));
+                    imageDetailsArray = [...imageDetailsArray, ...uploadedUrls];
+                }
+                
+                // Collect form data
+                const data = {
+                    id: productId,
+                    name: form.find("#editName").val().trim(),
+                    description: form.find("#editDescription").val().trim(),
+                    price: parseFloat(form.find("#editPrice").val()),
+                    image_cover: imageCoverUrl,
+                    image_details: imageDetailsArray,
+                    quantity: parseInt(form.find("#editQuantity").val(), 10),
+                    category: form.find("#editCategory").val(),
+                };
+
+                status.text("Updating product...");
+
+                $.ajax({
+                    url: `/api/products/${productId}`,
+                    type: "PUT",
+                    contentType: "application/json",
+                    data: JSON.stringify(data),
+                    success: function() {
+                        status.text("Product updated successfully!");
+                        status.removeClass().addClass("text-sm text-center text-green-600");
+                        fetchProducts();
+                        setTimeout(closeModal, 1500);
+                    },
+                    error: function(xhr) {
+                        status.text(xhr.responseJSON?.error || "Failed to update product");
+                        status.removeClass().addClass("text-sm text-center text-red-600");
+                    }
+                });
+            } catch (error) {
+                status.text("Error: " + error.message);
+                status.removeClass().addClass("text-sm text-center text-red-600");
+            }
         });
 
         // Category filter change handler

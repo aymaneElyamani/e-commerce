@@ -101,8 +101,28 @@
                             </div>
 
                             <div>
-                                <label for="imageUrl" class="block text-sm font-medium text-gray-700">Image URL (optional)</label>
-                                <input id="imageUrl" type="url" placeholder="https://example.com/image.jpg" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Blog Image (optional)</label>
+                                <div class="space-y-2">
+                                    <div>
+                                        <label for="imageFile" class="block text-xs text-gray-600">Upload File</label>
+                                        <input
+                                            type="file"
+                                            id="imageFile"
+                                            accept="image/*"
+                                            class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100"
+                                        />
+                                    </div>
+                                    <div class="text-center text-xs text-gray-500">OR</div>
+                                    <div>
+                                        <label for="imageUrl" class="block text-xs text-gray-600">Image URL</label>
+                                        <input
+                                            id="imageUrl"
+                                            type="url"
+                                            placeholder="https://example.com/image.jpg"
+                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 text-sm"
+                                        />
+                                    </div>
+                                </div>
                             </div>
 
                             <div>
@@ -187,6 +207,30 @@
 
     <script>
       const apiUrl = "/api/blogs";
+
+      // Upload image to Cloudinary
+      async function uploadImage(file) {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('folder', 'ecommerce/blogs');
+        
+        try {
+          const response = await fetch('/api/upload/image', {
+            method: 'POST',
+            body: formData
+          });
+          
+          const result = await response.json();
+          if (result.success) {
+            return result.url;
+          } else {
+            throw new Error(result.error || 'Upload failed');
+          }
+        } catch (error) {
+          console.error('Upload error:', error);
+          throw error;
+        }
+      }
 
       function escapeHTML(str) {
         return String(str)
@@ -307,17 +351,34 @@
         e.preventDefault();
         formMessage.textContent = "";
         const id = document.getElementById("blogId").value;
-        const blogData = {
-          title: document.getElementById("title").value.trim(),
-          image_url: document.getElementById("imageUrl").value.trim(),
-          content: document.getElementById("content").value.trim(),
-          is_published: document.getElementById("isPublished").value === "true",
-        };
-        if (!blogData.title || !blogData.content) {
-          formMessage.textContent = "Title and Content are required.";
-          return;
-        }
+        
         try {
+          // Handle image upload
+          let imageUrl = document.getElementById("imageUrl").value.trim();
+          const imageFile = document.getElementById("imageFile").files[0];
+          
+          if (imageFile) {
+            formMessage.textContent = "Uploading image...";
+            formMessage.className = "mt-2 text-primary-600 font-medium";
+            imageUrl = await uploadImage(imageFile);
+          }
+          
+          const blogData = {
+            title: document.getElementById("title").value.trim(),
+            image_url: imageUrl,
+            content: document.getElementById("content").value.trim(),
+            is_published: document.getElementById("isPublished").value === "true",
+          };
+          
+          if (!blogData.title || !blogData.content) {
+            formMessage.textContent = "Title and Content are required.";
+            formMessage.className = "mt-2 text-red-600 font-medium";
+            return;
+          }
+          
+          formMessage.textContent = id ? "Updating blog..." : "Creating blog...";
+          formMessage.className = "mt-2 text-primary-600 font-medium";
+          
           if (id) {
             await updateBlog(id, blogData);
             formMessage.textContent = "Blog updated successfully.";
@@ -325,10 +386,12 @@
             await createBlog(blogData);
             formMessage.textContent = "Blog created successfully.";
           }
+          formMessage.className = "mt-2 text-green-600 font-medium";
           resetForm();
           loadBlogs();
         } catch (error) {
           formMessage.textContent = error.message;
+          formMessage.className = "mt-2 text-red-600 font-medium";
         }
       });
 
