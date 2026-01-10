@@ -51,9 +51,16 @@ export default function Page() {
   const pathname = usePathname();
   const category = searchParams.get("category");
 
+
+  console.log("Category from URL:", category);
+
+  console.log("NEXT_PUBLIC_API_URL:", process.env.NEXT_PUBLIC_API_URL);
   const API_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/products${
     category ? `?category=${category}` : ""
   }`;
+
+
+  console.log("API_BASE_URL:", API_BASE_URL);
 
   useEffect(() => {
     setLoading(true);
